@@ -1,0 +1,70 @@
+package com.arhimag.games.omnomnom;
+
+import java.util.List;
+
+import com.arhimag.games.omnomnom.framework.Game;
+import com.arhimag.games.omnomnom.framework.Graphics;
+import com.arhimag.games.omnomnom.framework.Input.TouchEvent;
+import com.arhimag.games.omnomnom.framework.Screen;
+
+public class MainMenuScreen extends Screen
+{
+	Map map;
+	
+	public MainMenuScreen(Game game)
+	{
+		super(game);
+		map = new Map(11,0,0,game.getGraphics());
+	}
+
+	@Override
+	public void update(float deltaTime)
+	{
+		Graphics g = game.getGraphics();
+		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+		game.getInput().getKeyEvents();
+		
+		int len = touchEvents.size();
+		
+		for(int i = 0; i < len; i++)
+		{
+			TouchEvent event = touchEvents.get(i);
+			
+			if(event.type == TouchEvent.TOUCH_UP)
+			{
+				Assets.eat.play(1);
+			}
+		}
+		
+	}
+
+	@Override
+	public void present(float deltaTime)
+	{
+		Graphics g = game.getGraphics();
+		g.clear(0);
+		map.Draw();
+	}
+
+	@Override
+	public void pause()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void resume()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void dispose()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+}

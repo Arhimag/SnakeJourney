@@ -1,0 +1,239 @@
+package com.arhimag.games.omnomnom;
+
+import java.util.Random;
+
+import android.graphics.Rect;
+
+import com.arhimag.games.omnomnom.Levels.GameLevel;
+import com.arhimag.games.omnomnom.Maps.MainMenuMap;
+import com.arhimag.games.omnomnom.framework.Graphics;
+import com.arhimag.games.omnomnom.framework.Input.TouchEvent;
+
+public class GameLevelDrawer
+{
+	private GameLevel level;
+	
+	private int[] mapWallColors = new int[]{0xff53aa14, 0xffdd954d, 0xFFDD954D, 0xFFDD954D, 0xFFDD954D};
+	private int[][] mapColorModificators = new int[3][3];
+	
+	private int mapPixelSize = 5;
+	
+	private int mapStartDrawX = 0;
+	private int mapStartDrawY = 0;
+	
+	private int mapBitShift = 32;
+
+	private int snakeBodyColor = 0xffaaaaaa;
+	private int snakeHeadColor = 0xffffffff;
+	private int foodColor = 0xffaaaaaa;
+	private int finishColor = 0xff000000;
+	private int teleportColor = 0xff5555ff;
+	
+	private int snakeHeadSize;
+	private int snakeBodySize;
+	private int foodSize;
+	
+	private int screenHeight;
+	private int screenWidth;
+	
+	private int paddingTop = 0;
+	private int paddingBottom = 0;
+	private int paddingLeft = 0;
+	private int paddingRight = 0;
+	
+	private Graphics graphics;
+	
+	public GameLevelDrawer( GameLevel level, int screenWidth, int screenHeight, Graphics graphics )
+	{
+		
+		this.level = level;
+		
+		Random rand = new Random();
+		
+		this.screenHeight = screenHeight;
+		this.screenWidth = screenWidth;
+		
+		mapPixelSize = java.lang.Math.min((screenHeight - paddingTop - paddingBottom)/level.getMap().getMapHeight(), (screenWidth - paddingRight - paddingLeft)/level.getMap().getMapWidth() );
+		mapStartDrawX = paddingLeft + (screenWidth  - paddingRight - paddingLeft - mapPixelSize*level.getMap().getMapWidth()) / 2 ;
+		mapStartDrawY = paddingTop + (screenHeight - paddingTop - paddingBottom - level.getMap().getMapHeight()*mapPixelSize ) /2;
+		
+		this.foodSize = (3 * mapPixelSize) / 4;
+		this.snakeBodySize = (3 * mapPixelSize) / 4;
+		this.snakeHeadSize = mapPixelSize;
+		
+		this.graphics = graphics;
+		this.mapColorModificators[0][0] = 0;
+		this.mapColorModificators[1][1] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		this.mapColorModificators[1][0] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		this.mapColorModificators[2][0] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		this.mapColorModificators[0][1] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		this.mapColorModificators[2][1] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		this.mapColorModificators[0][2] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		this.mapColorModificators[1][2] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		this.mapColorModificators[2][2] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		
+	}
+	
+	public void drawMap()
+	{
+		for(int i = 0; i < level.getMap().getMapWidth() ; i++ )
+			for(int j=0; j < level.getMap().getMapHeight(); j++)
+				switch (level.getMap().getFlatMap(i, j))
+				{
+					case '#':
+						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[0] + mapColorModificators[i % 3][j % 3]);
+						break;
+					case 'W':
+						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[1] + mapColorModificators[i % 3][j % 3]);
+						break;
+					case 'Q':
+						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[2] + mapColorModificators[i % 3][j % 3]);
+						break;
+					case 'R':
+						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[3] + mapColorModificators[i % 3][j % 3]);
+						break;
+					case 'T':
+						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[4] + mapColorModificators[i % 3][j % 3]);
+						break;
+				}
+	}
+	
+	private void drawCenterRect( int x, int y, int side, int color)
+	{
+		graphics.drawRect( x - side/2, y - side/2, side, side, color);
+	}
+	
+	private void drawSnake( float deltaTime )
+	{
+		float x, y;
+		if( ! this.level.getMoved())
+		{
+			deltaTime = this.level.getTickTime() + 1.0f;
+		}
+		
+		for( int i = this.level.getSnake().parts.size() - 2; i > 0; i --)
+		{
+			SnakePart curr = this.level.getSnake().parts.get(i);
+			SnakePart prev = this.level.getSnake().parts.get(i + 1);
+	
+			if( deltaTime > this.level.getTickTime() )
+			{
+				x = mapStartDrawX + curr.x * mapPixelSize + (float)mapPixelSize / 2.0f;
+				y = mapStartDrawY + curr.y * mapPixelSize + (float)mapPixelSize / 2.0f;
+			}
+			else
+			{
+				x = mapStartDrawX + prev.x * mapPixelSize + (float)mapPixelSize / 2.0f + deltaTime * (float)mapPixelSize/this.level.getTickTime()*((float)curr.x - (float)prev.x );
+				y = mapStartDrawY + prev.y * mapPixelSize + (float)mapPixelSize / 2.0f + deltaTime * (float)mapPixelSize/this.level.getTickTime()*((float)curr.y - (float)prev.y );
+			}
+	
+			drawCenterRect(java.lang.Math.round(x), java.lang.Math.round(y),snakeBodySize,snakeBodyColor);
+		}
+		
+		if( this.level.getSnake().parts.size() == 1 )
+		{
+			if( deltaTime > this.level.getTickTime() )
+			{
+				x = mapStartDrawX + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getSnake().parts.get(0).x ;
+				y = mapStartDrawY + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getSnake().parts.get(0).y ;
+			}
+			else
+			{
+				x = mapStartDrawX + this.level.getSnake().lastx * mapPixelSize + (float)mapPixelSize / 2.0f + deltaTime * (float)mapPixelSize/this.level.getTickTime()*((float)this.level.getSnake().parts.get(0).x - (float)this.level.getSnake().lastx );
+				y = mapStartDrawY + this.level.getSnake().lasty * mapPixelSize + (float)mapPixelSize / 2.0f + deltaTime * (float)mapPixelSize/this.level.getTickTime()*((float)this.level.getSnake().parts.get(0).y - (float)this.level.getSnake().lasty );
+			}
+			drawCenterRect(java.lang.Math.round(x), java.lang.Math.round(y),snakeHeadSize,snakeHeadColor);
+		} 
+		else
+		{
+			if( deltaTime > this.level.getTickTime() )
+			{
+				x = mapStartDrawX + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getSnake().parts.get(this.level.getSnake().parts.size()-1).x;
+				y = mapStartDrawY + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getSnake().parts.get(this.level.getSnake().parts.size()-1).y;
+			}
+			else
+			{
+				x = mapStartDrawX + this.level.getSnake().lastx * mapPixelSize + (float)mapPixelSize / 2.0f + deltaTime * (float)mapPixelSize/this.level.getTickTime()*((float)this.level.getSnake().parts.get(this.level.getSnake().parts.size()-1).x - (float)this.level.getSnake().lastx );
+				y = mapStartDrawY + this.level.getSnake().lasty * mapPixelSize + (float)mapPixelSize / 2.0f + deltaTime * (float)mapPixelSize/this.level.getTickTime()*((float)this.level.getSnake().parts.get(this.level.getSnake().parts.size()-1).y - (float)this.level.getSnake().lasty );
+			}
+			
+			drawCenterRect(java.lang.Math.round(x), java.lang.Math.round(y),snakeBodySize,snakeBodyColor);
+	
+			if( deltaTime > this.level.getTickTime() )
+			{	
+				x = mapStartDrawX + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getSnake().parts.get(0).x;
+				y = mapStartDrawY + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getSnake().parts.get(0).y;
+			}
+			else
+			{
+				x = mapStartDrawX + this.level.getSnake().parts.get(1).x * mapPixelSize + (float)mapPixelSize / 2.0f + deltaTime * (float)mapPixelSize/this.level.getTickTime()*((float)this.level.getSnake().parts.get(0).x - (float)this.level.getSnake().parts.get(1).x );
+				y = mapStartDrawY + this.level.getSnake().parts.get(1).y * mapPixelSize + (float)mapPixelSize / 2.0f + deltaTime * (float)mapPixelSize/this.level.getTickTime()*((float)this.level.getSnake().parts.get(0).y - (float)this.level.getSnake().parts.get(1).y );
+			}
+			
+			drawCenterRect(java.lang.Math.round(x), java.lang.Math.round(y),snakeHeadSize,snakeHeadColor);
+		}
+	}
+
+	private void drawFood()
+	{
+		float x, y;
+		
+		for( int i = 0; i < this.level.getFoodLength(); i++ )
+		{
+			x = mapStartDrawX + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getFood(i).x;
+			y = mapStartDrawY + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getFood(i).y;
+			drawCenterRect(java.lang.Math.round(x), java.lang.Math.round(y), this.foodSize, this.foodColor);
+		}
+	}
+	
+	private void drawFinish()
+	{
+		for ( int i = 0; i < this.level.getFinishesCount(); i++ )
+			graphics.drawRect(mapStartDrawX + mapPixelSize * this.level.getFinishX(i), mapStartDrawY + mapPixelSize * this.level.getFinishY(i), mapPixelSize, mapPixelSize, finishColor);
+	}
+	
+	private void drawTeleports()
+	{
+		for ( int i = 0; i < this.level.getTeleportesCount(); i++ )
+			graphics.drawRect(mapStartDrawX + mapPixelSize * this.level.getTeleportX(i), mapStartDrawY + mapPixelSize * this.level.getTeleportY(i), mapPixelSize, mapPixelSize, teleportColor);
+	}
+	
+	public void draw( float deltaTime )
+	{
+		drawMap();
+		drawFood();
+		drawFinish();
+		drawTeleports();
+		drawSnake(this.level.getTicks());
+	}
+	
+		
+	public GameLevel getLevel()
+	{
+		return level;
+	}
+	
+	public void setLevel( GameLevel level)
+	{
+		this.level = level;
+		
+		mapPixelSize = java.lang.Math.min((screenHeight - paddingTop - paddingBottom)/level.getMap().getMapHeight(), (screenWidth - paddingRight - paddingLeft)/level.getMap().getMapWidth() );
+		mapStartDrawX = paddingLeft + (screenWidth  - paddingRight - paddingLeft - mapPixelSize*level.getMap().getMapWidth()) / 2 ;
+		mapStartDrawY = paddingTop + (screenHeight - paddingTop - paddingBottom - level.getMap().getMapHeight()*mapPixelSize ) /2;
+		
+		this.foodSize = (3 * mapPixelSize) / 4;
+		this.snakeBodySize = (3 * mapPixelSize) / 4;
+		this.snakeHeadSize = mapPixelSize;
+	}
+	
+	public boolean inBounds( TouchEvent event, Rect rct)
+	{
+		if ( ( event.x > paddingLeft + rct.left * mapPixelSize + mapStartDrawX) &&
+				( event.x <  paddingLeft + rct.right * mapPixelSize + mapStartDrawX  ) &&
+				( event.y > paddingTop + rct.top * mapPixelSize + mapStartDrawY) &&
+				( event.y <  paddingTop + rct.bottom * mapPixelSize + mapStartDrawY  ) )
+			return true;
+		else
+			return false;
+	}
+}

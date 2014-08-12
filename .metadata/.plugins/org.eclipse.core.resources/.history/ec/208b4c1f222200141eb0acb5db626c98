@@ -1,0 +1,164 @@
+package com.arhimag.games.omnomnom.AI;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+import com.arhimag.games.omnomnom.Snake;
+import com.arhimag.games.omnomnom.Levels.GameLevel;
+
+public class BFSAISnake extends Snake 
+{
+	GameLevel level;
+	private int primeNumber; // Персональное простое число присвоенное змейке, для заполнения временной карты во время прохождения BFS
+	private int mapWidth;
+	private int mapHeight;
+	
+	private int queque[]; //массив содржащий элементы очереди
+	private int quequeParents[]; //массив родителей соответствующих элементов
+	private int quequeStart; //индекс первого элемента
+	private int quequeEnd; //индекс куда записывать новый элемент
+	private int quequeSize;//размер массива
+	
+
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 *                                                             *  
+	 * Эмулирование очереди массивом.                              *
+	 * queque - массив содржащий элементы очереди.                 *
+	 * quequeParent - массив родителей соответствующих элементов.  *
+	 * quequeStart - индекс первого элемента                       *  
+	 * quequeEnd - индекс куда записывать новый элемент            *
+	 * quequeSize - размер массива. он не постоянен. В случае      * 
+	 * нехватки места происходит удвоение размера массива с        * 
+	 * копированием элементов старого, что может притормозить      * 
+	 * время работы программы, поэтому имеет смысл подобрать       *
+	 * оптимальный размер начального массива, чтобы оно не брало   *
+	 * много памяти, но и хватало этого в 90% случаев.             *
+	 *                                                             *
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	
+	/* Инициализация очереди. 
+	 * Запускать только в конструкторе и только после того, как будут
+	 * заданы размеры карты. В переменных mapWidth*mapHeight 
+	 */
+	private void initQueque()
+	{
+		quequeSize = mapWidth*mapHeight / 4;
+		queque = new int[quequeSize];
+		quequeParents = new int[quequeSize];
+		quequeStart = 0;
+		quequeEnd = 0;
+	}
+	
+	/* Добавлеят элемент в коней очереди
+	 * ! При нехватке места размер массива удваивается !
+	 */
+	private void pushQueque(int vertex, int parent )
+	{
+		if( quequeEnd == quequeSize )
+		{
+			int temp[];
+			
+			temp = new int[quequeSize * 2];
+			java.lang.System.arraycopy(queque, 0, temp, 0, quequeSize);
+			queque = temp;
+			temp = null;
+			
+			temp = new int[quequeSize * 2];
+			java.lang.System.arraycopy(quequeParents, 0, temp, 0, quequeSize);
+			quequeParents = temp;
+			temp = null;
+			
+			quequeSize *= 2;
+		}
+		
+		queque[quequeEnd] = vertex;
+		quequeParents[quequeEnd] = parent;
+		quequeEnd++;		
+	}
+	
+	/* Выдает значение первого элемента очереди. Без удаления.
+	 */
+	private int getQueque()
+	{
+		return queque[quequeStart];
+	}
+	
+	/* Выдает родителя первого элемента очереди. Без удаления.
+	 */
+	private int getParentQueque()
+	{
+		return quequeParents[quequeStart];
+	}
+	
+	/* Пуста ли очередь?
+	 */
+	private boolean isEmptyQueque()
+	{
+		return quequeStart < quequeEnd;
+	}
+	
+	/* Выдает первый элемент очереди удаляя его.
+	 */
+	private int popQueque()
+	{
+		return queque[quequeStart++];
+	}
+
+	private void clearQueque()
+	{
+		quequeStart = 0;
+		quequeEnd = 0;
+	}
+	/* * * * * * * * * * * * * *
+	 * Конец эмуляции очереди  *
+	 * * * * * * * * * * * * * */
+	
+	public BFSAISnake(GameLevel level, int x, int y, int primeNumber)
+	{
+		super(x,y);
+		this.level = level;
+		mapWidth = level.getMap().getMapWidth();
+		mapHeight = level.getMap().getMapHeight();
+		initQueque();
+	}
+
+	/* 
+	 * Алгоритм работы:
+	 * Ищем точку, к которой будет стремиться змейка.
+	 * Начинаем поиск в ширину с найденной точки до тех пор, пока не дойдем до головы змейки.
+	 * у каждой клетки храним ее родителя. Следующая клетка - это клетка родитель.
+	 */
+	
+	
+	
+/*	int bfsfood(int iteration)
+	{
+		int id;
+		if( queue.size() > 0 )
+			id = queue.poll();
+		else 
+			return -1;
+		
+		for(int neightboor = level.getMapGraphNeighbours(id, 0), i = 0; neightboor >= 0; neightboor = level.getMapGraphNeighbours(id, ++i) )
+		{
+			if( level.getIntTempMap(neightboor) == GameLevel.FOOD )
+				return neightboor;
+			if( level.getIntTempMap(neightboor) % primeNumber > 0 || level.getIntTempMap(neightboor) == 0 )
+				queue.add(neightboor);
+		}
+		
+	//	int way = bfsfood(iteration + 1)
+		
+		
+	} */
+	
+	
+	public void nextTurn()
+	{
+		//if( parts.size() > finishSize)
+//			deykstraFinish();
+//		else
+//			deykstra();
+//		direction = chooseDirection();
+	}
+}

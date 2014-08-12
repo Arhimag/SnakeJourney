@@ -1,0 +1,75 @@
+package com.arhimag.games.omnomnom.Maps;
+
+import java.util.Random;
+
+import com.arhimag.games.omnomnom.framework.Graphics;
+
+public abstract class GameMap
+{
+	public int[] WallColors = new int[]{0xff53aa14, 0xffdd954d, 0xFFDD954D, 0xFFDD954D, 0xFFDD954D};
+	public int[][] colorModificators = new int[3][3];
+	public static final int mapWidth = 48;
+	public static final int mapHeight = 29;
+	public char[][] FlatMap;
+	private int pixelSize = 5;
+	
+	private int startDrawX = 0;
+	private int startDrawY = 0;
+	
+	private int bitShift = 32;
+
+	private Graphics graphics;
+	
+	public GameMap( int pixelSize, int startDrawX, int startDrawY, Graphics graphics )
+	{
+		Random rand = new Random();
+		
+		this.pixelSize = pixelSize;
+		this.startDrawX = startDrawX;
+		this.startDrawY = startDrawY;
+		this.graphics = graphics;
+		this.colorModificators[0][0] = (0 | rand.nextInt(bitShift) << 16 | rand.nextInt(bitShift) << 8 | rand.nextInt(bitShift));
+		this.colorModificators[1][0] = (0 | rand.nextInt(bitShift) << 16 | rand.nextInt(bitShift) << 8 | rand.nextInt(bitShift));
+		this.colorModificators[2][0] = (0 | rand.nextInt(bitShift) << 16 | rand.nextInt(bitShift) << 8 | rand.nextInt(bitShift));
+		this.colorModificators[0][1] = (0 | rand.nextInt(bitShift) << 16 | rand.nextInt(bitShift) << 8 | rand.nextInt(bitShift));
+		this.colorModificators[1][1] = 0;
+		this.colorModificators[2][1] = (0 | rand.nextInt(bitShift) << 16 | rand.nextInt(bitShift) << 8 | rand.nextInt(bitShift));
+		this.colorModificators[0][2] = (0 | rand.nextInt(bitShift) << 16 | rand.nextInt(bitShift) << 8 | rand.nextInt(bitShift));
+		this.colorModificators[1][2] = (0 | rand.nextInt(bitShift) << 16 | rand.nextInt(bitShift) << 8 | rand.nextInt(bitShift));
+		this.colorModificators[2][2] = (0 | rand.nextInt(bitShift) << 16 | rand.nextInt(bitShift) << 8 | rand.nextInt(bitShift));
+	}
+	
+	public void Draw()
+	{
+		for(int i = 0; i < FlatMap[0].length ; i++ )
+			for(int j=0; j < FlatMap.length; j++)
+				switch (FlatMap[j][i])
+				{
+					case '#':
+						graphics.drawRect(startDrawX + i * pixelSize, this.startDrawY + j * pixelSize, pixelSize, pixelSize, WallColors[0] + colorModificators[i % 3][j % 3]);
+						break;
+					case 'W':
+						graphics.drawRect(startDrawX + i * pixelSize, this.startDrawY + j * pixelSize, pixelSize, pixelSize, WallColors[1] + colorModificators[i % 3][j % 3]);
+						break;
+					case 'Q':
+						graphics.drawRect(startDrawX + i * pixelSize, this.startDrawY + j * pixelSize, pixelSize, pixelSize, WallColors[2] + colorModificators[i % 3][j % 3]);
+						break;
+					case 'R':
+						graphics.drawRect(startDrawX + i * pixelSize, this.startDrawY + j * pixelSize, pixelSize, pixelSize, WallColors[3] + colorModificators[i % 3][j % 3]);
+						break;
+					case 'T':
+						graphics.drawRect(startDrawX + i * pixelSize, this.startDrawY + j * pixelSize, pixelSize, pixelSize, WallColors[4] + colorModificators[i % 3][j % 3]);
+						break;
+				}
+	}
+	
+	public static int getMapWidth()
+	{
+		return mapWidth;
+	}
+	
+	public static int getMapHeight()
+	{
+		return  mapHeight;
+	}
+}

@@ -1,0 +1,57 @@
+package com.arhimag.games.omnomnom.AI;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+import com.arhimag.games.omnomnom.Snake;
+import com.arhimag.games.omnomnom.Levels.GameLevel;
+
+public class BFSAISnake extends Snake 
+{
+	GameLevel level;
+	private int primeNumber;
+	private int mapWidth;
+	private int mapHeight;
+	private Queue<Integer> queue;
+		
+	public BFSAISnake(GameLevel level, int x, int y, int primeNumber)
+	{
+		super(x,y);
+		this.level = level;
+		queue = new LinkedList<Integer>();
+		mapWidth = level.getMap().getMapWidth();
+		mapHeight = level.getMap().getMapHeight();
+	}
+
+	
+/*	int bfsfood(int iteration)
+	{
+		int id;
+		if( queue.size() > 0 )
+			id = queue.poll();
+		else 
+			return -1;
+		
+		for(int neightboor = level.getMapGraphNeighbours(id, 0), i = 0; neightboor >= 0; neightboor = level.getMapGraphNeighbours(id, ++i) )
+		{
+			if( level.getIntTempMap(neightboor) == GameLevel.FOOD )
+				return neightboor;
+			if( level.getIntTempMap(neightboor) % primeNumber > 0 || level.getIntTempMap(neightboor) == 0 )
+				queue.add(neightboor);
+		}
+		
+	//	int way = bfsfood(iteration + 1)
+		
+		
+	} */
+	
+	
+	public void nextTurn()
+	{
+		//if( parts.size() > finishSize)
+//			deykstraFinish();
+//		else
+//			deykstra();
+//		direction = chooseDirection();
+	}
+}

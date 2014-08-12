@@ -1,0 +1,35 @@
+package com.arhimag.games.omnomnom.Levels;
+
+import com.arhimag.games.omnomnom.Snake;
+import com.arhimag.games.omnomnom.SnakePart;
+import com.arhimag.games.omnomnom.Maps.GameMap;
+
+public class Help2Level extends GameLevel
+{
+	public Help2Level(GameMap map)
+	{
+		super(map);
+		
+		int snakeStartX = 24;
+		int snakeStartY = 10;
+		
+		snake = new Snake(snakeStartX, snakeStartY);
+		for( int i = 0; i < 10; i++)
+			snake.parts.add(new SnakePart(snakeStartX, snakeStartY + 1 + i));		
+		snake.lastx = snakeStartX - 3;
+		snake.lasty = snakeStartY;
+		snake.direction = snake.RIGHT;
+	}
+	
+	@Override
+	public void update(float deltaTime )
+	{
+	}
+	
+	@Override
+	public boolean getMoved()
+	{
+		return false;
+	}
+	
+}

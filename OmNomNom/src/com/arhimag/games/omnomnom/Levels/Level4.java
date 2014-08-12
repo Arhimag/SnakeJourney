@@ -1,0 +1,51 @@
+package com.arhimag.games.omnomnom.Levels;
+
+import com.arhimag.games.omnomnom.Food;
+import com.arhimag.games.omnomnom.PlayerSnake;
+import com.arhimag.games.omnomnom.Snake;
+import com.arhimag.games.omnomnom.SnakePart;
+import com.arhimag.games.omnomnom.GameElements.Teleport;
+import com.arhimag.games.omnomnom.Maps.GameMap;
+import com.arhimag.games.omnomnom.framework.Point;
+
+public class Level4 extends GameLevel
+{
+	public Level4(  GameMap map )
+	{
+		super(map);
+		
+		int snakeStartX = 6;
+		int snakeStartY = 4;
+		snakes = new Snake[1];
+		moved = new boolean[1];
+		snakes[0] = new PlayerSnake(snakeStartX, snakeStartY);
+		snakes[0].parts.add(new SnakePart(snakeStartX + 1, snakeStartY));
+		snakes[0].parts.add(new SnakePart(snakeStartX + 2, snakeStartY));
+		snakes[0].parts.add(new SnakePart(snakeStartX + 3, snakeStartY));
+		snakes[0].lastx = snakeStartX + 4;
+		snakes[0].lasty = snakeStartY;
+		snakes[0].direction = Snake.LEFT;
+		
+		food = new Food[5];
+		food[0] = new Food( snakeStartX + 3, snakeStartY);
+		food[1] = new Food( snakeStartX + 7, snakeStartY);
+		food[2] = new Food( snakeStartX + 11, snakeStartY);
+		food[3] = new Food( snakeStartX + 17, snakeStartY);
+		food[4] = new Food( snakeStartX + 21, snakeStartY);
+		
+		finishes = new Point[2];
+		
+		finishes[0] = new Point(22,36);
+		finishes[1] = new Point(23,36);
+		
+		teleports = new Teleport[4];
+		teleports[0] = new Teleport(9,11,1);
+		teleports[1] = new Teleport(28,28,2);
+		teleports[2] = new Teleport(28,11,3);
+		teleports[3] = new Teleport(9,28,0);
+		
+		winLength = 30;
+		
+	}
+
+}
