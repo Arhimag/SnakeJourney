@@ -3,6 +3,8 @@ package com.arhimag.games.omnomnom.AI;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import android.util.Log;
+
 import com.arhimag.games.omnomnom.Snake;
 import com.arhimag.games.omnomnom.Levels.GameLevel;
 
@@ -14,17 +16,16 @@ public class BFSAISnake extends Snake
 	private int mapHeight;
 	
 	private int queque[]; //массив содржащий элементы очереди
-	private int quequeParents[]; //массив родителей соответствующих элементов
 	private int quequeStart; //индекс первого элемента
 	private int quequeEnd; //индекс куда записывать новый элемент
 	private int quequeSize;//размер массива
-	
+	private final int rndSequence[] = {0,1,3,2,3,2,0,1}; //Случайная последовательность поворотов
+	private int rndPointer = 3;
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	 *                                                             *  
 	 * Эмулирование очереди массивом.                              *
 	 * queque - массив содржащий элементы очереди.                 *
-	 * quequeParent - массив родителей соответствующих элементов.  *
 	 * quequeStart - индекс первого элемента                       *  
 	 * quequeEnd - индекс куда записывать новый элемент            *
 	 * quequeSize - размер массива. он не постоянен. В случае      * 
@@ -44,7 +45,6 @@ public class BFSAISnake extends Snake
 	{
 		quequeSize = mapWidth*mapHeight / 4;
 		queque = new int[quequeSize];
-		quequeParents = new int[quequeSize];
 		quequeStart = 0;
 		quequeEnd = 0;
 	}
@@ -52,7 +52,7 @@ public class BFSAISnake extends Snake
 	/* Добавлеят элемент в коней очереди
 	 * ! При нехватке места размер массива удваивается !
 	 */
-	private void pushQueque(int vertex, int parent )
+	private void pushQueque(int vertex )
 	{
 		if( quequeEnd == quequeSize )
 		{
@@ -63,16 +63,11 @@ public class BFSAISnake extends Snake
 			queque = temp;
 			temp = null;
 			
-			temp = new int[quequeSize * 2];
-			java.lang.System.arraycopy(quequeParents, 0, temp, 0, quequeSize);
-			quequeParents = temp;
-			temp = null;
-			
 			quequeSize *= 2;
 		}
 		
 		queque[quequeEnd] = vertex;
-		quequeParents[quequeEnd] = parent;
+		Log.d("BFS","Vertex (" + level.getMapVertexX(vertex) + "," + level.getMapVertexY(vertex) + ") added" );
 		quequeEnd++;		
 	}
 	
@@ -82,14 +77,7 @@ public class BFSAISnake extends Snake
 	{
 		return queque[quequeStart];
 	}
-	
-	/* Выдает родителя первого элемента очереди. Без удаления.
-	 */
-	private int getParentQueque()
-	{
-		return quequeParents[quequeStart];
-	}
-	
+
 	/* Пуста ли очередь?
 	 */
 	private boolean isEmptyQueque()
@@ -116,14 +104,17 @@ public class BFSAISnake extends Snake
 	 * Конец эмуляции очереди  *
 	 * * * * * * * * * * * * * */
 	
-	public BFSAISnake(GameLevel level, int x, int y, int primeNumber)
+	public BFSAISnake(GameLevel level, int x, int y, int primeNmbr)
 	{
 		super(x,y);
 		this.level = level;
+		primeNumber = primeNmbr;
 		mapWidth = level.getMap().getMapWidth();
 		mapHeight = level.getMap().getMapHeight();
 		initQueque();
 	}
+	
+	
 
 	/* 
 	 * Алгоритм работы:
@@ -131,37 +122,147 @@ public class BFSAISnake extends Snake
 	 * Начинаем поиск в ширину с найденной точки до тех пор, пока не дойдем до головы змейки.
 	 * у каждой клетки храним ее родителя. Следующая клетка - это клетка родитель.
 	 */
-	
-	
-	
-/*	int bfsfood(int iteration)
+	public int getSnakeTarget()
 	{
-		int id;
-		if( queue.size() > 0 )
-			id = queue.poll();
-		else 
-			return -1;
-		
-		for(int neightboor = level.getMapGraphNeighbours(id, 0), i = 0; neightboor >= 0; neightboor = level.getMapGraphNeighbours(id, ++i) )
+		int minWayLengthSquare = mapWidth*mapWidth + mapHeight*mapHeight;
+		int target = -1;
+		if( parts.size() > finishSize )
 		{
-			if( level.getIntTempMap(neightboor) == GameLevel.FOOD )
-				return neightboor;
-			if( level.getIntTempMap(neightboor) % primeNumber > 0 || level.getIntTempMap(neightboor) == 0 )
-				queue.add(neightboor);
+			 for( int i = 0; i < level.getFinishesLength(); i++ )
+				 if( (parts.get(0).x - level.getFinishX(i))*(parts.get(0).x - level.getFinishX(i)) + (parts.get(0).y -level.getFinishY(i))*(parts.get(0).y - level.getFinishY(i)) < minWayLengthSquare )
+				 {
+					 target = level.getMapVertexId(level.getFinishX(i), level.getFinishY(i));
+					 minWayLengthSquare = (parts.get(0).x - level.getFinishX(i))*(parts.get(0).x - level.getFinishX(i)) + (parts.get(0).y -level.getFinishY(i))*(parts.get(0).y - level.getFinishY(i));
+				 }
+			 return target;
+		}
+		else
+		{
+			for( int i = 0; i < level.getFoodLength(); i++ )
+				 if((parts.get(0).x - level.getFood(i).x)*(parts.get(0).x - level.getFood(i).x) + (parts.get(0).y - level.getFood(i).y)*(parts.get(0).y - level.getFood(i).y) < minWayLengthSquare )
+				 {
+					 target = level.getMapVertexId(level.getFood(i).x, level.getFood(i).y);
+					 minWayLengthSquare = (parts.get(0).x - level.getFood(i).x)*(parts.get(0).x - level.getFood(i).x) + (parts.get(0).y - level.getFood(i).y)*(parts.get(0).y - level.getFood(i).y);
+					 Log.d("BFS","Target is food #" + i);
+				 }
+			return target;
+		}
+	}
+	
+	/* Если БФС не сработал и пути к выбранной точке нет, то мы выбираем 
+	 * куда двигаться случайно с помощью этой функции. Преимущесственно
+	 * Стараемся выбирать направления в которых не произойдет столкновений. 
+	 */
+	public int getRandomDirection()
+	{
+		int rndNumber = rndSequence[rndPointer++ % rndSequence.length];
+		int previousLoop = -1;
+		while( rndNumber != previousLoop)
+		{
+			previousLoop = rndNumber;
+			if ( level.getIntTempMap(level.getMapVertexId(parts.get(0).x + 1, parts.get(0).y) ) >= 0 || level.getIntTempMap(level.getMapVertexId(parts.get(0).x + 1, parts.get(0).y) ) == GameLevel.TELEPORT ||  level.getIntTempMap(level.getMapVertexId(parts.get(0).x + 1, parts.get(0).y) ) == GameLevel.FOOD)
+				if( rndNumber-- == 0)
+					return Snake.RIGHT;
+			if ( level.getIntTempMap(level.getMapVertexId(parts.get(0).x - 1, parts.get(0).y) ) >= 0 || level.getIntTempMap(level.getMapVertexId(parts.get(0).x - 1, parts.get(0).y) ) == GameLevel.TELEPORT ||  level.getIntTempMap(level.getMapVertexId(parts.get(0).x - 1, parts.get(0).y) ) == GameLevel.FOOD)
+				if( rndNumber-- == 0)
+					return Snake.LEFT;
+			if ( level.getIntTempMap(level.getMapVertexId(parts.get(0).x, parts.get(0).y + 1) ) >= 0 || level.getIntTempMap(level.getMapVertexId(parts.get(0).x, parts.get(0).y + 1) ) == GameLevel.TELEPORT || level.getIntTempMap(level.getMapVertexId(parts.get(0).x, parts.get(0).y + 1) ) == GameLevel.FOOD)
+				if( rndNumber-- == 0)
+					return Snake.DOWN;
+			if ( level.getIntTempMap(level.getMapVertexId(parts.get(0).x, parts.get(0).y - 1) ) >= 0 || level.getIntTempMap(level.getMapVertexId(parts.get(0).x, parts.get(0).y - 1) ) == GameLevel.TELEPORT || level.getIntTempMap(level.getMapVertexId(parts.get(0).x, parts.get(0).y - 1) ) == GameLevel.FOOD)
+				if( rndNumber-- == 0)
+					return Snake.UP;
+		}
+		return direction;
+	}
+	
+	/* Выдает направление, для передвижения в точку - передаваемый параметр
+	 */
+	public int getDirection( int nextVert )
+	{
+		if( parts.get(0).x < level.getMapVertexX(nextVert) )
+			return Snake.RIGHT;
+		if( parts.get(0).x > level.getMapVertexX(nextVert) )
+			return Snake.LEFT;
+		if( parts.get(0).y < level.getMapVertexY(nextVert) )
+			return Snake.UP;
+		else
+			return Snake.DOWN;
+	}
+	
+	public void bfs()
+	{
+		int neightboor;
+		int neightboorId;
+		int current;
+
+		clearQueque();
+		pushQueque(getSnakeTarget());
+		
+		/* Отдельно обработаем соседей клеток соседних с целевой, т.к. на них
+		 * влияет финиширует ли змейка или нет. Т.к. если бы целевая точка - 
+		 * это финишная точка, то соседей в обычной жизни у нее нет, т.к. чаще
+		 * всего она - стена.
+		 */
+		current = popQueque();
+		neightboorId = 0;
+		
+		while( ( neightboor = level.getMapGraphNeighbours(current, neightboorId++) ) > -1 )
+		{
+			if( level.getMapVertexX(neightboor) == parts.get(0).x && level.getMapVertexY(neightboor) == parts.get(0).y )
+			{
+				direction = getDirection(current);
+				level.refreshFoodAndTeleportsOnTempMap();
+				return;
+			}
+			if( parts.size() > finishSize )
+			{
+				if( level.getMapGraphWeightFinish(current, neightboor) >= 0 && level.getIntTempMap(neightboor) != primeNumber )
+				{
+					level.markIntTempMap(neightboor, primeNumber);
+					pushQueque(neightboor);
+				}
+			}
+			else
+			{
+				if( level.getMapGraphWeight(current, neightboor) >= 0 && level.getIntTempMap(neightboor) != primeNumber )
+				{
+					level.markIntTempMap(neightboor, primeNumber);
+					pushQueque(neightboor);
+				}
+			}
 		}
 		
-	//	int way = bfsfood(iteration + 1)
+		while( ! isEmptyQueque() )
+		{
+			current = popQueque();
+			neightboorId = 0;
+			
+			while( ( neightboor = level.getMapGraphNeighbours(current, neightboorId++) ) > -1 )
+			{
+				if( level.getMapVertexX(neightboor) == parts.get(0).x && level.getMapVertexY(neightboor) == parts.get(0).y )
+				{
+					direction = getDirection(current);
+					level.refreshFoodAndTeleportsOnTempMap();
+					return;
+				}
+				
+				if( level.getMapGraphWeight(current, neightboor) >= 0 && level.getIntTempMap(neightboor) != primeNumber )
+				{
+					level.markIntTempMap(neightboor, primeNumber);
+					pushQueque(neightboor);
+				}
+			}
+		}
 		
-		
-	} */
-	
+		direction = getRandomDirection();
+		Log.d("BFS","Way from (" + level.getMapVertexX(getSnakeTarget()) + "," + level.getMapVertexY(getSnakeTarget()) + ") to Snake failed. Direction is " + direction );
+		level.refreshFoodAndTeleportsOnTempMap();
+		return;
+	}
 	
 	public void nextTurn()
 	{
-		//if( parts.size() > finishSize)
-//			deykstraFinish();
-//		else
-//			deykstra();
-//		direction = chooseDirection();
+		bfs();	
 	}
 }

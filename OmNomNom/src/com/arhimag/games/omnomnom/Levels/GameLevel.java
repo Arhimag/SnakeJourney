@@ -121,6 +121,16 @@ public abstract class GameLevel
 		tempMapBuild = true;
 	}
 	
+	public void refreshFoodAndTeleportsOnTempMap()
+	{
+		if( teleports != null)
+			for(int i = 0; i < teleports.length; i++  )
+//				tempMap[teleports[i].x][teleports[i].y] = 'T';
+				intTempMap[teleports[i].x][teleports[i].y] = TELEPORT;
+		if( food != null )
+			for( int i = 0; i < food.length; i++ )
+				intTempMap[food[i].x][food[i].y] = FOOD;	
+	}
 	// Возвращает iтого соседа вершины v. Если соседа такого нет, то возвращает -1 
 	public int getMapGraphNeighbours( int v, int i  )
 	{
@@ -132,25 +142,65 @@ public abstract class GameLevel
 		{
 			counter++;
 			if( counter == i )
+			{
+				if( intTempMap[x-1][y] == TELEPORT)
+					for( int j = 0; j < teleports.length; j++ )
+						if ( (teleports[j].x == x-1 ) && (teleports[j].y == y) )
+						{
+							counter++;
+							if( counter == i )
+								return getMapVertexId(teleports[teleports[j].getNextPort()].x, teleports[teleports[j].getNextPort()].y );
+						}
 				return getMapVertexId(x - 1, y);
+			}
 		}
 		if( y > 0 )
 		{
 			counter++;
 			if( counter == i )
+			{
+				if( intTempMap[x][y-1] == TELEPORT)
+					for( int j = 0; j < teleports.length; j++ )
+						if ( (teleports[j].x == x ) && (teleports[j].y == y-1) )
+						{
+							counter++;
+							if( counter == i )
+								return getMapVertexId(teleports[teleports[j].getNextPort()].x, teleports[teleports[j].getNextPort()].y );
+						}
 				return getMapVertexId(x, y - 1);
+			}
 		}
 		if( x < map.getMapWidth() - 1 )
 		{
 			counter++;
 			if( counter == i )
+			{
+				if( intTempMap[x+1][y] == TELEPORT)
+					for( int j = 0; j < teleports.length; j++ )
+						if ( (teleports[j].x == x + 1 ) && (teleports[j].y == y) )
+						{
+							counter++;
+							if( counter == i )
+								return getMapVertexId(teleports[teleports[j].getNextPort()].x, teleports[teleports[j].getNextPort()].y );
+						}
 				return getMapVertexId(x + 1, y);
+			}
 		}
 		if( y < map.getMapHeight() - 1 )
 		{
 			counter++;
 			if( counter == i )
+			{
+				if( intTempMap[x][y+1] == TELEPORT)
+					for( int j = 0; j < teleports.length; j++ )
+						if ( (teleports[j].x == x ) && (teleports[j].y == y+1) )
+						{
+							counter++;
+							if( counter == i )
+								return getMapVertexId(teleports[teleports[j].getNextPort()].x, teleports[teleports[j].getNextPort()].y );
+						}
 				return getMapVertexId(x, y + 1);
+			}
 		}
 		//if( tempMap[x][y] == 'T')
 		if( intTempMap[x][y] == TELEPORT)
@@ -187,15 +237,80 @@ public abstract class GameLevel
 		if(( intTempMap[x2][y2]<0) && (intTempMap[x2][y2]!=TELEPORT) && (intTempMap[x2][y2]!=FOOD))
 			return -1;
 		
-		if( ( Math.abs(x1 - x2) > 1) || (Math.abs(y1 - y2) > 1) )
-			return -1;
+
 		
 //		if ( (tempMap[x1][y1] == 'T') && (tempMap[x2][y2] == 'T')) 
 		if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
 			for( int i = 0; i < teleports.length; i++ )
-				if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[(i + 1) % teleports.length].x == x2 ) && (teleports[(i + 1)%teleports.length].y == y2) ) ||
-						( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[(i + 1) % teleports.length].x == x1 ) && (teleports[(i + 1)%teleports.length].y == y1) ) )
-					return 0;
+				if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+						( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+					return 1;
+		
+		if( x1 > 0 )
+			if ( (intTempMap[x1 - 1][y1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 - 1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 - 1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if( x1 < map.getMapWidth() - 1 )
+			if ( (intTempMap[x1 + 1][y1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 + 1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 + 1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if( x2 > 0 )
+			if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2 - 1][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 - 1) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 - 1 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1  ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if( x2 < map.getMapWidth() - 1 )
+			if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2 + 1][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 + 1 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 + 1 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+
+		if( y1 > 0 )
+			if ( (intTempMap[x1][y1 - 1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1 - 1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1 - 1) ) )
+						return 1;
+		
+		if( y1 < map.getMapHeight() - 1 )
+			if ( (intTempMap[x1][y1 + 1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1 + 1 ) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1 + 1) ) )
+						return 1;
+		
+		if( y2 > 0 )
+			if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2][y2 - 1] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2 - 1) ) ||
+							( (teleports[i].x == x2  ) && (teleports[i].y == y2 - 1) && (teleports[teleports[i].getNextPort()].x == x1  ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if( y2 < map.getMapHeight() - 1 )
+			if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2][y2 + 1] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2 + 1) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2 + 1) && (teleports[teleports[i].getNextPort()].x == x1  ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+			for( int i = 0; i < teleports.length; i++ )
+				if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+						( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+					return 1;
+		
+		if( ( Math.abs(x1 - x2) > 1) || (Math.abs(y1 - y2) > 1) )
+			return -1;
+		
 		return 1;
 	}
 	
@@ -226,9 +341,7 @@ public abstract class GameLevel
 				if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[(i + 1)%teleports.length].y == y2) ) ||
 						( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
 					return 0;
-		
-		if( ( Math.abs(x1 - x2) > 1) || (Math.abs(y1 - y2) > 1) )
-			return -1;
+
 		
 		for( int i = 0; i < finishes.length; i++ )
 			if ( ( x2 == finishes[i].x ) && ( y2 == finishes[i].y ) ) 
@@ -237,7 +350,78 @@ public abstract class GameLevel
 		//if(( tempMap[x2][y2]!=' ') && (tempMap[x2][y2]!='T'))
 		if(( intTempMap[x2][y2]!=TELEPORT) && (intTempMap[x2][y2]!=TELEPORT))
 			return -1;
+		if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+			for( int i = 0; i < teleports.length; i++ )
+				if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+						( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+					return 1;
+		
+		if( x1 > 0 )
+			if ( (intTempMap[x1 - 1][y1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 - 1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 - 1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if( x1 < map.getMapWidth() - 1 )
+			if ( (intTempMap[x1 + 1][y1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 + 1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 + 1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if( x2 > 0 )
+			if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2 - 1][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 - 1) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 - 1 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1  ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if( x2 < map.getMapWidth() - 1 )
+			if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2 + 1][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 + 1 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 + 1 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
 
+		if( y1 > 0 )
+			if ( (intTempMap[x1][y1 - 1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1 - 1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1 - 1) ) )
+						return 1;
+		
+		if( y1 < map.getMapHeight() - 1 )
+			if ( (intTempMap[x1][y1 + 1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1 + 1 ) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1 + 1) ) )
+						return 1;
+		
+		if( y2 > 0 )
+			if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2][y2 - 1] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2 - 1) ) ||
+							( (teleports[i].x == x2  ) && (teleports[i].y == y2 - 1) && (teleports[teleports[i].getNextPort()].x == x1  ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if( y2 < map.getMapHeight() - 1 )
+			if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2][y2 + 1] == TELEPORT))
+				for( int i = 0; i < teleports.length; i++ )
+					if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2 + 1) ) ||
+							( (teleports[i].x == x2 ) && (teleports[i].y == y2 + 1) && (teleports[teleports[i].getNextPort()].x == x1  ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+						return 1;
+		
+		if ( (intTempMap[x1][y1] == TELEPORT) && (intTempMap[x2][y2] == TELEPORT))
+			for( int i = 0; i < teleports.length; i++ )
+				if ( ( (teleports[i].x == x1 ) && (teleports[i].y == y1) && (teleports[teleports[i].getNextPort()].x == x2 ) && (teleports[teleports[i].getNextPort()].y == y2) ) ||
+						( (teleports[i].x == x2 ) && (teleports[i].y == y2) && (teleports[teleports[i].getNextPort()].x == x1 ) && (teleports[teleports[i].getNextPort()].y == y1) ) )
+					return 1;
+
+		
+		if( ( Math.abs(x1 - x2) > 1) || (Math.abs(y1 - y2) > 1) )
+			return -1;
+		
 		return 1;
 	}
 	
