@@ -19,7 +19,7 @@ public class BFSAISnake extends Snake
 	private int quequeStart; //индекс первого элемента
 	private int quequeEnd; //индекс куда записывать новый элемент
 	private int quequeSize;//размер массива
-	private final int rndSequence[] = {0,1,3,2,3,2,0,1}; //Случайная последовательность поворотов
+	private final int rndSequence[] = {3,2,3,2,0,0,3,1,0,0,2,1,2,0,0,1,0,2,0,2,3,2,0,2,3,2,1,2,2,3,1,1,0,1,0,3,1,2,1,0,2,0,1,3,2,3,1,2,3,1,1,0,1,1,3,2,3,1,2,0,3,3,3,2,2,0,0,0,3,0,2,1,0,0,1,1,3,2,1,3,2,1,3,0,2,1,2,1,0,2,1,3,3,3,2,2,3,1,3,2}; //Случайная последовательность поворотов
 	private int rndPointer = 3;
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -56,18 +56,20 @@ public class BFSAISnake extends Snake
 	{
 		if( quequeEnd == quequeSize )
 		{
-			int temp[];
+			// Почему-то происходит java.lang.OutOfMemory, поэтому пока фишка с расширением отключена
+			return;
+/*			int temp[];
 			
 			temp = new int[quequeSize * 2];
 			java.lang.System.arraycopy(queque, 0, temp, 0, quequeSize);
 			queque = temp;
 			temp = null;
 			
-			quequeSize *= 2;
+			quequeSize *= 2; */
 		}
 		
 		queque[quequeEnd] = vertex;
-		Log.d("BFS","Vertex (" + level.getMapVertexX(vertex) + "," + level.getMapVertexY(vertex) + ") added" );
+//		Log.d("BFS","Vertex (" + level.getMapVertexX(vertex) + "," + level.getMapVertexY(vertex) + ") added " + quequeEnd );
 		quequeEnd++;		
 	}
 	
@@ -82,7 +84,7 @@ public class BFSAISnake extends Snake
 	 */
 	private boolean isEmptyQueque()
 	{
-		return quequeStart < quequeEnd;
+		return quequeStart >= quequeEnd;
 	}
 	
 	/* Выдает первый элемент очереди удаляя его.
@@ -143,7 +145,7 @@ public class BFSAISnake extends Snake
 				 {
 					 target = level.getMapVertexId(level.getFood(i).x, level.getFood(i).y);
 					 minWayLengthSquare = (parts.get(0).x - level.getFood(i).x)*(parts.get(0).x - level.getFood(i).x) + (parts.get(0).y - level.getFood(i).y)*(parts.get(0).y - level.getFood(i).y);
-					 Log.d("BFS","Target is food #" + i);
+//					 Log.d("BFS","Target is food #" + i);
 				 }
 			return target;
 		}
@@ -185,9 +187,9 @@ public class BFSAISnake extends Snake
 		if( parts.get(0).x > level.getMapVertexX(nextVert) )
 			return Snake.LEFT;
 		if( parts.get(0).y < level.getMapVertexY(nextVert) )
-			return Snake.UP;
-		else
 			return Snake.DOWN;
+		else
+			return Snake.UP;
 	}
 	
 	public void bfs()
@@ -209,6 +211,7 @@ public class BFSAISnake extends Snake
 		
 		while( ( neightboor = level.getMapGraphNeighbours(current, neightboorId++) ) > -1 )
 		{
+//			Log.d("BFS", "Check for success (" + level.getMapVertexX(neightboor) +  "," +level.getMapVertexY(neightboor) + ") and (" + parts.get(0).x + "," + parts.get(0).y + ")");
 			if( level.getMapVertexX(neightboor) == parts.get(0).x && level.getMapVertexY(neightboor) == parts.get(0).y )
 			{
 				direction = getDirection(current);
@@ -240,6 +243,7 @@ public class BFSAISnake extends Snake
 			
 			while( ( neightboor = level.getMapGraphNeighbours(current, neightboorId++) ) > -1 )
 			{
+//				Log.d("BFS", "Check for success (" + level.getMapVertexX(neightboor) +  "," +level.getMapVertexY(neightboor) + ") and (" + parts.get(0).x + "," + parts.get(0).y + ")");
 				if( level.getMapVertexX(neightboor) == parts.get(0).x && level.getMapVertexY(neightboor) == parts.get(0).y )
 				{
 					direction = getDirection(current);
@@ -256,7 +260,7 @@ public class BFSAISnake extends Snake
 		}
 		
 		direction = getRandomDirection();
-		Log.d("BFS","Way from (" + level.getMapVertexX(getSnakeTarget()) + "," + level.getMapVertexY(getSnakeTarget()) + ") to Snake failed. Direction is " + direction );
+//		Log.d("BFS","Way from (" + level.getMapVertexX(getSnakeTarget()) + "," + level.getMapVertexY(getSnakeTarget()) + ") to Snake failed. Direction is " + direction );
 		level.refreshFoodAndTeleportsOnTempMap();
 		return;
 	}

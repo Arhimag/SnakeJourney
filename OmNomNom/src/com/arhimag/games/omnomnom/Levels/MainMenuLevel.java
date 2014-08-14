@@ -1,5 +1,7 @@
 package com.arhimag.games.omnomnom.Levels;
 
+import android.util.Log;
+
 import com.arhimag.games.omnomnom.Food;
 import com.arhimag.games.omnomnom.Snake;
 import com.arhimag.games.omnomnom.SnakePart;
@@ -9,6 +11,7 @@ import com.arhimag.games.omnomnom.Maps.GameMap;
 
 public class MainMenuLevel extends GameLevel
 {
+
 	public MainMenuLevel(  GameMap map )
 	{
 		super(map);
@@ -25,13 +28,13 @@ public class MainMenuLevel extends GameLevel
 		snakes[0].direction = Snake.RIGHT;
 		snakes[0].finishSize = 10000;
 		
-		/*snakes[1] = new Deykstra2AISnake(this,this.map.getMapWidth() - snakeStartX - 4 - 1, snakeStartY);
+/*		snakes[1] = new Deykstra2AISnake(this,this.map.getMapWidth() - snakeStartX - 4 - 1, snakeStartY);
 		snakes[1].parts.add(new SnakePart(this.map.getMapWidth() - snakeStartX - 3 - 1, snakeStartY));
 		snakes[1].parts.add(new SnakePart(this.map.getMapWidth() - snakeStartX - 2 - 1, snakeStartY));
 		snakes[1].lastx = this.map.getMapWidth() - snakeStartX - 1 - 1;
 		snakes[1].lasty = snakeStartY;
 		snakes[1].direction = Snake.LEFT;
-		snakes[1].finishSize = 10000; */
+		snakes[1].finishSize = 10000; */ 
 		
 		food = new Food[5];
 		food[0] = new Food( snakeStartX + 3, snakeStartY);
@@ -49,7 +52,8 @@ public class MainMenuLevel extends GameLevel
 		if(!botMoved)
 		{
 			((BFSAISnake)snakes[0]).nextTurn();
-			//((Deykstra2AISnake)snakes[1]).nextTurn();
+			((Deykstra2AISnake)snakes[1]).nextTurn();
+			
 			botMoved = true;
 		}
 		super.update(deltaTime, snake_id);
