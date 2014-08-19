@@ -6,17 +6,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
+import android.util.Log;
+
 import com.arhimag.games.omnomnom.framework.FileIO;
 
 public class Settings
 {
 	private static boolean soundEnabled = true;
-	private static int control = 7;
-	private static final int programmVersion = 13; 
+	private static int control = 0;
+	private static final int programmVersion = 16; 
 	private static int currentVersion = programmVersion;
 	private static int lastReachedLevel = 9;
 	private static int isFutureMovement = 1;
 	
+	private static int[] levelsEggs = {3,2,1,0,0,1,2,3,1,3}; 
 	private static int playButtonColor = 0xFF1AAE1A;
 	private static int achievementButtonColor = 0xFFDAA520;
 	private static int helpButtonColor = 0xFF263696;
@@ -36,6 +39,16 @@ public class Settings
 				control = Integer.parseInt(in.readLine());
 				lastReachedLevel = Integer.parseInt(in.readLine());
 				isFutureMovement = Integer.parseInt(in.readLine());
+				levelsEggs = new int[LevelSequence.getLevelsCount()];
+				for( int i = 0; i <= lastReachedLevel; i++)
+					try
+					{
+						levelsEggs[i] = Integer.parseInt(in.readLine());
+					}
+					catch( Exception ex )
+					{
+						levelsEggs[i] = 0;
+					}
 			}
 		}
 		catch (IOException e)
@@ -76,6 +89,11 @@ public class Settings
 			out.newLine();
 			out.write(Integer.toString(isFutureMovement));
 			out.newLine();
+			for( int i = 0; i < levelsEggs.length; i ++ )
+			{
+				out.write(Integer.toString(levelsEggs[i]));
+				out.newLine();
+			}
 		}
 		catch(IOException e)
 		{
@@ -131,6 +149,19 @@ public class Settings
 			return 0;
 	}
 	
+	public static void updateEggs( int level, int Eggs)
+	{
+		if( levelsEggs.length > level && Eggs > levelsEggs[level])
+			levelsEggs[level] = Eggs;
+	}
+	
+	public static int getEggs( int level )
+	{
+		if( levelsEggs.length > level )
+			return levelsEggs[level];
+		else 
+			return 0;
+	}
 	public static  void setFutureMovement()
 	{
 		

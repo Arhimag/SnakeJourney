@@ -107,6 +107,7 @@ public class GameScreen extends Screen
 		
 		if( this.levelDrawer.getLevel().getEggsWindow())
 		{
+			Settings.updateEggs(level, (levelDrawer.getLevel().isFirstEggActive()?1:0) + (levelDrawer.getLevel().isSecondEggActive()?1:0) + (levelDrawer.getLevel().isThirdEggActive()?1:0) );
 			len = touchEvents.size();
 			for(int i = 0; i < len; i++)
 			{
@@ -123,8 +124,6 @@ public class GameScreen extends Screen
 					}
 					if( levelDrawer.inBoundsEgg(event, EggsWindowMap.getRetryBounds()))
 					{
-						// TODO Сделать повтор игры в тот же уровень.
-						// game.setScreen(new SettingsScreen(game));
 						levelDrawer.setLevel(LevelSequence.createSameLevel(levelDrawer.getLevel()));
 						if( Settings.isSoundEnabled())
 							Assets.eat.play(1);
@@ -158,6 +157,19 @@ public class GameScreen extends Screen
 		
 			
 		if( this.levelDrawer.getLevel().nextLevel() )
+		{
+			
+			if( level < LevelSequence.getLevelsCount() - 1)
+			{
+				level++;
+				updateAvalibleLevel(level);
+				levelDrawer.setLevel(LevelSequence.createNextLevel(levelDrawer.getLevel()));
+			}
+			else
+			{
+				game.setScreen(new MainMenuScreen(game));
+			}
+/*				
 			if( level == 0)
 			{
 				level = 1;
@@ -218,8 +230,8 @@ public class GameScreen extends Screen
 				updateAvalibleLevel(level);
 				this.levelDrawer.setLevel(new Level4(new Level4Map()));
 			}
-			else
-				game.setScreen(new MainMenuScreen(game));
+			else */
+		}
 		else if( this.levelDrawer.getLevel().getGameOver())
 		{
 			game.setScreen(new GameOverScreen(game));

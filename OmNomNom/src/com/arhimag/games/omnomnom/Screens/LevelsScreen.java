@@ -83,22 +83,26 @@ public class LevelsScreen extends Screen
 	
 	private void goToLevelTL()
 	{
-		game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getTopLeft()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4));
+		if( ((LevelLevelsList)this.levelDrawer.getLevel()).getTopLeft() != null )
+			game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getTopLeft()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4));
 	}
 	
 	private void goToLevelTR()
 	{
-		game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getTopRight()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 1));
+		if( ((LevelLevelsList)this.levelDrawer.getLevel()).getTopRight() != null )
+			game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getTopRight()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 1));
 	}
 	
 	private void goToLevelBL()
 	{
-		game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getBottomLeft()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 2));
+		if( ((LevelLevelsList)this.levelDrawer.getLevel()).getBottomLeft() != null )
+			game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getBottomLeft()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 2));
 	}
 	
 	private void goToLevelBR()
 	{
-		game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getBottomRight()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 3));
+		if( ((LevelLevelsList)this.levelDrawer.getLevel()).getBottomRight() != null )
+			game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getBottomRight()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 3));
 	}
 	@Override
 	public void update (float deltaTime)

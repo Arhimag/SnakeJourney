@@ -41,11 +41,16 @@ public class LevelSequence
 			MeetAIMap.class, CircleMap.class, SnakeMap.class, Level1Map.class, Level2Map.class,
 			Level3Map.class, Level4Map.class};
     
-    private static int levelsCount;
+    private static int levelsCount = 11;
     
 	private static Constructor levelsConstructors[];
 	
 	private static Constructor mapsConstructors[];
+	
+	public static int getLevelsCount()
+	{
+		return levelsCount;
+	}
 	
 	public static void Initialize()
 	{

@@ -14,6 +14,10 @@ public class LevelCarpet extends GameLevel
 	{
 		super(map);
 		
+		egg1 = (long)1800 * (long)1000000000 - 1; // 1 час
+		egg2 = (long)180 * (long)1000000000; // 5 минут
+		egg3 = (long)90 * (long)1000000000; // 1,5 минута
+		
 		int snakeStartX = 14;
 		int snakeStartY = 5;
 	

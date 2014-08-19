@@ -17,7 +17,11 @@ public class CircleLevel extends GameLevel
 		
 		int snakeStartX = 7;
 		int snakeStartY = 7;
-	
+		
+		egg1 = (long)1200 * (long)1000000000 - 1; // 1 час
+		egg2 = (long)480 * (long)1000000000; // 5 минут
+		egg3 = (long)240 * (long)1000000000; // 1,5 минута
+		
 		snakes = new Snake[2];
 		moved = new boolean[2];
 

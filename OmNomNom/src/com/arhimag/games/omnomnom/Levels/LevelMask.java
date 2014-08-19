@@ -16,7 +16,11 @@ public class LevelMask extends GameLevel
 		
 		int snakeStartX = 14;
 		int snakeStartY = 5;
-	
+		
+		egg1 = (long)1800 * (long)1000000000 - 1; // 1 час
+		egg2 = (long)150 * (long)1000000000; // 5 минут
+		egg3 = (long)60 * (long)1000000000; // 1,5 минута
+		
 		snakes = new Snake[1];
 		moved = new boolean[1];
 

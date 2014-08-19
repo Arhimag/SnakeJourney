@@ -37,7 +37,7 @@ public abstract class GameLevel
 	protected long egg1 = (long)3600 * (long)1000000000 - 1; // 1 час
 	protected long egg2 = (long)300 * (long)1000000000; // 5 минут
 	protected long egg3 = (long)60 * (long)1000000000; // 1 минута
-	protected long eggTimeOut = (long)5 * (long)1000000000; // 1 секунда
+	protected long eggTimeOut = (long)1 * (long)1000000000; // 1 секунды
 	protected boolean gameOver = false;
 	
 	protected java.util.Date tempEggDate = new java.util.Date();
@@ -79,6 +79,7 @@ public abstract class GameLevel
 		intTempMap = new int[map.getMapWidth()][map.getMapHeight()];
 		tempMapBuild = false;
 		buildTempMap();
+
 		levelStartTime = System.nanoTime();
 	}
 	

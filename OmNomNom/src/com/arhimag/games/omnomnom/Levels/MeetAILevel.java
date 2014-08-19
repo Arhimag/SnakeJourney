@@ -17,7 +17,11 @@ public class MeetAILevel extends GameLevel
 		
 		int snakeStartX = 4;
 		int snakeStartY = 1;
-	
+		
+		egg1 = (long)600 * (long)1000000000 - 1; // 1 час
+		egg2 = (long)360 * (long)1000000000; // 5 минут
+		egg3 = (long)120 * (long)1000000000; // 1,5 минута
+		
 		snakes = new Snake[2];
 		moved = new boolean[2];
 

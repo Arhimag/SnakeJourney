@@ -19,23 +19,23 @@ public class GameLevelDrawer
 {
 	private GameLevel level;
 	
-	private int[] mapWallColors = new int[]{0xff53aa14, 0xffdd954d, 0xFFDD954D, 0xFFDD954D, 0xFFDD954D, 0xFF305015, 0xFF000000};
-	private int[][] mapColorModificators = new int[3][3];
+	private static int[] mapWallColors = new int[]{0xff53aa14, 0xffdd954d, 0xFFDD954D, 0xFFDD954D, 0xFFDD954D, 0xFF305015, 0xFF000000};
+	private static int[][] mapColorModificators = new int[3][3];
 	
 	private int mapPixelSize = 5;
 	
 	private int mapStartDrawX = 0;
 	private int mapStartDrawY = 0;
 	
-	private int mapBitShift = 32;
+	private int mapBitShift = 22;//было 32
 
-	private int foodColor = 0xffaaaaaa;
-	private int finishColor = 0xff000000;
+	private static int foodColor = 0xffaaaaaa;
+	private static int finishColor = 0xff000000;
 //	private int teleportColor = 0xff5555ff;
-	private int teleportColor = 0xff7799ff;
+	private static int teleportColor = 0xff7799ff;
 	
-	private int inactiveSettingsColors = 0xff333333;
-	private int activeSettingsColors = 0xffdd5555;
+	private static int inactiveSettingsColors = 0xff333333;
+	private static int activeSettingsColors = 0xffdd5555;
 	
 	private int snakeHeadSize;
 	private int snakeBodySize;
@@ -93,11 +93,11 @@ public class GameLevelDrawer
 		
 	}
 	
-	private int getColor(char cellValue)
+	public static int getColor(char cellValue)
 	{
 		return getColor( cellValue, 0, 0);
 	}
-	private int getColor(char cellValue, int i, int j  )
+	public static int getColor(char cellValue, int i, int j  )
 	{
 		switch( cellValue )
 		{
@@ -136,7 +136,7 @@ public class GameLevelDrawer
 			case 't': //¬рем€ ачивки
 				return 0xFF858DA0 + mapColorModificators[i % 3][j % 3];
 			case 'E': //не активное €йцо
-				return 0xFFC0C0C0 + mapColorModificators[i % 3][j % 3];
+				return 0xFF303030 + mapColorModificators[i % 3][j % 3];
 			case 'e': //јктивное €йцо
 				return 0xFFF0F0F0;
 			case 'Y':
@@ -144,7 +144,7 @@ public class GameLevelDrawer
 			case 'M':
 				return 0xFFC2C2C2 + mapColorModificators[i % 3][j % 3];
 			case 'C':
-				return 0xFFFFFFFF + mapColorModificators[i % 3][j % 3];
+				return 0xFFFFFFFF;
 			case 'B':
 				return 0xFF9A7F76 + mapColorModificators[i % 3][j % 3];
 			default:
@@ -725,26 +725,59 @@ public class GameLevelDrawer
 	
 	public void  drawMapMiniature(GameMap map, int mapStartDrawX, int mapStartDrawY, int width, int height)
 	{	
+		if( !map.isColorsInited())
+			map.initFlatMapColor();
 		int mapPixelSize = java.lang.Math.min((height)/map.getMapHeight(), (width)/map.getMapWidth() );
 		mapStartDrawX += (width - map.getMapWidth() * mapPixelSize) / 2;
 		mapStartDrawY += (height - map.getMapHeight() * mapPixelSize) / 2;
 		for(int i = 0; i < map.getMapWidth() ; i++ )
 			for(int j=0; j < map.getMapHeight(); j++)
-				graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, getColor(map.getFlatMap(i, j),i,j));
+				graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, map.getFlatMapColor(i, j));
 	}
 
 	public void  drawMapMiniature(GameMap map, int mapStartDrawX, int mapStartDrawY, int pixelSize)
 	{	
+		if( !map.isColorsInited())
+			map.initFlatMapColor();
 		for(int i = 0; i < map.getMapWidth() ; i++ )
 			for(int j=0; j < map.getMapHeight(); j++)
-				graphics.drawRect(mapStartDrawX + i * pixelSize, mapStartDrawY + j * pixelSize, pixelSize, pixelSize, getColor(map.getFlatMap(i, j),i,j));
+				graphics.drawRect(mapStartDrawX + i * pixelSize, mapStartDrawY + j * pixelSize, pixelSize, pixelSize, map.getFlatMapColor(i, j));
+	}
+	
+	public void drawMapMiniature(GameMap map, int mapStartDrawX, int mapStartDrawY, int width, int height, int eggsCount, int eggPixelSize )
+	{
+		if( !map.isColorsInited())
+			map.initFlatMapColor();
+		int mapPixelSize = java.lang.Math.min((height)/map.getMapHeight(), (width)/map.getMapWidth() );
+		mapStartDrawX += (width - map.getMapWidth() * mapPixelSize) / 2;
+		mapStartDrawY += (height - map.getMapHeight() * mapPixelSize) / 2;
+		for(int i = 0; i < map.getMapWidth() ; i++ )
+			for(int j=0; j < map.getMapHeight(); j++)
+				graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, map.getFlatMapColor(i, j));
+		if( eggsCount > 0 )
+		{
+			graphics.drawRect(mapStartDrawX + map.getMapWidth() * mapPixelSize - EggsWindowMap.Egg[0].length * eggPixelSize, mapStartDrawY + map.getMapHeight() * mapPixelSize - EggsWindowMap.Egg.length * eggPixelSize, EggsWindowMap.Egg[0].length * eggPixelSize, EggsWindowMap.Egg.length * eggPixelSize, 0xFF000000);
+			drawLabel(EGG,mapStartDrawX + map.getMapWidth() * mapPixelSize - EggsWindowMap.Egg[0].length * eggPixelSize, mapStartDrawY + map.getMapHeight() * mapPixelSize - EggsWindowMap.Egg.length * eggPixelSize, eggPixelSize );
+		}
+		if( eggsCount > 1 )
+		{
+			graphics.drawRect(mapStartDrawX + map.getMapWidth() * mapPixelSize - ( 2 * EggsWindowMap.Egg[0].length + 1 ) * eggPixelSize, mapStartDrawY + map.getMapHeight() * mapPixelSize - EggsWindowMap.Egg.length * eggPixelSize, EggsWindowMap.Egg[0].length * eggPixelSize, EggsWindowMap.Egg.length * eggPixelSize, 0xFF000000);
+			drawLabel(EGG,mapStartDrawX + map.getMapWidth() * mapPixelSize - (2 * EggsWindowMap.Egg[0].length + 1 ) * eggPixelSize, mapStartDrawY + map.getMapHeight() * mapPixelSize - EggsWindowMap.Egg.length * eggPixelSize, eggPixelSize );
+		}
+		if( eggsCount > 2 )
+		{
+			graphics.drawRect(mapStartDrawX + map.getMapWidth() * mapPixelSize - (3 * EggsWindowMap.Egg[0].length + 2 ) * eggPixelSize, mapStartDrawY + map.getMapHeight() * mapPixelSize - EggsWindowMap.Egg.length * eggPixelSize, EggsWindowMap.Egg[0].length * eggPixelSize, EggsWindowMap.Egg.length * eggPixelSize, 0xFF000000);
+			drawLabel(EGG,mapStartDrawX + map.getMapWidth() * mapPixelSize - (3 * EggsWindowMap.Egg[0].length + 2) * eggPixelSize, mapStartDrawY + map.getMapHeight() * mapPixelSize - EggsWindowMap.Egg.length * eggPixelSize, eggPixelSize );
+		}
 	}
 	
 	public void drawMap()
 	{
+		if(! level.getMap().isColorsInited())
+			level.getMap().initFlatMapColor();
 		for(int i = 0; i < level.getMap().getMapWidth() ; i++ )
 			for(int j=0; j < level.getMap().getMapHeight(); j++)
-				graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, getColor(level.getMap().getFlatMap(i, j),i,j));
+				graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, level.getMap().getFlatMapColor(i, j));
 	}
 	
 	private void drawCenterRect( int x, int y, int side, int color)
@@ -1141,6 +1174,7 @@ public class GameLevelDrawer
 		if(! this.level.getEggsWindow() )
 			return;
 		
+		graphics.drawRect(0, 0, screenWidth, screenHeight, 0x55000000);
 		int winPixelSize = java.lang.Math.min((screenHeight - paddingTop - paddingBottom)/EggsWindowMap.getMapHeightStatic(), (screenWidth - paddingRight - paddingLeft)/EggsWindowMap.getMapWidthStatic() );
 		int winStartDrawX = paddingLeft + (screenWidth  - paddingRight - paddingLeft - winPixelSize * EggsWindowMap.getMapWidthStatic()) / 2 ;
 		int winStartDrawY = paddingTop + (screenHeight - paddingTop - paddingBottom - EggsWindowMap.getMapHeightStatic() * winPixelSize ) /2;
@@ -1249,6 +1283,7 @@ public class GameLevelDrawer
 			int lbmapY  = paddingTop + ((LevelLevelsList)level).getLbmapY() * mapPixelSize;
 			int rbmapX  = paddingLeft + ((LevelLevelsList)level).getRbmapX() * mapPixelSize;
 			int rbmapY  = paddingTop + ((LevelLevelsList)level).getRbmapY() * mapPixelSize;
+			int eggSize = mapPixelSize / 4;
 			//int minimapXDiff = 5 * mapPixelSize;
 			/*int ltmapX  = paddingLeft + mapPixelSize * 6;
 			int ltmapY  = paddingTop + 10 * mapPixelSize;
@@ -1268,13 +1303,13 @@ public class GameLevelDrawer
 			if ( ((LevelLevelsList)level).isSlide() )
 			{
 				if ( ((LevelLevelsList)level).getTopLeft() != null )
-					drawMapMiniature( ((LevelLevelsList)level).getTopLeft(), ltmapX - ((LevelLevelsList)level).getSlideStartX() + ((LevelLevelsList)level).getSlideX() , ltmapY, minimapWidth, minimapHeight);
+					drawMapMiniature( ((LevelLevelsList)level).getTopLeft(), ltmapX - ((LevelLevelsList)level).getSlideStartX() + ((LevelLevelsList)level).getSlideX() , ltmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getLTeggs(), eggSize);
 				if ( ((LevelLevelsList)level).getTopRight() != null )
-					drawMapMiniature( ((LevelLevelsList)level).getTopRight(), rtmapX - ((LevelLevelsList)level).getSlideStartX() + ((LevelLevelsList)level).getSlideX(), rtmapY, minimapWidth, minimapHeight);
+					drawMapMiniature( ((LevelLevelsList)level).getTopRight(), rtmapX - ((LevelLevelsList)level).getSlideStartX() + ((LevelLevelsList)level).getSlideX(), rtmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getRTeggs(), eggSize);
 				if ( ((LevelLevelsList)level).getBottomLeft() != null )
-					drawMapMiniature( ((LevelLevelsList)level).getBottomLeft(), lbmapX - ((LevelLevelsList)level).getSlideStartX() + ((LevelLevelsList)level).getSlideX(), lbmapY, minimapWidth, minimapHeight);
+					drawMapMiniature( ((LevelLevelsList)level).getBottomLeft(), lbmapX - ((LevelLevelsList)level).getSlideStartX() + ((LevelLevelsList)level).getSlideX(), lbmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getLBeggs(), eggSize);
 				if ( ((LevelLevelsList)level).getBottomRight() != null )
-					drawMapMiniature( ((LevelLevelsList)level).getBottomRight(), rbmapX - ((LevelLevelsList)level).getSlideStartX() + ((LevelLevelsList)level).getSlideX(), rbmapY, minimapWidth, minimapHeight);
+					drawMapMiniature( ((LevelLevelsList)level).getBottomRight(), rbmapX - ((LevelLevelsList)level).getSlideStartX() + ((LevelLevelsList)level).getSlideX(), rbmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getRBeggs(), eggSize);
 			}
 			else if ( ((LevelLevelsList)level).getAnimation() != LevelLevelsList.ANIMATION_STOP ) 
 			{
@@ -1289,13 +1324,13 @@ public class GameLevelDrawer
 					int move = java.lang.Math.round(((float)((System.nanoTime() - levelsSlideAnimationStartTime))/ 1000000000.0f) * ((LevelLevelsList)level).getAnimationSpeed());
 					
 					if ( ((LevelLevelsList)level).getTopLeft() != null )
-						drawMapMiniature( ((LevelLevelsList)level).getTopLeft(), ltmapX + move + levelsSlideAnimationStartX  , ltmapY, minimapWidth, minimapHeight);
+						drawMapMiniature( ((LevelLevelsList)level).getTopLeft(), ltmapX + move + levelsSlideAnimationStartX  , ltmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getLTeggs(), eggSize);
 					if ( ((LevelLevelsList)level).getTopRight() != null )
-						drawMapMiniature( ((LevelLevelsList)level).getTopRight(), rtmapX + move + levelsSlideAnimationStartX , rtmapY, minimapWidth, minimapHeight);
+						drawMapMiniature( ((LevelLevelsList)level).getTopRight(), rtmapX + move + levelsSlideAnimationStartX , rtmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getRTeggs(), eggSize);
 					if ( ((LevelLevelsList)level).getBottomLeft() != null )
-						drawMapMiniature( ((LevelLevelsList)level).getBottomLeft(), lbmapX + move + levelsSlideAnimationStartX , lbmapY, minimapWidth, minimapHeight);
+						drawMapMiniature( ((LevelLevelsList)level).getBottomLeft(), lbmapX + move + levelsSlideAnimationStartX , lbmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getLBeggs(), eggSize);
 					if ( ((LevelLevelsList)level).getBottomRight() != null )
-						drawMapMiniature( ((LevelLevelsList)level).getBottomRight(), rbmapX + move + levelsSlideAnimationStartX , rbmapY, minimapWidth, minimapHeight);
+						drawMapMiniature( ((LevelLevelsList)level).getBottomRight(), rbmapX + move + levelsSlideAnimationStartX , rbmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getRBeggs(), eggSize);
 					
 					if (( rtmapX + minimapWidth + move + levelsSlideAnimationStartX < 0) || ( ltmapX + move + levelsSlideAnimationStartX > screenWidth ))
 					{
@@ -1322,13 +1357,13 @@ public class GameLevelDrawer
 					int move = java.lang.Math.round((((float)(System.nanoTime() - levelsSlideAnimationStartTime))/ 1000000000.0f) * ((LevelLevelsList)level).getAnimationSpeed());
 					
 					if ( ((LevelLevelsList)level).getTopLeft() != null )
-						drawMapMiniature( ((LevelLevelsList)level).getTopLeft(), ltmapX + move + levelsSlideAnimationStartX  , ltmapY, minimapWidth, minimapHeight);
+						drawMapMiniature( ((LevelLevelsList)level).getTopLeft(), ltmapX + move + levelsSlideAnimationStartX  , ltmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getLTeggs(), eggSize);
 					if ( ((LevelLevelsList)level).getTopRight() != null )
-						drawMapMiniature( ((LevelLevelsList)level).getTopRight(), rtmapX + move + levelsSlideAnimationStartX , rtmapY, minimapWidth, minimapHeight);
+						drawMapMiniature( ((LevelLevelsList)level).getTopRight(), rtmapX + move + levelsSlideAnimationStartX , rtmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getRTeggs(), eggSize);
 					if ( ((LevelLevelsList)level).getBottomLeft() != null )
-						drawMapMiniature( ((LevelLevelsList)level).getBottomLeft(), lbmapX + move + levelsSlideAnimationStartX , lbmapY, minimapWidth, minimapHeight);
+						drawMapMiniature( ((LevelLevelsList)level).getBottomLeft(), lbmapX + move + levelsSlideAnimationStartX , lbmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getLBeggs(), eggSize);
 					if ( ((LevelLevelsList)level).getBottomRight() != null )
-						drawMapMiniature( ((LevelLevelsList)level).getBottomRight(), rbmapX + move + levelsSlideAnimationStartX , rbmapY, minimapWidth, minimapHeight);
+						drawMapMiniature( ((LevelLevelsList)level).getBottomRight(), rbmapX + move + levelsSlideAnimationStartX , rbmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getRBeggs(), eggSize);
 					
 					if ((( rtmapX + move + levelsSlideAnimationStartX < rtmapX) && (((LevelLevelsList)level).getAnimation() ==LevelLevelsList.ANIMATION_NEXT )) || (( rtmapX + move + levelsSlideAnimationStartX > rtmapX) && (((LevelLevelsList)level).getAnimation() ==LevelLevelsList.ANIMATION_PREVIOUS )) )
 					{
@@ -1340,13 +1375,13 @@ public class GameLevelDrawer
 			else
 			{
 				if ( ((LevelLevelsList)level).getTopLeft() != null )
-					drawMapMiniature( ((LevelLevelsList)level).getTopLeft(), ltmapX, ltmapY, minimapWidth, minimapHeight);
+					drawMapMiniature( ((LevelLevelsList)level).getTopLeft(), ltmapX, ltmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getLTeggs(), eggSize);
 				if ( ((LevelLevelsList)level).getTopRight() != null )
-					drawMapMiniature( ((LevelLevelsList)level).getTopRight(), rtmapX, rtmapY, minimapWidth, minimapHeight);
+					drawMapMiniature( ((LevelLevelsList)level).getTopRight(), rtmapX, rtmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getRTeggs(), eggSize);
 				if ( ((LevelLevelsList)level).getBottomLeft() != null )
-					drawMapMiniature( ((LevelLevelsList)level).getBottomLeft(), lbmapX, lbmapY, minimapWidth, minimapHeight);
+					drawMapMiniature( ((LevelLevelsList)level).getBottomLeft(), lbmapX, lbmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getLBeggs(), eggSize);
 				if ( ((LevelLevelsList)level).getBottomRight() != null )
-					drawMapMiniature( ((LevelLevelsList)level).getBottomRight(), rbmapX, rbmapY, minimapWidth, minimapHeight);
+					drawMapMiniature( ((LevelLevelsList)level).getBottomRight(), rbmapX, rbmapY, minimapWidth, minimapHeight, ((LevelLevelsList)level).getRBeggs(), eggSize);
 				
 				if( ((LevelLevelsList)level).isListAvalible(((LevelLevelsList)level).getListNumber() + 1) )
 					drawLabel(NEXTLIST_LABEL);

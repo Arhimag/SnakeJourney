@@ -41,6 +41,11 @@ public class LevelLevelsList extends GameLevel
 	private GameMap levelBottomLeft;
 	private GameMap levelBottomRight;
 	
+	private int levelTopLeftEggs;
+	private int levelTopRightEggs;
+	private int levelBottomLeftEggs;
+	private int levelBottomRightEggs;
+
 	private int minimapXDiff = 5;
 	private int minimapYDiff = 3;
 	private int minimapWidth = ((getMap().getMapWidth() - 15) / 2 );
@@ -225,24 +230,48 @@ public class LevelLevelsList extends GameLevel
 	{
 		
 		if( Settings.getLastReachedLevel() > listNumber * 4 - 1 )
-			levelTopLeft = LevelSequence.createMap(listNumber * 4); 
+		{
+			levelTopLeft = LevelSequence.createMap(listNumber * 4);
+			levelTopLeftEggs = Settings.getEggs(listNumber * 4);
+		}
 		else
+		{
 			levelTopLeft = null;
+			levelTopLeftEggs = 0;
+		}
 		
 		if( Settings.getLastReachedLevel() > listNumber * 4  )
-			levelTopRight = LevelSequence.createMap(listNumber * 4 + 1); 
+		{
+			levelTopRight = LevelSequence.createMap(listNumber * 4 + 1);
+			levelTopRightEggs = Settings.getEggs(listNumber * 4 + 1);
+		}
 		else
+		{
 			levelTopRight = null;
+			levelTopRightEggs = 0;
+		}
 		
 		if( Settings.getLastReachedLevel() > listNumber * 4 + 1 )
-			levelBottomLeft = LevelSequence.createMap(listNumber * 4 + 2); 
+		{
+			levelBottomLeft = LevelSequence.createMap(listNumber * 4 + 2);
+			levelBottomLeftEggs = Settings.getEggs(listNumber * 4 + 2);
+		}
 		else
+		{
 			levelBottomLeft = null;
+			levelBottomLeftEggs = 0;
+		}
 		
 		if( Settings.getLastReachedLevel() > listNumber * 4 + 2)
-			levelBottomRight = LevelSequence.createMap(listNumber * 4 + 3); 
+		{
+			levelBottomRight = LevelSequence.createMap(listNumber * 4 + 3);
+			levelBottomRightEggs = Settings.getEggs(listNumber * 4 + 3);
+		}
 		else
+		{
 			levelBottomRight = null;
+			levelBottomRightEggs = 0;
+		}
 		
 
 		/*switch( listNumber )
@@ -447,6 +476,26 @@ public class LevelLevelsList extends GameLevel
 	public Rect getRbBounds()
 	{
 		return rbBounds;
+	}
+	
+	public int getRTeggs()
+	{
+		return levelTopRightEggs;
+	}
+	
+	public int getLTeggs()
+	{
+		return levelTopLeftEggs;
+	}
+	
+	public int getRBeggs()
+	{
+		return levelBottomRightEggs;
+	}
+	
+	public int getLBeggs()
+	{
+		return levelBottomLeftEggs;
 	}
 }
 

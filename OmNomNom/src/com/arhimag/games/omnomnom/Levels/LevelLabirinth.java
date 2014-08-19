@@ -13,6 +13,10 @@ public class LevelLabirinth extends GameLevel
 	{
 		super(map);
 		
+		egg1 = (long)3600 * (long)1000000000 - 1; // 1 час
+		egg2 = (long)300 * (long)1000000000; // 5 минут
+		egg3 = (long)60 * (long)1000000000; // 1 минута
+		
 		int snakeStartX = 3;
 		int snakeStartY = 2;
 	
