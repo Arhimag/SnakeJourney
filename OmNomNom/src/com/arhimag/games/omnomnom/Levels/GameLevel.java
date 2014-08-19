@@ -25,13 +25,22 @@ public abstract class GameLevel
 	protected float timeFromTick;
 	protected Point finishes[];
 	protected boolean nextLevel = false;
+	protected boolean eggsWindow = false;
 	protected int winLength = 5;
 	protected boolean moved[];
 	protected boolean movedDirection[][];
 	protected boolean eat = false;
 	protected Teleport teleports[];  
 	protected int playerSnake = 0;
+	protected long levelStartTime = 0;
+	protected long levelEndTime = 0;
+	protected long egg1 = (long)3600 * (long)1000000000 - 1; // 1 час
+	protected long egg2 = (long)300 * (long)1000000000; // 5 минут
+	protected long egg3 = (long)60 * (long)1000000000; // 1 минута
+	protected long eggTimeOut = (long)5 * (long)1000000000; // 1 секунда
 	protected boolean gameOver = false;
+	
+	protected java.util.Date tempEggDate = new java.util.Date();
 	
 	public static final int WALL = -2;
 	public static final int TELEPORT = -3;
@@ -70,6 +79,7 @@ public abstract class GameLevel
 		intTempMap = new int[map.getMapWidth()][map.getMapHeight()];
 		tempMapBuild = false;
 		buildTempMap();
+		levelStartTime = System.nanoTime();
 	}
 	
 	public int getMapVertexId(int x, int y)
@@ -102,7 +112,7 @@ public abstract class GameLevel
 	{
 		for(int x = 0; x < map.getMapWidth(); x++)
 			for(int y = 0; y < map.getMapHeight(); y++)
-				intTempMap[x][y] = (map.getFlatMap(x, y) == ' ') ? 0 : WALL;
+				intTempMap[x][y] = ((map.getFlatMap(x, y) == ' ') || (map.getFlatMap(x, y) == '.'))  ? 0 : WALL;
 //				tempMap[x][y] = map.getFlatMap(x, y);
 		for(int j = 0; j < this.snakes.length; j++)
 		{
@@ -515,7 +525,10 @@ public abstract class GameLevel
 	
 	protected void generateNewFood( int i )
 	{
-		
+		// TODO переделать на другой Random
+		/* Старый алгоритм генерации Еды.
+		 */ 
+		 
 		int x = rand.nextInt(this.map.getMapWidth());
 		int y = rand.nextInt(this.map.getMapHeight());
 		while( this.map.getFlatMap(x,y) != ' ' ||  isTeleportNear(x,y)  || isSnakeNear(x,y) )
@@ -525,6 +538,10 @@ public abstract class GameLevel
 		}
 		this.food[i].x = x;
 		this.food[i].y = y;
+		
+		
+		
+		
 	}
 	
 	public void update(float deltaTime, int snake_id )
@@ -586,7 +603,7 @@ public abstract class GameLevel
 				nextFieldValue = map.getFlatMap(nextFieldX,nextFieldY);
 				
 				// Если змейка идет в стену
-				if( nextFieldValue != ' ' )
+				if( nextFieldValue != ' ' && nextFieldValue != '.')
 				{
 					if( snakes[snakeid].parts.size() > 1)
 					{
@@ -621,7 +638,7 @@ public abstract class GameLevel
 				nextFieldValue = map.getFlatMap(nextFieldX,nextFieldY);
 				
 				// Если змейка идет в стену
-				if( nextFieldValue != ' ' )
+				if( nextFieldValue != ' ' && nextFieldValue != '.')
 				{
 					if( snakes[snakeid].parts.size() > 1)
 					{
@@ -657,7 +674,7 @@ public abstract class GameLevel
 				nextFieldValue = map.getFlatMap(nextFieldX,nextFieldY);
 				
 				// Если змейка идет в стену
-				if( nextFieldValue != ' ' )
+				if( nextFieldValue != ' ' && nextFieldValue != '.' )
 				{
 					if( snakes[snakeid].parts.size() > 1)
 					{
@@ -690,7 +707,7 @@ public abstract class GameLevel
 				nextFieldValue = map.getFlatMap(nextFieldX,nextFieldY);
 				
 				// Если змейка идет в стену
-				if( nextFieldValue != ' ' )
+				if( nextFieldValue != ' ' && nextFieldValue != '.')
 				{
 					if( snakes[snakeid].parts.size() > 1)
 					{
@@ -720,6 +737,10 @@ public abstract class GameLevel
 		char nextFieldValue;
 		boolean tail;
 		boolean moveFinished = false;
+		
+		// TODO Тест яичного окна
+		if( eggsWindow )
+			return;
 		
 		if( moved.length < snakes.length )
 			moved = new boolean[snakes.length];
@@ -770,7 +791,11 @@ public abstract class GameLevel
 				if( snakes[snakeid].parts.size() > snakes[snakeid].finishSize )
 					for( int i = 0; i < finishes.length; i++)
 						if(( finishes[i].x == nextFieldX ) && ( finishes[i].y == nextFieldY ))
+						{
+ 
 							finish = true;
+
+						}
 				
 				// Проверяем не пришла ли змейка в телепорт
 				int teleportId = -1;
@@ -785,7 +810,10 @@ public abstract class GameLevel
 					if( snakeid == this.playerSnake)
 					{
 						snakes[snakeid].advance();
-						this.nextLevel = true;
+						// TODO Тест яичного окна
+						levelEndTime = System.nanoTime();
+						eggsWindow = true;
+						// this.nextLevel = true;
 					}
 					else
 					{
@@ -820,7 +848,7 @@ public abstract class GameLevel
 				else
 				{
 					// Если змейка идет в стену
-					if( nextFieldValue != ' ' )
+					if( nextFieldValue != ' ' && nextFieldValue != '.')
 					{
 						if( snakes[snakeid].parts.size() > 1)
 						{
@@ -1026,4 +1054,101 @@ public abstract class GameLevel
 			return movedDirection[direction][snake];
 	}
 	
+	public boolean getEggsWindow()
+	{
+		return eggsWindow;
+	}
+	
+	public boolean isFirstEggActive()
+	{
+		if( levelEndTime == 0 )
+			return false;
+		return (levelEndTime - levelStartTime < egg1);
+	}
+	
+	public boolean isSecondEggActive()
+	{
+		if( levelEndTime == 0 )
+			return false;
+		return (levelEndTime - levelStartTime < egg2);
+	}
+	
+	public boolean isThirdEggActive()
+	{
+		if( levelEndTime == 0 )
+			return false;
+		return (levelEndTime - levelStartTime < egg3);
+	}
+	
+	public long getEggTimeout()
+	{
+		return eggTimeOut;
+	}
+	
+	public void setNextLevel()
+	{
+		nextLevel = true;
+	}
+	
+	public long getEgg1TimeNumber(int number) //ч0ч1:м2м3 
+	{
+		tempEggDate.setTime(egg1 / 1000000);
+		if( number == 0 )
+			return tempEggDate.getMinutes()/10;
+		if( number == 1 )
+			return tempEggDate.getMinutes()%10;
+		if( number == 2 )
+			return tempEggDate.getSeconds()/10;
+		if( number == 3 )
+			return tempEggDate.getSeconds()%10;
+		else return 0;
+	}
+	
+	public long getEgg2TimeNumber(int number) //ч0ч1:м2м3 
+	{
+		tempEggDate.setTime(egg2 / 1000000);
+		if( number == 0 )
+			return tempEggDate.getMinutes()/10;
+		if( number == 1 )
+			return tempEggDate.getMinutes()%10;
+		if( number == 2 )
+			return tempEggDate.getSeconds()/10;
+		if( number == 3 )
+			return tempEggDate.getSeconds()%10;
+		else return 0;
+	}
+	
+	public long getEgg3TimeNumber(int number) //ч0ч1:м2м3 
+	{
+		tempEggDate.setTime(egg3 / 1000000);
+		if( number == 0 )
+			return tempEggDate.getMinutes()/10;
+		if( number == 1 )
+			return tempEggDate.getMinutes()%10;
+		if( number == 2 )
+			return tempEggDate.getSeconds()/10;
+		if( number == 3 )
+			return tempEggDate.getSeconds()%10;
+		else return 0;
+	}
+	
+	public long getPlayerTimeNumber(int number) //ч0ч1:м2м3 
+	{
+		if( levelEndTime == 0 )
+			return 9;
+		
+		if( levelEndTime - levelStartTime > (long)1000000000 * (long)60 * (long)60  )
+			return 9;
+		
+		tempEggDate.setTime(( levelEndTime - levelStartTime) / 1000000);
+		if( number == 0 )
+			return tempEggDate.getMinutes()/10;
+		if( number == 1 )
+			return tempEggDate.getMinutes()%10;
+		if( number == 2 )
+			return tempEggDate.getSeconds()/10;
+		if( number == 3 )
+			return tempEggDate.getSeconds()%10;
+		else return 0;		
+	}
 }

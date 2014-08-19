@@ -11,11 +11,17 @@ import com.arhimag.games.omnomnom.framework.FileIO;
 public class Settings
 {
 	private static boolean soundEnabled = true;
-	private static int control = 0;
-	private static final int programmVersion = 12; 
+	private static int control = 7;
+	private static final int programmVersion = 13; 
 	private static int currentVersion = programmVersion;
 	private static int lastReachedLevel = 9;
 	private static int isFutureMovement = 1;
+	
+	private static int playButtonColor = 0xFF1AAE1A;
+	private static int achievementButtonColor = 0xFFDAA520;
+	private static int helpButtonColor = 0xFF263696;
+	private static int levelsButtonColor = 0xFF4B2295;
+	private static int settingsButtonColor = 0xFFDAC320;
 	
 	public static void load(FileIO  files)
 	{

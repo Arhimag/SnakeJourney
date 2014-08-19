@@ -97,15 +97,12 @@ public class MainMenuScreen extends Screen
 	@Override
 	public void resume()
 	{
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose()
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 }

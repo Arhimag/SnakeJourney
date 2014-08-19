@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.arhimag.games.omnomnom.Assets;
 import com.arhimag.games.omnomnom.GameLevelDrawer;
+import com.arhimag.games.omnomnom.LevelSequence;
 import com.arhimag.games.omnomnom.Settings;
 import com.arhimag.games.omnomnom.Snake;
 import com.arhimag.games.omnomnom.Levels.CircleLevel;
@@ -22,12 +23,14 @@ import com.arhimag.games.omnomnom.Levels.MeetAILevel;
 import com.arhimag.games.omnomnom.Levels.MeetTeleportLevel;
 import com.arhimag.games.omnomnom.Levels.SnakeLevel;
 import com.arhimag.games.omnomnom.Maps.CircleMap;
+import com.arhimag.games.omnomnom.Maps.EggsWindowMap;
 import com.arhimag.games.omnomnom.Maps.Level1Map;
 import com.arhimag.games.omnomnom.Maps.Level2Map;
 import com.arhimag.games.omnomnom.Maps.Level3Map;
 import com.arhimag.games.omnomnom.Maps.Level4Map;
 import com.arhimag.games.omnomnom.Maps.LevelLabirinthMap;
 import com.arhimag.games.omnomnom.Maps.LevelCarpetMap;
+import com.arhimag.games.omnomnom.Maps.MainMenuMap;
 import com.arhimag.games.omnomnom.Maps.MaskMap;
 import com.arhimag.games.omnomnom.Maps.MeetAIMap;
 import com.arhimag.games.omnomnom.Maps.MeetTeleportMap;
@@ -85,7 +88,7 @@ public class GameScreen extends Screen
 	@Override
 	public void update(float deltaTime)
 	{
-		Log.d("OmNomNomTrace","Update start");
+		//Log.d("OmNomNomTrace","Update start");
 		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
 		List<KeyEvent> keyEvents = game.getInput().getKeyEvents();
 		
@@ -102,6 +105,41 @@ public class GameScreen extends Screen
 			
 		}
 		
+		if( this.levelDrawer.getLevel().getEggsWindow())
+		{
+			len = touchEvents.size();
+			for(int i = 0; i < len; i++)
+			{
+				TouchEvent event = touchEvents.get(i);
+				
+				if(event.type == TouchEvent.TOUCH_UP)
+				{
+					if( levelDrawer.inBoundsEgg(event, EggsWindowMap.getMenuBounds()))
+					{
+						game.setScreen(new MainMenuScreen(game));
+						if( Settings.isSoundEnabled())
+							Assets.eat.play(1);
+						return;
+					}
+					if( levelDrawer.inBoundsEgg(event, EggsWindowMap.getRetryBounds()))
+					{
+						// TODO Сделать повтор игры в тот же уровень.
+						// game.setScreen(new SettingsScreen(game));
+						levelDrawer.setLevel(LevelSequence.createSameLevel(levelDrawer.getLevel()));
+						if( Settings.isSoundEnabled())
+							Assets.eat.play(1);
+						return;
+					}
+					if( levelDrawer.inBoundsEgg(event, EggsWindowMap.getNextBounds()))
+					{
+						this.levelDrawer.getLevel().setNextLevel();
+						if( Settings.isSoundEnabled())
+							Assets.eat.play(1);
+						return;
+					}
+				}
+			}
+		}
 		
 		if( controltype == 1 )
 		{
@@ -297,9 +335,33 @@ public class GameScreen extends Screen
 									levelDrawer.getLevel().goDOWN(this.levelDrawer.getLevel().getPlayerSnake());
 					}
 				}
+				else if( controltype == 7)
+				{
+					if( event.type == TouchEvent.TOUCH_UP )
+					{
+						if( old[event.pointer].x != 0 || old[event.pointer].y != 0 )
+							if( old[event.pointer].x < ((AndroidGame)game).getDisplayWidth() / 2 )
+								if( old[event.pointer].y > event.y )
+									levelDrawer.getLevel().goUP(levelDrawer.getLevel().getPlayerSnake());
+								else
+									levelDrawer.getLevel().goDOWN(levelDrawer.getLevel().getPlayerSnake());
+							else
+								if( old[event.pointer].x > event.x )
+									levelDrawer.getLevel().goLEFT(levelDrawer.getLevel().getPlayerSnake());
+								else
+									levelDrawer.getLevel().goRIGHT(levelDrawer.getLevel().getPlayerSnake());
+						old[event.pointer].x = 0;
+						old[event.pointer].y = 0;
+					}
+					else if( event.type == TouchEvent.TOUCH_DOWN )
+					{
+						old[event.pointer].x = event.x;
+						old[event.pointer].y = event.y;
+					}
+				}
 			}
 		}
-		Log.d("OmNomNomTrace","Update end");
+		//Log.d("OmNomNomTrace","Update end");
 	}
 
 	@Override
@@ -319,14 +381,12 @@ public class GameScreen extends Screen
 	@Override
 	public void resume()
 	{
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose()
 	{
-		// TODO Auto-generated method stub
 
 	}
 

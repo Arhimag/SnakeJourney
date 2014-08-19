@@ -8,6 +8,7 @@ import android.util.Log;
 import com.arhimag.games.omnomnom.Levels.GameLevel;
 import com.arhimag.games.omnomnom.Levels.LevelLevelsList;
 import com.arhimag.games.omnomnom.Levels.SettingsLevel;
+import com.arhimag.games.omnomnom.Maps.EggsWindowMap;
 import com.arhimag.games.omnomnom.Maps.GameMap;
 import com.arhimag.games.omnomnom.Maps.LevelsListMap;
 import com.arhimag.games.omnomnom.Maps.SettingsMap;
@@ -56,6 +57,9 @@ public class GameLevelDrawer
 	
 	private int previousHeadX = -1;
 	private int previousHeadY = -1;
+	
+	private int eggShown = 0;
+	private long eggShowStart = 0;
 	private Graphics graphics;
 	
 	public GameLevelDrawer( GameLevel level, int screenWidth, int screenHeight, Graphics graphics )
@@ -109,12 +113,40 @@ public class GameLevelDrawer
 				return mapWallColors[2] + mapColorModificators[i % 3][j % 3];
 			case 'R':
 				return mapWallColors[3] + mapColorModificators[i % 3][j % 3];
-			case 'T':
-				return mapWallColors[4] + mapColorModificators[i % 3][j % 3];
 			case 'G':
 				return mapWallColors[4] + mapColorModificators[i % 3][j % 3];
+			case 'P':
+//				return 0xFF03C03C + mapColorModificators[i % 3][j % 3];
+//				return 0xFFE0E0E0 + mapColorModificators[i % 3][j % 3];
+//				return 0xFF1AAE1A + mapColorModificators[i % 3][j % 3];
+				return mapWallColors[3] + mapColorModificators[i % 3][j % 3];
+			case 'A':
+				return 0xFFDAA520 + ( mapColorModificators[i % 3][j % 3] & 0xFF00FFFF );
+			case 's':
+				//return 0xFFBB1B5C + mapColorModificators[i % 3][j % 3];
+				return 0xFFDAC320 + mapColorModificators[i % 3][j % 3];
 			case 'L':
-				return mapWallColors[5] + mapColorModificators[i % 3][j % 3];
+				//return 0xFF7AC61D + mapColorModificators[i % 3][j % 3];
+				return 0xFF4B2295 + mapColorModificators[i * 5 % 3][j * 5 % 3];
+			case 'H':
+				//return 0xFF263696 + mapColorModificators[i % 3][j % 3];
+				return 0xFF263696 + mapColorModificators[i % 3][j % 3];
+			case 'T': //¬рем€ ачивки
+				return 0xFF7F7F7F + mapColorModificators[i % 3][j % 3];
+			case 't': //¬рем€ ачивки
+				return 0xFF858DA0 + mapColorModificators[i % 3][j % 3];
+			case 'E': //не активное €йцо
+				return 0xFFC0C0C0 + mapColorModificators[i % 3][j % 3];
+			case 'e': //јктивное €йцо
+				return 0xFFF0F0F0;
+			case 'Y':
+				return 0xFFBEBEBE + mapColorModificators[i % 3][j % 3];
+			case 'M':
+				return 0xFFC2C2C2 + mapColorModificators[i % 3][j % 3];
+			case 'C':
+				return 0xFFFFFFFF + mapColorModificators[i % 3][j % 3];
+			case 'B':
+				return 0xFF9A7F76 + mapColorModificators[i % 3][j % 3];
 			default:
 				return mapWallColors[mapWallColors.length - 1];
 		}
@@ -699,36 +731,13 @@ public class GameLevelDrawer
 		for(int i = 0; i < map.getMapWidth() ; i++ )
 			for(int j=0; j < map.getMapHeight(); j++)
 				graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, getColor(map.getFlatMap(i, j),i,j));
-				/*switch (map.getFlatMap(i, j))
-				{
-					case '#':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[0] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case '_':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, 0xFF000000);
-						break;
-					case 'W':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[1] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'S':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, inactiveSettingsColors + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'Q':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[2] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'R':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[3] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'T':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[4] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'G':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[4] + mapColorModificators[i % 3][j % 3]);
-						break;
-					default:
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[mapWallColors.length - 1]);
-						
-				}*/
+	}
+
+	public void  drawMapMiniature(GameMap map, int mapStartDrawX, int mapStartDrawY, int pixelSize)
+	{	
+		for(int i = 0; i < map.getMapWidth() ; i++ )
+			for(int j=0; j < map.getMapHeight(); j++)
+				graphics.drawRect(mapStartDrawX + i * pixelSize, mapStartDrawY + j * pixelSize, pixelSize, pixelSize, getColor(map.getFlatMap(i, j),i,j));
 	}
 	
 	public void drawMap()
@@ -736,36 +745,6 @@ public class GameLevelDrawer
 		for(int i = 0; i < level.getMap().getMapWidth() ; i++ )
 			for(int j=0; j < level.getMap().getMapHeight(); j++)
 				graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, getColor(level.getMap().getFlatMap(i, j),i,j));
-/*				switch (level.getMap().getFlatMap(i, j))
-				{
-					case '#':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[0] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case '_':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, 0xFF000000);
-						break;
-					case 'W':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[1] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'S':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, inactiveSettingsColors + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'Q':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[2] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'R':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[3] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'T':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[4] + mapColorModificators[i % 3][j % 3]);
-						break;
-					case 'G':
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[4] + mapColorModificators[i % 3][j % 3]);
-						break;
-					default:
-						graphics.drawRect(mapStartDrawX + i * mapPixelSize, this.mapStartDrawY + j * mapPixelSize, mapPixelSize, mapPixelSize, mapWallColors[mapWallColors.length - 1]);
-						
-				}*/
 	}
 	
 	private void drawCenterRect( int x, int y, int side, int color)
@@ -1035,6 +1014,11 @@ public class GameLevelDrawer
 	private static final int LEFTRIGHT_LABEL = 4;
 	private static final int NEXTLIST_LABEL = 5;
 	private static final int PREVIOUSLIST_LABEL = 6;
+
+	private static final int NUMBER_0_P = 10;
+	private static final int NUMBER_0_A = 20;
+	
+	private static final int EGG = 30;
 	
 	public void drawLabel( int label )
 	{
@@ -1127,6 +1111,107 @@ public class GameLevelDrawer
 				break;			
 
 		}
+	}
+	
+	public void drawLabel( int label, int x, int y, int pixelsize )
+	{
+		// ¬ыводим цифры
+		if( label >= NUMBER_0_P  && label <= NUMBER_0_A + 9  )
+		{
+			for(int i = 0; i < EggsWindowMap.Numbers[(label - NUMBER_0_P) % 10][0].length ; i++ )
+				for(int j = 0; j < EggsWindowMap.Numbers[(label - NUMBER_0_P) % 10].length; j++)
+					if( label <= NUMBER_0_P + 9)
+						graphics.drawRect(x + i * pixelsize, y + j * pixelsize, pixelsize, pixelsize, getColor(Character.toLowerCase(EggsWindowMap.Numbers[(label - NUMBER_0_P) % 10][j][i]),j,i));
+					else
+						graphics.drawRect(x + i * pixelsize, y + j * pixelsize, pixelsize, pixelsize, getColor(Character.toUpperCase(EggsWindowMap.Numbers[(label - NUMBER_0_P) % 10][j][i]),j,i));
+		}
+		
+		switch( label )
+		{
+			case EGG:
+				for(int i = 0; i < EggsWindowMap.Egg[0].length ; i++ )
+					for(int j = 0; j < EggsWindowMap.Egg.length; j++)
+						graphics.drawRect(x + i * pixelsize, y + j * pixelsize, pixelsize, pixelsize, getColor(EggsWindowMap.Egg[j][i],j,i));
+				break;
+		}
+	}
+	
+	private void drawEggWindow()
+	{
+		if(! this.level.getEggsWindow() )
+			return;
+		
+		int winPixelSize = java.lang.Math.min((screenHeight - paddingTop - paddingBottom)/EggsWindowMap.getMapHeightStatic(), (screenWidth - paddingRight - paddingLeft)/EggsWindowMap.getMapWidthStatic() );
+		int winStartDrawX = paddingLeft + (screenWidth  - paddingRight - paddingLeft - winPixelSize * EggsWindowMap.getMapWidthStatic()) / 2 ;
+		int winStartDrawY = paddingTop + (screenHeight - paddingTop - paddingBottom - EggsWindowMap.getMapHeightStatic() * winPixelSize ) /2;
+		
+		graphics.drawRect(winStartDrawX,winStartDrawY,winPixelSize*EggsWindowMap.getMapWidthStatic(),winPixelSize*EggsWindowMap.getMapHeightStatic(),0xFF000000);
+		
+		// –исуем основной "каркас" всплывающего окошка
+		for(int i = 0; i < EggsWindowMap.getMapWidthStatic() ; i++ )
+			for(int j=0; j < EggsWindowMap.getMapHeightStatic(); j++)
+				graphics.drawRect(winStartDrawX + i * winPixelSize, winStartDrawY + j * winPixelSize, winPixelSize, winPixelSize, getColor(EggsWindowMap.getFlatMapStatic(i, j),i,j));
+		
+		
+		// –исуем врем€ €йца
+		if( eggShown == 0)
+		{
+			eggShown = 1;
+			eggShowStart = System.nanoTime();
+		}
+		else if( eggShown < 3 )
+		{
+			if( System.nanoTime() - eggShowStart > level.getEggTimeout() )
+			{
+				eggShown ++;
+				eggShowStart = System.nanoTime();
+			}			
+		}
+		
+		switch( eggShown )
+		{
+			case 1:
+				drawLabel(NUMBER_0_A + (int)level.getEgg1TimeNumber(0),winStartDrawX + EggsWindowMap.ACHIVE_HOUR_1.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_HOUR_1.y * winPixelSize, winPixelSize);
+				drawLabel(NUMBER_0_A + (int)level.getEgg1TimeNumber(1),winStartDrawX + EggsWindowMap.ACHIVE_HOUR_2.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_HOUR_2.y * winPixelSize, winPixelSize);
+				drawLabel(NUMBER_0_A + (int)level.getEgg1TimeNumber(2),winStartDrawX + EggsWindowMap.ACHIVE_MINUTE_1.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_MINUTE_1.y * winPixelSize, winPixelSize);
+				drawLabel(NUMBER_0_A + (int)level.getEgg1TimeNumber(3),winStartDrawX + EggsWindowMap.ACHIVE_MINUTE_2.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_MINUTE_2.y * winPixelSize, winPixelSize);
+				break;
+			case 2:
+				drawLabel(NUMBER_0_A + (int)level.getEgg2TimeNumber(0),winStartDrawX + EggsWindowMap.ACHIVE_HOUR_1.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_HOUR_1.y * winPixelSize, winPixelSize);
+				drawLabel(NUMBER_0_A + (int)level.getEgg2TimeNumber(1),winStartDrawX + EggsWindowMap.ACHIVE_HOUR_2.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_HOUR_2.y * winPixelSize, winPixelSize);
+				drawLabel(NUMBER_0_A + (int)level.getEgg2TimeNumber(2),winStartDrawX + EggsWindowMap.ACHIVE_MINUTE_1.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_MINUTE_1.y * winPixelSize, winPixelSize);
+				drawLabel(NUMBER_0_A + (int)level.getEgg2TimeNumber(3),winStartDrawX + EggsWindowMap.ACHIVE_MINUTE_2.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_MINUTE_2.y * winPixelSize, winPixelSize);
+				break;
+			default://3
+				drawLabel(NUMBER_0_A + (int)level.getEgg3TimeNumber(0),winStartDrawX + EggsWindowMap.ACHIVE_HOUR_1.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_HOUR_1.y * winPixelSize, winPixelSize);
+				drawLabel(NUMBER_0_A + (int)level.getEgg3TimeNumber(1),winStartDrawX + EggsWindowMap.ACHIVE_HOUR_2.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_HOUR_2.y * winPixelSize, winPixelSize);
+				drawLabel(NUMBER_0_A + (int)level.getEgg3TimeNumber(2),winStartDrawX + EggsWindowMap.ACHIVE_MINUTE_1.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_MINUTE_1.y * winPixelSize, winPixelSize);
+				drawLabel(NUMBER_0_A + (int)level.getEgg3TimeNumber(3),winStartDrawX + EggsWindowMap.ACHIVE_MINUTE_2.x * winPixelSize, winStartDrawY + EggsWindowMap.ACHIVE_MINUTE_2.y * winPixelSize, winPixelSize);
+				break;				
+		}
+		
+		// –исуем јктивные €йца
+		if( eggShown > 0 )
+		{
+			if(level.isFirstEggActive())
+				drawLabel(EGG,winStartDrawX + EggsWindowMap.EGG1.x * winPixelSize, winStartDrawY + EggsWindowMap.EGG1.y * winPixelSize, winPixelSize );
+		}
+		if( eggShown > 1)
+		{
+			if(level.isSecondEggActive())
+				drawLabel(EGG,winStartDrawX + EggsWindowMap.EGG2.x * winPixelSize, winStartDrawY + EggsWindowMap.EGG2.y * winPixelSize, winPixelSize );
+		}
+		if( eggShown > 2)
+		{
+			if(level.isThirdEggActive())
+				drawLabel(EGG,winStartDrawX + EggsWindowMap.EGG3.x * winPixelSize, winStartDrawY + EggsWindowMap.EGG3.y * winPixelSize, winPixelSize );
+		}
+
+		// –исуем врем€ игрока
+		drawLabel(NUMBER_0_P + (int)level.getPlayerTimeNumber(0),winStartDrawX + EggsWindowMap.PLAYER_HOUR_1.x * winPixelSize, winStartDrawY + EggsWindowMap.PLAYER_HOUR_1.y * winPixelSize, winPixelSize);
+		drawLabel(NUMBER_0_P + (int)level.getPlayerTimeNumber(1),winStartDrawX + EggsWindowMap.PLAYER_HOUR_2.x * winPixelSize, winStartDrawY + EggsWindowMap.PLAYER_HOUR_2.y * winPixelSize, winPixelSize);
+		drawLabel(NUMBER_0_P + (int)level.getPlayerTimeNumber(2),winStartDrawX + EggsWindowMap.PLAYER_MINUTE_1.x * winPixelSize, winStartDrawY + EggsWindowMap.PLAYER_MINUTE_1.y * winPixelSize, winPixelSize);
+		drawLabel(NUMBER_0_P + (int)level.getPlayerTimeNumber(3),winStartDrawX + EggsWindowMap.PLAYER_MINUTE_2.x * winPixelSize, winStartDrawY + EggsWindowMap.PLAYER_MINUTE_2.y * winPixelSize, winPixelSize);
 	}
 	
 	public void draw( float deltaTime )
@@ -1272,6 +1357,7 @@ public class GameLevelDrawer
 		else 
 		{
 			drawMap();
+			
 			if( level.getAqua() )
 				drawAquaControl();
 			if( level.getPauseButton())
@@ -1280,18 +1366,24 @@ public class GameLevelDrawer
 			drawFood();
 			drawFinish();
 			drawTeleports();
-			if( Settings.getIsFutureMovement() == 1)
+			if( ! level.getEggsWindow() )
 			{
-				for( int i = 0; i < this.level.getSnakesCount(); i++)
-					if( i != this.level.getPlayerSnake() || !this.level.isReadyScreen()  ||  this.level.getReadyTicks() % 2 == 1 )
-						drawSnakeFuture(this.level.getTicks(), i);
+				if( Settings.getIsFutureMovement() == 1)
+				{
+					for( int i = 0; i < this.level.getSnakesCount(); i++)
+						if( i != this.level.getPlayerSnake() || !this.level.isReadyScreen()  ||  this.level.getReadyTicks() % 2 == 1 )
+							drawSnakeFuture(this.level.getTicks(), i);
+				}
+				else
+				{
+					for( int i = 0; i < this.level.getSnakesCount(); i++)
+						if( i != this.level.getPlayerSnake() || !this.level.isReadyScreen()  ||  this.level.getReadyTicks() % 2 == 1 )
+							drawSnake(this.level.getTicks(), i);
+				}
 			}
-			else
-			{
-				for( int i = 0; i < this.level.getSnakesCount(); i++)
-					if( i != this.level.getPlayerSnake() || !this.level.isReadyScreen()  ||  this.level.getReadyTicks() % 2 == 1 )
-						drawSnake(this.level.getTicks(), i);
-			}
+			
+			if( level.getEggsWindow())
+				drawEggWindow();
 		}
 	}
 	
@@ -1312,6 +1404,9 @@ public class GameLevelDrawer
 		this.foodSize = (3 * mapPixelSize) / 4;
 		this.snakeBodySize = (3 * mapPixelSize) / 4;
 		this.snakeHeadSize = mapPixelSize;
+		
+		eggShown = 0;
+		eggShowStart = 0;
 	}
 	
 	public boolean inBounds( TouchEvent event, Rect rct)
@@ -1320,6 +1415,21 @@ public class GameLevelDrawer
 				( event.x <  paddingLeft + rct.right * mapPixelSize + mapStartDrawX  ) &&
 				( event.y > paddingTop + rct.top * mapPixelSize + mapStartDrawY) &&
 				( event.y <  paddingTop + rct.bottom * mapPixelSize + mapStartDrawY  ) )
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean inBoundsEgg( TouchEvent event, Rect rct)
+	{
+		int winPixelSize = java.lang.Math.min((screenHeight - paddingTop - paddingBottom)/EggsWindowMap.getMapHeightStatic(), (screenWidth - paddingRight - paddingLeft)/EggsWindowMap.getMapWidthStatic() );
+		int winStartDrawX = paddingLeft + (screenWidth  - paddingRight - paddingLeft - winPixelSize * EggsWindowMap.getMapWidthStatic()) / 2 ;
+		int winStartDrawY = paddingTop + (screenHeight - paddingTop - paddingBottom - EggsWindowMap.getMapHeightStatic() * winPixelSize ) /2;
+		
+		if ( ( event.x > paddingLeft + rct.left * winPixelSize + winStartDrawX) &&
+				( event.x <  paddingLeft + rct.right * winPixelSize + winStartDrawX  ) &&
+				( event.y > paddingTop + rct.top * winPixelSize + winStartDrawY) &&
+				( event.y <  paddingTop + rct.bottom * winPixelSize + winStartDrawY  ) )
 			return true;
 		else
 			return false;

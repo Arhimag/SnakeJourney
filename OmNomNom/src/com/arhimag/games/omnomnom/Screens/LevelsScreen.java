@@ -135,7 +135,7 @@ public class LevelsScreen extends Screen
 			{
 				if (((LevelLevelsList)this.levelDrawer.getLevel()).isSlide())
 				{
-					if (java.lang.Math.abs(event.x - ((LevelLevelsList)this.levelDrawer.getLevel()).getSlideStartX()) > andrGame.getDisplayWidth()/4 )
+					if (java.lang.Math.abs(event.x - ((LevelLevelsList)this.levelDrawer.getLevel()).getSlideStartX()) > andrGame.getDisplayWidth()/10 )
 					{
 						if( event.x > ((LevelLevelsList)this.levelDrawer.getLevel()).getSlideStartX()) 
 							((LevelLevelsList)this.levelDrawer.getLevel()).startAnimationLeft();

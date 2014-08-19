@@ -2,6 +2,7 @@ package com.arhimag.games.omnomnom.Levels;
 
 import android.graphics.Rect;
 
+import com.arhimag.games.omnomnom.LevelSequence;
 import com.arhimag.games.omnomnom.Settings;
 import com.arhimag.games.omnomnom.Maps.CircleMap;
 import com.arhimag.games.omnomnom.Maps.GameMap;
@@ -222,7 +223,29 @@ public class LevelLevelsList extends GameLevel
 	// 6 - level4
 	private void fillList()
 	{
-		switch( listNumber )
+		
+		if( Settings.getLastReachedLevel() > listNumber * 4 - 1 )
+			levelTopLeft = LevelSequence.createMap(listNumber * 4); 
+		else
+			levelTopLeft = null;
+		
+		if( Settings.getLastReachedLevel() > listNumber * 4  )
+			levelTopRight = LevelSequence.createMap(listNumber * 4 + 1); 
+		else
+			levelTopRight = null;
+		
+		if( Settings.getLastReachedLevel() > listNumber * 4 + 1 )
+			levelBottomLeft = LevelSequence.createMap(listNumber * 4 + 2); 
+		else
+			levelBottomLeft = null;
+		
+		if( Settings.getLastReachedLevel() > listNumber * 4 + 2)
+			levelBottomRight = LevelSequence.createMap(listNumber * 4 + 3); 
+		else
+			levelBottomRight = null;
+		
+
+		/*switch( listNumber )
 		{
 		case 0:
 
@@ -301,7 +324,7 @@ public class LevelLevelsList extends GameLevel
 			levelBottomRight = null;
 			break;
 			
-		}
+		} */
 	}
 	
 	
