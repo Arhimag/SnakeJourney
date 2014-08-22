@@ -13,6 +13,7 @@ public class Help2Level extends GameLevel
 		
 		int snakeStartX = 24;
 		int snakeStartY = 10;
+		pauseable = false;
 		
 		snakes = new Snake[1]; 
 		snakes[0] = new PlayerSnake(snakeStartX, snakeStartY);

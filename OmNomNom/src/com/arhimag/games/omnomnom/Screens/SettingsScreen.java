@@ -5,6 +5,7 @@ import java.util.List;
 import com.arhimag.games.omnomnom.Assets;
 import com.arhimag.games.omnomnom.GameLevelDrawer;
 import com.arhimag.games.omnomnom.Settings;
+import com.arhimag.games.omnomnom.Levels.GameLevel;
 import com.arhimag.games.omnomnom.Levels.SettingsLevel;
 import com.arhimag.games.omnomnom.Maps.SettingsMap;
 import com.arhimag.games.omnomnom.framework.Game;
@@ -25,6 +26,7 @@ public class SettingsScreen extends Screen
 		AndroidGame andrGame = (AndroidGame) game;
 		
 		levelDrawer = new GameLevelDrawer( new SettingsLevel( new SettingsMap()), andrGame.getDisplayWidth() , andrGame.getDisplayHeight(), game.getGraphics());
+		GameLevel.startPauseTimer();
 	}
 
 	@Override

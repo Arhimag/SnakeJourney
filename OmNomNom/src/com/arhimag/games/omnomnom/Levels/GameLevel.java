@@ -5,6 +5,7 @@ import java.util.Random;
 import android.util.Log;
 
 import com.arhimag.games.omnomnom.Food;
+import com.arhimag.games.omnomnom.LevelSequence;
 import com.arhimag.games.omnomnom.Settings;
 import com.arhimag.games.omnomnom.Snake;
 import com.arhimag.games.omnomnom.GameElements.Teleport;
@@ -40,6 +41,13 @@ public abstract class GameLevel
 	protected long eggTimeOut = (long)1 * (long)1000000000; // 1 секунды
 	protected boolean gameOver = false;
 	
+	protected boolean movementHelp = false;
+	protected int movementHelpDirection;
+	protected boolean movementHelpDone = false;
+	
+	private static long pauseStart = 0;
+	private static long pauseDuration = 0;
+	
 	protected java.util.Date tempEggDate = new java.util.Date();
 	
 	public static final int WALL = -2;
@@ -56,6 +64,7 @@ public abstract class GameLevel
 	protected int readyTicksLeft = 5;
 	
 	protected boolean pause = false;
+	protected boolean pauseable = true;
 	
 	protected boolean ticked = true;
 	protected boolean botMoved = false;
@@ -79,7 +88,11 @@ public abstract class GameLevel
 		intTempMap = new int[map.getMapWidth()][map.getMapHeight()];
 		tempMapBuild = false;
 		buildTempMap();
-
+		
+		pauseable = (LevelSequence.getMapNum(map) >= 0);
+		
+		if(pauseable)
+			GameLevel.clearPause();
 		levelStartTime = System.nanoTime();
 	}
 	
@@ -511,11 +524,14 @@ public abstract class GameLevel
 	
 	protected boolean isSnakeNear( int x, int y )
 	{
+		if( getIntTempMap(getMapVertexId(x,y)) < 0 )
+			return true;
+		
 		for( int i = 0; i < snakes.length; i++ )
 		{
 			if( snakes[i].lastx == x && snakes[i].lasty == y )
 				return true;
-			if((java.lang.Math.abs(snakes[i].parts.get(0).x - x) <= 1 ) && (java.lang.Math.abs(snakes[i].parts.get(0).y - y) <= 1))
+			if((java.lang.Math.abs(snakes[i].parts.get(0).x - x) <= 2 ) && (java.lang.Math.abs(snakes[i].parts.get(0).y - y) <= 2))
 				return true;
 			for( int j = 1; j < snakes[i].parts.size(); j++ )
 				if( snakes[i].parts.get(j).x == x && snakes[i].parts.get(j).y == y)
@@ -532,17 +548,23 @@ public abstract class GameLevel
 		 
 		int x = rand.nextInt(this.map.getMapWidth());
 		int y = rand.nextInt(this.map.getMapHeight());
+		
 		while( this.map.getFlatMap(x,y) != ' ' ||  isTeleportNear(x,y)  || isSnakeNear(x,y) )
 		{
 			x = rand.nextInt(this.map.getMapWidth());
 			y = rand.nextInt(this.map.getMapHeight());
 		}
+		
 		this.food[i].x = x;
 		this.food[i].y = y;
 		
 		
 		
 		
+	}
+	public boolean isTickNow(float deltaTime)
+	{
+		return timeFromTick + deltaTime > this.getTickTime();
 	}
 	
 	public void update(float deltaTime, int snake_id )
@@ -739,9 +761,18 @@ public abstract class GameLevel
 		boolean tail;
 		boolean moveFinished = false;
 		
-		// TODO Тест яичного окна
+		if (pauseable )
+			GameLevel.stopPauseTimer();
+		
 		if( eggsWindow )
 			return;
+		
+		if( movementHelp && playerSnake >= 0 && playerSnake < snakes.length && ticked && movementHelpDone)
+		{
+			snakes[playerSnake].direction = movementHelpDirection;
+			movementHelpDone = false;
+		}
+			
 		
 		if( moved.length < snakes.length )
 			moved = new boolean[snakes.length];
@@ -811,8 +842,10 @@ public abstract class GameLevel
 					if( snakeid == this.playerSnake)
 					{
 						snakes[snakeid].advance();
-						// TODO Тест яичного окна
+						// TODO Тест паузы
 						levelEndTime = System.nanoTime();
+						levelStartTime += GameLevel.getPauseDuration();
+						GameLevel.clearPause();
 						eggsWindow = true;
 						// this.nextLevel = true;
 					}
@@ -1152,4 +1185,80 @@ public abstract class GameLevel
 			return tempEggDate.getSeconds()%10;
 		else return 0;		
 	}
+	
+	public boolean getMovementHelp()
+	{
+		return movementHelp;
+	}
+	
+	public void helpGoUP( )
+	{
+		if( playerSnake >= 0 && playerSnake < snakes.length )
+			if( snakes[playerSnake].parts.size() == 1 || snakes[playerSnake].parts.get(1).x != snakes[playerSnake].parts.get(0).x - 1 )
+			{
+				movementHelpDirection = Snake.UP;
+				movementHelpDone = true;
+			}
+	}
+	
+	public void helpGoDOWN( )
+	{
+		if( playerSnake >= 0 && playerSnake < snakes.length )
+			if( snakes[playerSnake].parts.size() == 1 || snakes[playerSnake].parts.get(1).x != snakes[playerSnake].parts.get(0).x - 1 )
+			{
+				movementHelpDirection = Snake.DOWN;
+				movementHelpDone = true;
+			}
+	}
+	
+	public void helpGoRIGHT( )
+	{
+		if( playerSnake >= 0 && playerSnake < snakes.length )
+			if( snakes[playerSnake].parts.size() == 1 || snakes[playerSnake].parts.get(1).x != snakes[playerSnake].parts.get(0).x - 1 )
+			{
+				movementHelpDirection = Snake.RIGHT;
+				movementHelpDone = true;
+			}
+	}
+	
+	public void helpGoLEFT(  )
+	{
+		if( playerSnake >= 0 && playerSnake < snakes.length )
+			if( snakes[playerSnake].parts.size() == 1 || snakes[playerSnake].parts.get(1).x != snakes[playerSnake].parts.get(0).x - 1 )
+			{
+				movementHelpDirection = Snake.LEFT;
+				movementHelpDone = true;
+			}
+	}
+	
+	
+	public static void startPauseTimer()
+	{
+		//Log.d("pauseDebug", "Trying to pause game(pauseStart:" + pauseStart + "; pauseDuration:" + pauseDuration + ")");
+		if( pauseStart == 0 )
+			pauseStart = System.nanoTime();
+	}
+	
+	public static void stopPauseTimer()
+	{
+		//Log.d("pauseDebug", "Trying to stopPause game(pauseStart:" + pauseStart + "; pauseDuration:" + pauseDuration + ")");
+		if( pauseStart > 0 )
+			pauseDuration += System.nanoTime() - pauseStart;
+		pauseStart = 0;
+	}
+	
+	public static void clearPause()
+	{
+		//Log.d("pauseDebug", "Trying to clearPause game(pauseStart:" + pauseStart + "; pauseDuration:" + pauseDuration + ")");
+		pauseStart = 0;
+		pauseDuration = 0;
+	}
+	
+	public static long getPauseDuration()
+	{
+		//Log.d("pauseDebug", "Trying to getPause game(pauseStart:" + pauseStart + "; pauseDuration:" + pauseDuration + ")");
+		return pauseDuration;
+	}
+	
+	
 }

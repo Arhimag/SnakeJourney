@@ -9,6 +9,7 @@ public class SettingsLevel extends GameLevel
 	{
 		super(map);
 		playerSnake = -1;
+		pauseable = false;
 	}
 	
 	@Override

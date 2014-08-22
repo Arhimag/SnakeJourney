@@ -35,6 +35,7 @@ public class PauseMenuScreen extends Screen
 		AndroidGame andrGame = (AndroidGame) game;
 		
 		levelDrawer = new GameLevelDrawer( new PauseMenuLevel( new PauseMenuMap(), lvl, lvlnum),andrGame.getDisplayWidth(),andrGame.getDisplayHeight() , game.getGraphics());
+		GameLevel.startPauseTimer();
 	}
 
 	@Override

@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.arhimag.games.omnomnom.Assets;
 import com.arhimag.games.omnomnom.GameLevelDrawer;
+import com.arhimag.games.omnomnom.LevelSequence;
 import com.arhimag.games.omnomnom.Settings;
+import com.arhimag.games.omnomnom.Levels.GameLevel;
 import com.arhimag.games.omnomnom.Levels.Help2Level;
 import com.arhimag.games.omnomnom.Maps.HelpScreen2Map;
 import com.arhimag.games.omnomnom.framework.Game;
@@ -24,6 +26,7 @@ public class HelpScreen2 extends Screen
 		AndroidGame andrGame = (AndroidGame) game;
 
 		levelDrawer = new GameLevelDrawer( new Help2Level(  new HelpScreen2Map()),andrGame.getDisplayWidth()  ,andrGame.getDisplayHeight(), game.getGraphics());
+		GameLevel.startPauseTimer();
 	}
 
 	@Override

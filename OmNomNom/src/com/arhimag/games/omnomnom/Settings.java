@@ -14,12 +14,12 @@ public class Settings
 {
 	private static boolean soundEnabled = true;
 	private static int control = 0;
-	private static final int programmVersion = 16; 
+	private static final int programmVersion = 17; 
 	private static int currentVersion = programmVersion;
-	private static int lastReachedLevel = 9;
+	private static int lastReachedLevel = 0;
 	private static int isFutureMovement = 1;
 	
-	private static int[] levelsEggs = {3,2,1,0,0,1,2,3,1,3}; 
+	private static int[] levelsEggs = {0,0,0,0,0,0,0,0,0,0}; 
 	private static int playButtonColor = 0xFF1AAE1A;
 	private static int achievementButtonColor = 0xFFDAA520;
 	private static int helpButtonColor = 0xFF263696;

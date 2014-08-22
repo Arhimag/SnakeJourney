@@ -5,6 +5,7 @@ import java.util.List;
 import com.arhimag.games.omnomnom.Assets;
 import com.arhimag.games.omnomnom.GameLevelDrawer;
 import com.arhimag.games.omnomnom.Settings;
+import com.arhimag.games.omnomnom.Levels.GameLevel;
 import com.arhimag.games.omnomnom.Levels.HelpLevel;
 import com.arhimag.games.omnomnom.Maps.HelpScreenMap;
 import com.arhimag.games.omnomnom.framework.Game;
@@ -24,6 +25,7 @@ public class HelpScreen extends Screen
 		AndroidGame andrGame = (AndroidGame) game;
 		
 		levelDrawer = new GameLevelDrawer( new HelpLevel( new HelpScreenMap()), andrGame.getDisplayWidth() , andrGame.getDisplayHeight(), game.getGraphics());
+		GameLevel.startPauseTimer();
 	}
 
 	@Override
@@ -59,6 +61,7 @@ public class HelpScreen extends Screen
 	@Override
 	public void pause()
 	{
+		
 	}
 	
 	@Override

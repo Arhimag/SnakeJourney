@@ -10,7 +10,9 @@ public class HelpLevel extends GameLevel
 	public HelpLevel(GameMap map)
 	{
 		super(map);
-		
+
+
+		pauseable = false;
 		int snakeStartX = 26;
 		int snakeStartY = 15;
 		

@@ -67,7 +67,8 @@ public class LevelLevelsList extends GameLevel
 	public LevelLevelsList(  GameMap map )
 	{
 		super(map);
-		
+
+		pauseable = false;
 		/*snakes = new Snake[2];
 		moved = new boolean[2];
 		

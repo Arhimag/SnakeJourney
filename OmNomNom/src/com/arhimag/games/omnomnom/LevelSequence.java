@@ -3,6 +3,8 @@ package com.arhimag.games.omnomnom;
 import android.util.Log;
 
 import com.arhimag.games.omnomnom.Levels.CircleLevel;
+import com.arhimag.games.omnomnom.Levels.LevelBalcony;
+import com.arhimag.games.omnomnom.Levels.LevelBeginner;
 import com.arhimag.games.omnomnom.Levels.LevelLabirinth;
 import com.arhimag.games.omnomnom.Levels.Level1;
 import com.arhimag.games.omnomnom.Levels.Level2;
@@ -10,6 +12,10 @@ import com.arhimag.games.omnomnom.Levels.Level3;
 import com.arhimag.games.omnomnom.Levels.Level4;
 import com.arhimag.games.omnomnom.Levels.LevelCarpet;
 import com.arhimag.games.omnomnom.Levels.LevelMask;
+import com.arhimag.games.omnomnom.Levels.LevelMiniSquare;
+import com.arhimag.games.omnomnom.Levels.LevelSnail;
+import com.arhimag.games.omnomnom.Levels.LevelTorii;
+import com.arhimag.games.omnomnom.Levels.LevelZigZag;
 import com.arhimag.games.omnomnom.Levels.MeetAILevel;
 import com.arhimag.games.omnomnom.Levels.MeetTeleportLevel;
 import com.arhimag.games.omnomnom.Levels.SnakeLevel;
@@ -19,29 +25,42 @@ import com.arhimag.games.omnomnom.Maps.GameMap;
 import com.arhimag.games.omnomnom.Maps.Level2Map;
 import com.arhimag.games.omnomnom.Maps.Level3Map;
 import com.arhimag.games.omnomnom.Maps.Level4Map;
+import com.arhimag.games.omnomnom.Maps.LevelBalconyMap;
+import com.arhimag.games.omnomnom.Maps.LevelBeginnerMap;
 import com.arhimag.games.omnomnom.Maps.LevelCarpetMap;
+import com.arhimag.games.omnomnom.Maps.LevelMiniSquareMap;
+import com.arhimag.games.omnomnom.Maps.LevelSnailMap;
+import com.arhimag.games.omnomnom.Maps.LevelToriiMap;
+import com.arhimag.games.omnomnom.Maps.LevelZigZagMap;
 import com.arhimag.games.omnomnom.Maps.MaskMap;
 import com.arhimag.games.omnomnom.Maps.MeetAIMap;
 import com.arhimag.games.omnomnom.Maps.MeetTeleportMap;
 import com.arhimag.games.omnomnom.Maps.SnakeMap;
 import com.arhimag.games.omnomnom.Maps.LevelLabirinthMap;
-import com.arhimag.games.omnomnom.Screens.MainMenuScreen;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+
 
 import com.arhimag.games.omnomnom.Levels.GameLevel;
 
 public class LevelSequence 
 {
-	private static final Class levels[] = {LevelLabirinth.class, MeetTeleportLevel.class, LevelMask.class, LevelCarpet.class,
-			MeetAILevel.class, CircleLevel.class, SnakeLevel.class, Level1.class, Level2.class,
-			Level3.class, Level4.class};
+	private static final Class levels[] = {
+		LevelBeginner.class, LevelSnail.class, LevelBalcony.class, 
+		LevelLabirinth.class, LevelZigZag.class, LevelMiniSquare.class, 
+		LevelTorii.class, MeetTeleportLevel.class, LevelMask.class, 
+		LevelCarpet.class, MeetAILevel.class, CircleLevel.class, 
+		SnakeLevel.class, Level1.class, Level2.class,
+		Level3.class, Level4.class};
 
-    private static final Class maps[] = {LevelLabirinthMap.class, MeetTeleportMap.class, MaskMap.class, LevelCarpetMap.class,
-			MeetAIMap.class, CircleMap.class, SnakeMap.class, Level1Map.class, Level2Map.class,
-			Level3Map.class, Level4Map.class};
+    private static final Class maps[] = {
+    	LevelBeginnerMap.class, LevelSnailMap.class, LevelBalconyMap.class, 
+    	LevelLabirinthMap.class, LevelZigZagMap.class, LevelMiniSquareMap.class, 
+    	LevelToriiMap.class, MeetTeleportMap.class, MaskMap.class, 
+    	LevelCarpetMap.class, MeetAIMap.class, CircleMap.class, 
+    	SnakeMap.class, Level1Map.class, Level2Map.class, 
+    	Level3Map.class,Level4Map.class};
     
-    private static int levelsCount = 11;
+    private static int levelsCount = 16;
     
 	private static Constructor levelsConstructors[];
 	
@@ -82,6 +101,14 @@ public class LevelSequence
 	{
 		for( int i = 0; i < levelsCount; i++ )
 			if( level.getClass() == levels[i] )
+				return i;
+		return -1;
+	}
+	
+	public static int getMapNum( GameMap map )
+	{
+		for( int i = 0; i < levelsCount; i++ )
+			if( map.getClass() == maps[i] )
 				return i;
 		return -1;
 	}
@@ -128,5 +155,24 @@ public class LevelSequence
 			return createLevel( levelNum + 1 );
 		else 
 			return null;
+	}
+	
+	public static GameLevel createLevelByMap( GameMap map )
+	{
+		int levelNum = -1;
+		for( int i = 0; i < levelsCount; i++ )
+			if( map.getClass() == maps[i] )
+				levelNum = i;
+		if( levelNum == -1 )
+			return null;
+		try
+		{
+			return (GameLevel) levelsConstructors[levelNum].newInstance(map);
+		}
+		catch(Exception ex)
+		{
+			Log.d("SnakeFatal", "Can not load level " + levelNum + " " + ex.toString());
+			return null;
+		}
 	}
 }

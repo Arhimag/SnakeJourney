@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.arhimag.games.omnomnom.Assets;
 import com.arhimag.games.omnomnom.GameLevelDrawer;
+import com.arhimag.games.omnomnom.LevelSequence;
 import com.arhimag.games.omnomnom.Settings;
 import com.arhimag.games.omnomnom.Levels.CircleLevel;
 import com.arhimag.games.omnomnom.Levels.GameLevel;
@@ -51,9 +52,10 @@ public class LevelsScreen extends Screen
 		andrGame = (AndroidGame) game;
 		
 		levelDrawer = new GameLevelDrawer( new LevelLevelsList( new LevelsListMap()), andrGame.getDisplayWidth() , andrGame.getDisplayHeight(), game.getGraphics());
+		GameLevel.startPauseTimer();
 	}
 
-	private GameLevel getLevel( GameMap map )
+/*	private GameLevel getLevel( GameMap map )
 	{
 		if( map instanceof Level1Map )
 			return new Level1(map);
@@ -79,30 +81,30 @@ public class LevelsScreen extends Screen
 			return new SnakeLevel(map);
 		else
 			return new Level1(map);
-	}
+	} */
 	
 	private void goToLevelTL()
 	{
 		if( ((LevelLevelsList)this.levelDrawer.getLevel()).getTopLeft() != null )
-			game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getTopLeft()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4));
+			game.setScreen(new GameScreen(game,LevelSequence.createLevelByMap(((LevelLevelsList)this.levelDrawer.getLevel()).getTopLeft()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4));
 	}
 	
 	private void goToLevelTR()
 	{
 		if( ((LevelLevelsList)this.levelDrawer.getLevel()).getTopRight() != null )
-			game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getTopRight()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 1));
+			game.setScreen(new GameScreen(game,LevelSequence.createLevelByMap(((LevelLevelsList)this.levelDrawer.getLevel()).getTopRight()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 1));
 	}
 	
 	private void goToLevelBL()
 	{
 		if( ((LevelLevelsList)this.levelDrawer.getLevel()).getBottomLeft() != null )
-			game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getBottomLeft()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 2));
+			game.setScreen(new GameScreen(game,LevelSequence.createLevelByMap(((LevelLevelsList)this.levelDrawer.getLevel()).getBottomLeft()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 2));
 	}
 	
 	private void goToLevelBR()
 	{
 		if( ((LevelLevelsList)this.levelDrawer.getLevel()).getBottomRight() != null )
-			game.setScreen(new GameScreen(game,getLevel(((LevelLevelsList)this.levelDrawer.getLevel()).getBottomRight()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 3));
+			game.setScreen(new GameScreen(game,LevelSequence.createLevelByMap(((LevelLevelsList)this.levelDrawer.getLevel()).getBottomRight()),((LevelLevelsList)this.levelDrawer.getLevel()).getListNumber() * 4 + 3));
 	}
 	@Override
 	public void update (float deltaTime)

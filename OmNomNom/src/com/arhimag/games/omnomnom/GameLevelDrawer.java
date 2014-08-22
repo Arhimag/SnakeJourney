@@ -1469,4 +1469,14 @@ public class GameLevelDrawer
 		else
 			return false;
 	}
+	
+	public int getScreenWidth()
+	{
+		return screenWidth;
+	}
+	
+	public int getScreenHeight()
+	{
+		return screenHeight;
+	}
 }

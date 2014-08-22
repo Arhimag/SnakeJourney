@@ -51,6 +51,7 @@ public class GameScreen extends Screen
 	Point old[];
 	int level = 0;
 	int controltype;
+	int thisSessionLevel = 0; 
 	
 	public GameScreen(Game game)
 	{
@@ -59,9 +60,10 @@ public class GameScreen extends Screen
 
 		old = new Point[10];
 		for(int i  = 0; i < 10 ; i++) old[i] = new Point();
-		
+		thisSessionLevel = 0;
 		//levelDrawer = new GameLevelDrawer( new Level1( new Level1Map()), andrGame.getDisplayWidth() , andrGame.getDisplayHeight(), game.getGraphics());
-		levelDrawer = new GameLevelDrawer( new LevelLabirinth( new LevelLabirinthMap()), andrGame.getDisplayWidth() , andrGame.getDisplayHeight(), game.getGraphics());
+		//levelDrawer = new GameLevelDrawer( new LevelLabirinth( new LevelLabirinthMap()), andrGame.getDisplayWidth() , andrGame.getDisplayHeight(), game.getGraphics());
+		levelDrawer = new GameLevelDrawer( LevelSequence.createLevel(Settings.getLastReachedLevel()), andrGame.getDisplayWidth() , andrGame.getDisplayHeight(), game.getGraphics());
 		controltype = Settings.getControl();
 	}
 
@@ -75,6 +77,7 @@ public class GameScreen extends Screen
 		
 		level = levelNum;
 		levelDrawer = new GameLevelDrawer( levelObject, andrGame.getDisplayWidth() , andrGame.getDisplayHeight(), game.getGraphics());
+		thisSessionLevel = 0;
 		//levelDrawer = new GameLevelDrawer( new LevelLabirinth( new LevelLabirinthMap()), andrGame.getDisplayWidth() , andrGame.getDisplayHeight(), game.getGraphics());
 		controltype = Settings.getControl();
 	}
@@ -153,84 +156,21 @@ public class GameScreen extends Screen
 				this.levelDrawer.getLevel().goDOWN(this.levelDrawer.getLevel().getPlayerSnake());
 		}
 		
-		this.levelDrawer.getLevel().update(deltaTime,this.levelDrawer.getLevel().getPlayerSnake());
-		
-			
 		if( this.levelDrawer.getLevel().nextLevel() )
 		{
 			
 			if( level < LevelSequence.getLevelsCount() - 1)
 			{
 				level++;
+				thisSessionLevel++;
 				updateAvalibleLevel(level);
 				levelDrawer.setLevel(LevelSequence.createNextLevel(levelDrawer.getLevel()));
+				levelDrawer.getLevel().setAqua(false);
 			}
 			else
 			{
 				game.setScreen(new MainMenuScreen(game));
 			}
-/*				
-			if( level == 0)
-			{
-				level = 1;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new MeetTeleportLevel(new MeetTeleportMap()));
-			}
-			else if( level == 1)
-			{
-				level = 2;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new LevelMask(new MaskMap()));
-			}
-			else if( level == 2)
-			{
-				level = 3;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new LevelCarpet(new LevelCarpetMap()));
-			}
-			else if( level == 3)
-			{
-				level = 4;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new MeetAILevel(new MeetAIMap()));
-			}
-			else if (level == 4)
-			{
-				level = 5;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new CircleLevel(new CircleMap()));
-			}
-			else if (level == 5)
-			{
-				level = 6;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new SnakeLevel(new SnakeMap()));
-			}
-			else if (level == 6)
-			{
-				level = 7;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new Level1(new Level1Map()));
-			}
-			else if (level == 7)
-			{
-				level = 8;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new Level2(new Level2Map()));
-			}
-			else if (level == 8)
-			{
-				level = 9;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new Level3(new Level3Map()));
-			}
-			else if (level == 9)
-			{
-				level = 10;
-				updateAvalibleLevel(level);
-				this.levelDrawer.setLevel(new Level4(new Level4Map()));
-			}
-			else */
 		}
 		else if( this.levelDrawer.getLevel().getGameOver())
 		{
@@ -274,6 +214,26 @@ public class GameScreen extends Screen
 						old[event.pointer].x = event.x;
 						old[event.pointer].y = event.y;
 					}
+/*					else if( event.type == TouchEvent.TOUCH_DRAGGED && levelDrawer.getLevel().getMovementHelp() && levelDrawer.getLevel().isTickNow(deltaTime) && old[event.pointer].x > 0 && old[event.pointer].y > 0)
+					{
+						Log.d("tocuhTest","TOUCH_DRAGGED: I = " + event.pointer + " (" + event.x + "," + event.y  + ") old[" + event.pointer + "]=(" + old[event.pointer].x + "," + old[event.pointer].y + ")");
+						if( java.lang.Math.abs(event.x - old[event.pointer].x) > java.lang.Math.abs(event.y - old[event.pointer].y) && java.lang.Math.abs(event.x - old[event.pointer].x) > levelDrawer.getScreenWidth() / 100)
+						{
+							if( event.x - old[event.pointer].x < 0 )
+								this.levelDrawer.getLevel().helpGoLEFT();
+							else
+								this.levelDrawer.getLevel().helpGoRIGHT();
+						}
+						else if( java.lang.Math.abs(event.x - old[event.pointer].x) < java.lang.Math.abs(event.y - old[event.pointer].y) &&  java.lang.Math.abs(event.y - old[event.pointer].y) > levelDrawer.getScreenHeight() / 100 )
+						{
+							if( event.y - old[event.pointer].y < 0 )
+								this.levelDrawer.getLevel().helpGoUP();
+							else
+								this.levelDrawer.getLevel().helpGoDOWN();
+						}
+						old[event.pointer].x = -1;
+						old[event.pointer].y = -1;
+					}*/
 				}
 				else if( controltype == 2)
 				{
@@ -374,6 +334,7 @@ public class GameScreen extends Screen
 			}
 		}
 		//Log.d("OmNomNomTrace","Update end");
+		this.levelDrawer.getLevel().update(deltaTime,this.levelDrawer.getLevel().getPlayerSnake());
 	}
 
 	@Override
@@ -388,12 +349,13 @@ public class GameScreen extends Screen
 	public void pause()
 	{
 		Settings.save(game.getFileIO());
+		GameLevel.startPauseTimer();
 	}
 
 	@Override
 	public void resume()
 	{
-
+		GameLevel.stopPauseTimer();
 	}
 
 	@Override
