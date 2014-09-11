@@ -4,18 +4,7 @@ import android.graphics.Rect;
 
 import com.arhimag.games.omnomnom.LevelSequence;
 import com.arhimag.games.omnomnom.Settings;
-import com.arhimag.games.omnomnom.Maps.CircleMap;
 import com.arhimag.games.omnomnom.Maps.GameMap;
-import com.arhimag.games.omnomnom.Maps.Level1Map;
-import com.arhimag.games.omnomnom.Maps.Level2Map;
-import com.arhimag.games.omnomnom.Maps.Level3Map;
-import com.arhimag.games.omnomnom.Maps.Level4Map;
-import com.arhimag.games.omnomnom.Maps.LevelCarpetMap;
-import com.arhimag.games.omnomnom.Maps.LevelLabirinthMap;
-import com.arhimag.games.omnomnom.Maps.MaskMap;
-import com.arhimag.games.omnomnom.Maps.MeetAIMap;
-import com.arhimag.games.omnomnom.Maps.MeetTeleportMap;
-import com.arhimag.games.omnomnom.Maps.SnakeMap;
 
 public class LevelLevelsList extends GameLevel
 {

@@ -1,11 +1,8 @@
 package com.arhimag.games.omnomnom.Levels;
 
-import android.util.Log;
-
 import com.arhimag.games.omnomnom.Food;
 import com.arhimag.games.omnomnom.Snake;
 import com.arhimag.games.omnomnom.SnakePart;
-import com.arhimag.games.omnomnom.AI.Deykstra2AISnake;
 import com.arhimag.games.omnomnom.AI.BFSAISnake;
 import com.arhimag.games.omnomnom.Maps.GameMap;
 

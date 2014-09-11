@@ -1,0 +1,30 @@
+package com.arhimag.games.omnomnom.AI;
+
+import com.arhimag.games.omnomnom.Snake;
+import com.arhimag.games.omnomnom.Levels.GameLevel;
+
+public class BridgeAISnake extends Snake 
+{
+	GameLevel level;
+	java.util.Random rnd = new java.util.Random(System.currentTimeMillis());
+	
+	public BridgeAISnake(GameLevel level, int x, int y)
+	{
+		super(x,y);
+		this.level = level;
+	}
+	
+	
+	
+	public int chooseDirection()
+	{
+		int decision = rnd.nextInt(3);
+		//Если 0, то поворачиваем.
+		if(decision == 0 )
+	}
+
+	public void nextTurn()
+	{
+		direction = chooseDirection();
+	}
+}

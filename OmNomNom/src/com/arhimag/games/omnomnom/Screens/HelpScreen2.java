@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.arhimag.games.omnomnom.Assets;
 import com.arhimag.games.omnomnom.GameLevelDrawer;
-import com.arhimag.games.omnomnom.LevelSequence;
 import com.arhimag.games.omnomnom.Settings;
 import com.arhimag.games.omnomnom.Levels.GameLevel;
 import com.arhimag.games.omnomnom.Levels.Help2Level;

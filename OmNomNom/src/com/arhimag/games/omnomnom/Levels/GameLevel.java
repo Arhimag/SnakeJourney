@@ -1,5 +1,6 @@
 package com.arhimag.games.omnomnom.Levels;
 
+import java.util.Calendar;
 import java.util.Random;
 
 import android.util.Log;
@@ -49,6 +50,7 @@ public abstract class GameLevel
 	private static long pauseDuration = 0;
 	
 	protected java.util.Date tempEggDate = new java.util.Date();
+	protected java.util.Calendar tempEggCalendar = java.util.Calendar.getInstance();
 	
 	public static final int WALL = -2;
 	public static final int TELEPORT = -3;
@@ -531,9 +533,9 @@ public abstract class GameLevel
 		{
 			if( snakes[i].lastx == x && snakes[i].lasty == y )
 				return true;
-			if((java.lang.Math.abs(snakes[i].parts.get(0).x - x) <= 2 ) && (java.lang.Math.abs(snakes[i].parts.get(0).y - y) <= 2))
+			if((java.lang.Math.abs(snakes[i].parts.get(0).x - x) <= 3 ) && (java.lang.Math.abs(snakes[i].parts.get(0).y - y) <= 3))
 				return true;
-			for( int j = 1; j < snakes[i].parts.size(); j++ )
+			for( int j = 0; j < snakes[i].parts.size(); j++ )
 				if( snakes[i].parts.get(j).x == x && snakes[i].parts.get(j).y == y)
 					return true;
 		}
@@ -753,6 +755,57 @@ public abstract class GameLevel
 	}
 		
 		
+	public char getNextSnakeField(int snakeid)
+	{
+		int nextFieldX = -1;
+		int nextFieldY = -1;
+		char nextFieldValue;
+		boolean tail;
+		
+		if( snakes[snakeid].direction ==  Snake.UP)
+		{
+			nextFieldX = snakes[snakeid].parts.get(0).x;
+			nextFieldY = snakes[snakeid].parts.get(0).y - 1;
+		} 
+		else if( snakes[snakeid].direction == Snake.DOWN )
+		{
+			nextFieldX = snakes[snakeid].parts.get(0).x;
+			nextFieldY = snakes[snakeid].parts.get(0).y + 1;
+		} 
+		else if( snakes[snakeid].direction == Snake.LEFT )
+		{
+			nextFieldX = snakes[snakeid].parts.get(0).x - 1;
+			nextFieldY = snakes[snakeid].parts.get(0).y ;
+		} 
+		else if( snakes[snakeid].direction == Snake.RIGHT )
+		{
+			nextFieldX = snakes[snakeid].parts.get(0).x + 1;
+			nextFieldY = snakes[snakeid].parts.get(0).y;
+		}		
+		
+		if( ( nextFieldX < 0 ) || 
+			( nextFieldX >= map.getMapWidth() ) ||
+			( nextFieldY < 0 ) ||
+			( nextFieldY >= map.getMapHeight() ) )
+			{
+				Log.d("SnakeJourney", "Incorrect snake position!");
+				throw new RuntimeException();
+			}
+		
+		nextFieldValue = map.getFlatMap(nextFieldX,nextFieldY);
+		
+		tail = false;
+		for( int check_snake = 0; check_snake < snakes.length; check_snake++)
+			for( int check_snake_id = 0; check_snake_id < snakes[check_snake].parts.size(); check_snake_id++ )
+				if ( ( nextFieldX == snakes[check_snake].parts.get(check_snake_id).x ) && ( nextFieldY == snakes[check_snake].parts.get(check_snake_id).y ) )
+					tail = true;
+		if( tail )
+			return 'R';
+		else
+			return nextFieldValue;
+
+	}
+	
 	public void tick()
 	{
 		int nextFieldX = -1;
@@ -921,7 +974,6 @@ public abstract class GameLevel
 									this.snakes[snakeid].eat();
 									eat = true;
 									this.generateNewFood(i);
-									break;
 								}
 							}
 							snakes[snakeid].advance();
@@ -1126,43 +1178,43 @@ public abstract class GameLevel
 	
 	public long getEgg1TimeNumber(int number) //÷0÷1:ì2ì3 
 	{
-		tempEggDate.setTime(egg1 / 1000000);
+		tempEggCalendar.setTimeInMillis(egg1 / 1000000);
 		if( number == 0 )
-			return tempEggDate.getMinutes()/10;
+			return tempEggCalendar.get(Calendar.MINUTE)/10;
 		if( number == 1 )
-			return tempEggDate.getMinutes()%10;
+			return tempEggCalendar.get(Calendar.MINUTE)%10;
 		if( number == 2 )
-			return tempEggDate.getSeconds()/10;
+			return tempEggCalendar.get(Calendar.SECOND)/10;
 		if( number == 3 )
-			return tempEggDate.getSeconds()%10;
+			return tempEggCalendar.get(Calendar.SECOND)%10;
 		else return 0;
 	}
 	
 	public long getEgg2TimeNumber(int number) //÷0÷1:ì2ì3 
 	{
-		tempEggDate.setTime(egg2 / 1000000);
+		tempEggCalendar.setTimeInMillis(egg2 / 1000000);
 		if( number == 0 )
-			return tempEggDate.getMinutes()/10;
+			return tempEggCalendar.get(Calendar.MINUTE)/10;
 		if( number == 1 )
-			return tempEggDate.getMinutes()%10;
+			return tempEggCalendar.get(Calendar.MINUTE)%10;
 		if( number == 2 )
-			return tempEggDate.getSeconds()/10;
+			return tempEggCalendar.get(Calendar.SECOND)/10;
 		if( number == 3 )
-			return tempEggDate.getSeconds()%10;
+			return tempEggCalendar.get(Calendar.SECOND)%10;
 		else return 0;
 	}
 	
 	public long getEgg3TimeNumber(int number) //÷0÷1:ì2ì3 
 	{
-		tempEggDate.setTime(egg3 / 1000000);
+		tempEggCalendar.setTimeInMillis(egg3 / 1000000);
 		if( number == 0 )
-			return tempEggDate.getMinutes()/10;
+			return tempEggCalendar.get(Calendar.MINUTE)/10;
 		if( number == 1 )
-			return tempEggDate.getMinutes()%10;
+			return tempEggCalendar.get(Calendar.MINUTE)%10;
 		if( number == 2 )
-			return tempEggDate.getSeconds()/10;
+			return tempEggCalendar.get(Calendar.SECOND)/10;
 		if( number == 3 )
-			return tempEggDate.getSeconds()%10;
+			return tempEggCalendar.get(Calendar.SECOND)%10;
 		else return 0;
 	}
 	
@@ -1174,16 +1226,16 @@ public abstract class GameLevel
 		if( levelEndTime - levelStartTime > (long)1000000000 * (long)60 * (long)60  )
 			return 9;
 		
-		tempEggDate.setTime(( levelEndTime - levelStartTime) / 1000000);
+		tempEggCalendar.setTimeInMillis(( levelEndTime - levelStartTime) / 1000000);
 		if( number == 0 )
-			return tempEggDate.getMinutes()/10;
+			return tempEggCalendar.get(Calendar.MINUTE)/10;
 		if( number == 1 )
-			return tempEggDate.getMinutes()%10;
+			return tempEggCalendar.get(Calendar.MINUTE)%10;
 		if( number == 2 )
-			return tempEggDate.getSeconds()/10;
+			return tempEggCalendar.get(Calendar.SECOND)/10;
 		if( number == 3 )
-			return tempEggDate.getSeconds()%10;
-		else return 0;		
+			return tempEggCalendar.get(Calendar.SECOND)%10;
+		else return 0;
 	}
 	
 	public boolean getMovementHelp()

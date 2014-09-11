@@ -6,25 +6,41 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import android.util.Log;
-
+import com.arhimag.games.omnomnom.Achievements.GameAchievement;
 import com.arhimag.games.omnomnom.framework.FileIO;
 
 public class Settings
 {
+	/* Струтура файла настроек:
+	 * 1.	Версия файла.(Параметр, в случае несовпадения которого с 
+	 * 		зашитом в версии игры происходит сброс настроек в дефолтные)
+	 * 2.	Включен ли звук
+	 * 3.	Id режима управления
+	 * 4.	Последний достигнутый уровень.
+	 * 5.	Количество уровней про которые есть информация про яйца.
+	 * 6.	Яйца уровня 1
+	 * 7.	Яйца уровня 2
+	 * 8.	...
+	 * 9. 	Яйца последнего уровня о котором есть информация про яйца.
+	 * 10.	Состояние первой ачивки
+	 * 11.	Состояние второй ачивки
+	 * 12.	...
+	 * 13. 	Состояние последней ачивки.
+	 * 14.	-1 ая ачивка.(Разница в способе хранения яиц и ачивок объясняется
+	 * 		тем, что информация о яйцах - является исключительно информацией 
+	 * 		игрока и никогда от разработчика не зависит. Количество же ачивок
+	 * 		может быть изменено разработчиком.)
+	 */
 	private static boolean soundEnabled = true;
 	private static int control = 0;
-	private static final int programmVersion = 17; 
+	private static final int programmVersion = 18; 
 	private static int currentVersion = programmVersion;
 	private static int lastReachedLevel = 0;
 	private static int isFutureMovement = 1;
 	
 	private static int[] levelsEggs = {0,0,0,0,0,0,0,0,0,0}; 
-	private static int playButtonColor = 0xFF1AAE1A;
-	private static int achievementButtonColor = 0xFFDAA520;
-	private static int helpButtonColor = 0xFF263696;
-	private static int levelsButtonColor = 0xFF4B2295;
-	private static int settingsButtonColor = 0xFFDAC320;
+
+	private static GameAchievement[] achievementsStatus;
 	
 	public static void load(FileIO  files)
 	{
@@ -143,9 +159,9 @@ public class Settings
 	
 	public static int getIsFutureMovement()
 	{
-		if( control == 2)
-			return 1;
-		else
+		//if( control == 2)
+		//	return 1;
+		//else
 			return 0;
 	}
 	

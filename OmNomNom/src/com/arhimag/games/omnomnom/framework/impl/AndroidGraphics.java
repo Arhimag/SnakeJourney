@@ -41,9 +41,9 @@ public class AndroidGraphics implements Graphics
 		if( format == PixmapFormat.RGB565 )
 			config = Config.RGB_565;
 		else if ( format == PixmapFormat.ARGB4444 )
-			config = config.ARGB_4444;
+			config = Config.ARGB_4444;
 		else
-			config = config.ARGB_8888;
+			config = Config.ARGB_8888;
 		
 		Options options = new Options();
 		options.inPreferredConfig = config;

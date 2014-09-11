@@ -1,13 +1,9 @@
 package com.arhimag.games.omnomnom.framework.impl;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -26,7 +22,7 @@ public abstract class AndroidGame extends Activity implements Game
 	Input input;
 	FileIO fileIO;
 	Screen screen;
-	WakeLock wakeLock;
+	//WakeLock wakeLock;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -34,13 +30,21 @@ public abstract class AndroidGame extends Activity implements Game
 		super.onCreate(savedInstanceState);
 		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON ,  WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON );
 		
-		boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+		// boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+		// Используем  старую функцию getWidth ради того, чтобы поддерживать 8ое минимальное API
+		@SuppressWarnings("deprecation")
 		int frameBufferWidth = getWindowManager().getDefaultDisplay().getWidth(); //isLandscape ? 800 : 600;
+		// Используем  старую функцию getHeight ради того, чтобы поддерживать 8ое минимальное API
+		@SuppressWarnings("deprecation")
 		int frameBufferHeight = getWindowManager().getDefaultDisplay().getHeight(); //isLandscape ? 600 : 800;
 		Bitmap frameBuffer = Bitmap.createBitmap(frameBufferWidth,frameBufferHeight,Config.RGB_565);
+		// Используем  старую функцию getWidth ради того, чтобы поддерживать 8ое минимальное API
+		@SuppressWarnings("deprecation")
 		float scaleX = (float) frameBufferWidth / getWindowManager().getDefaultDisplay().getWidth();
+		// Используем  старую функцию getHeight ради того, чтобы поддерживать 8ое минимальное API
+		@SuppressWarnings("deprecation")
 		float scaleY = (float) frameBufferHeight / getWindowManager().getDefaultDisplay().getHeight();
 		
 		renderView = new AndroidFastRenderView( this, frameBuffer);
@@ -51,15 +55,15 @@ public abstract class AndroidGame extends Activity implements Game
 		screen = getStartScreen();
 		setContentView(renderView);
 		
-		PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "GLGame");
+		//PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		//wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "GLGame");
 	}
 	
 	@Override
 	public void onResume()
 	{
 		super.onResume();
-		wakeLock.acquire();
+		//wakeLock.acquire();
 		screen.resume();
 		renderView.resume();
 	}
@@ -68,7 +72,7 @@ public abstract class AndroidGame extends Activity implements Game
 	public void onPause()
 	{
 		super.onPause();
-		wakeLock.release();
+		//wakeLock.release();
 		renderView.pause();
 		screen.pause();
 		
@@ -119,13 +123,17 @@ public abstract class AndroidGame extends Activity implements Game
 		return screen;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public int getDisplayWidth()
 	{
+		// Используем  старую функцию getWidth ради того, чтобы поддерживать 8ое минимальное API
 		return  getWindowManager().getDefaultDisplay().getWidth();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public int getDisplayHeight()
 	{
+		// Используем  старую функцию getHeight ради того, чтобы поддерживать 8ое минимальное API
 		return  getWindowManager().getDefaultDisplay().getHeight();
 	}
 

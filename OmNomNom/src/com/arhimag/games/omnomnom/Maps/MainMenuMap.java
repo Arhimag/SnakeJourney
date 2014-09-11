@@ -136,9 +136,15 @@ public class MainMenuMap extends GameMap
 	{
 		return settingsBounds;
 	}
+
 	public static Rect getHelpBounds()
 	{
 		return helpBounds;
+	}
+	
+	public static Rect getAchievementsBounds()
+	{
+		return achivementsBounds;
 	}
 }
 

@@ -81,15 +81,15 @@ public class GameLevelDrawer
 		this.snakeHeadSize = mapPixelSize;
 		
 		this.graphics = graphics;
-		this.mapColorModificators[0][0] = 0;
-		this.mapColorModificators[1][1] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
-		this.mapColorModificators[1][0] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
-		this.mapColorModificators[2][0] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
-		this.mapColorModificators[0][1] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
-		this.mapColorModificators[2][1] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
-		this.mapColorModificators[0][2] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
-		this.mapColorModificators[1][2] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
-		this.mapColorModificators[2][2] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		GameLevelDrawer.mapColorModificators[0][0] = 0;
+		GameLevelDrawer.mapColorModificators[1][1] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		GameLevelDrawer.mapColorModificators[1][0] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		GameLevelDrawer.mapColorModificators[2][0] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		GameLevelDrawer.mapColorModificators[0][1] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		GameLevelDrawer.mapColorModificators[2][1] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		GameLevelDrawer.mapColorModificators[0][2] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		GameLevelDrawer.mapColorModificators[1][2] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
+		GameLevelDrawer.mapColorModificators[2][2] = (0 | rand.nextInt(mapBitShift) << 16 | rand.nextInt(mapBitShift) << 8 | rand.nextInt(mapBitShift));
 		
 	}
 	
@@ -1010,7 +1010,7 @@ public class GameLevelDrawer
 		{
 			x = mapStartDrawX + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getFood(i).x;
 			y = mapStartDrawY + (float)mapPixelSize / 2.0f + (float)mapPixelSize * (float)this.level.getFood(i).y;
-			drawCenterRect(java.lang.Math.round(x), java.lang.Math.round(y), this.foodSize, this.foodColor);
+			drawCenterRect(java.lang.Math.round(x), java.lang.Math.round(y), this.foodSize, GameLevelDrawer.foodColor);
 		}
 	}
 	

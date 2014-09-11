@@ -1,8 +1,5 @@
 package com.arhimag.games.omnomnom.AI;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import android.util.Log;
 
 import com.arhimag.games.omnomnom.Snake;
@@ -43,7 +40,7 @@ public class BFSAISnake extends Snake
 	 */
 	private void initQueque()
 	{
-		quequeSize = mapWidth*mapHeight / 4;
+		quequeSize = mapWidth*mapHeight;
 		queque = new int[quequeSize];
 		quequeStart = 0;
 		quequeEnd = 0;
@@ -73,13 +70,6 @@ public class BFSAISnake extends Snake
 		quequeEnd++;		
 	}
 	
-	/* Выдает значение первого элемента очереди. Без удаления.
-	 */
-	private int getQueque()
-	{
-		return queque[quequeStart];
-	}
-
 	/* Пуста ли очередь?
 	 */
 	private boolean isEmptyQueque()
@@ -114,6 +104,7 @@ public class BFSAISnake extends Snake
 		mapWidth = level.getMap().getMapWidth();
 		mapHeight = level.getMap().getMapHeight();
 		initQueque();
+		//Log.d("OmNomNom", "test");
 	}
 	
 	
@@ -128,7 +119,7 @@ public class BFSAISnake extends Snake
 	{
 		int minWayLengthSquare = mapWidth*mapWidth + mapHeight*mapHeight;
 		int target = -1;
-		if( parts.size() > finishSize )
+		if( parts.size() >= finishSize )
 		{
 			 for( int i = 0; i < level.getFinishesLength(); i++ )
 				 if( (parts.get(0).x - level.getFinishX(i))*(parts.get(0).x - level.getFinishX(i)) + (parts.get(0).y -level.getFinishY(i))*(parts.get(0).y - level.getFinishY(i)) < minWayLengthSquare )
@@ -136,6 +127,7 @@ public class BFSAISnake extends Snake
 					 target = level.getMapVertexId(level.getFinishX(i), level.getFinishY(i));
 					 minWayLengthSquare = (parts.get(0).x - level.getFinishX(i))*(parts.get(0).x - level.getFinishX(i)) + (parts.get(0).y -level.getFinishY(i))*(parts.get(0).y - level.getFinishY(i));
 				 }
+			 //Log.d("BFS","Target is food" + level.getMapVertexX(target) + " " + level.getMapVertexY(target));
 			 return target;
 		}
 		else
@@ -145,7 +137,7 @@ public class BFSAISnake extends Snake
 				 {
 					 target = level.getMapVertexId(level.getFood(i).x, level.getFood(i).y);
 					 minWayLengthSquare = (parts.get(0).x - level.getFood(i).x)*(parts.get(0).x - level.getFood(i).x) + (parts.get(0).y - level.getFood(i).y)*(parts.get(0).y - level.getFood(i).y);
-//					 Log.d("BFS","Target is food #" + i);
+
 				 }
 			return target;
 		}
@@ -211,16 +203,16 @@ public class BFSAISnake extends Snake
 		
 		while( ( neightboor = level.getMapGraphNeighbours(current, neightboorId++) ) > -1 )
 		{
-//			Log.d("BFS", "Check for success (" + level.getMapVertexX(neightboor) +  "," +level.getMapVertexY(neightboor) + ") and (" + parts.get(0).x + "," + parts.get(0).y + ")");
+    		//Log.d("BFS", "Check for success (" + level.getMapVertexX(neightboor) +  "," +level.getMapVertexY(neightboor) + ") and (" + parts.get(0).x + "," + parts.get(0).y + ")");
 			if( level.getMapVertexX(neightboor) == parts.get(0).x && level.getMapVertexY(neightboor) == parts.get(0).y )
 			{
 				direction = getDirection(current);
 				level.refreshFoodAndTeleportsOnTempMap();
 				return;
 			}
-			if( parts.size() > finishSize )
+			if( parts.size() >= finishSize )
 			{
-				if( level.getMapGraphWeightFinish(current, neightboor) >= 0 && level.getIntTempMap(neightboor) != primeNumber )
+				if( level.getMapGraphWeightFinish( neightboor, current) >= 0 && level.getIntTempMap(neightboor) != primeNumber && level.getIntTempMap(neightboor) >= 0)
 				{
 					level.markIntTempMap(neightboor, primeNumber);
 					pushQueque(neightboor);
@@ -228,7 +220,7 @@ public class BFSAISnake extends Snake
 			}
 			else
 			{
-				if( level.getMapGraphWeight(current, neightboor) >= 0 && level.getIntTempMap(neightboor) != primeNumber )
+				if( level.getMapGraphWeight(current, neightboor) >= 0 && level.getIntTempMap(neightboor) != primeNumber && level.getIntTempMap(neightboor) >= 0)
 				{
 					level.markIntTempMap(neightboor, primeNumber);
 					pushQueque(neightboor);
@@ -240,10 +232,10 @@ public class BFSAISnake extends Snake
 		{
 			current = popQueque();
 			neightboorId = 0;
-			
+			//Log.d("BFS","!!!");
 			while( ( neightboor = level.getMapGraphNeighbours(current, neightboorId++) ) > -1 )
 			{
-//				Log.d("BFS", "Check for success (" + level.getMapVertexX(neightboor) +  "," +level.getMapVertexY(neightboor) + ") and (" + parts.get(0).x + "," + parts.get(0).y + ")");
+				//Log.d("BFS", "Check for success (" + level.getMapVertexX(neightboor) +  "," +level.getMapVertexY(neightboor) + ") and (" + parts.get(0).x + "," + parts.get(0).y + ")");
 				if( level.getMapVertexX(neightboor) == parts.get(0).x && level.getMapVertexY(neightboor) == parts.get(0).y )
 				{
 					direction = getDirection(current);
@@ -251,7 +243,7 @@ public class BFSAISnake extends Snake
 					return;
 				}
 				
-				if( level.getMapGraphWeight(current, neightboor) >= 0 && level.getIntTempMap(neightboor) != primeNumber )
+				if( level.getMapGraphWeight(current, neightboor) >= 0 && level.getIntTempMap(neightboor) != primeNumber && level.getIntTempMap(neightboor) >= 0)
 				{
 					level.markIntTempMap(neightboor, primeNumber);
 					pushQueque(neightboor);
@@ -260,13 +252,17 @@ public class BFSAISnake extends Snake
 		}
 		
 		direction = getRandomDirection();
-//		Log.d("BFS","Way from (" + level.getMapVertexX(getSnakeTarget()) + "," + level.getMapVertexY(getSnakeTarget()) + ") to Snake failed. Direction is " + direction );
+		//Log.d("BFS","Way from (" + level.getMapVertexX(getSnakeTarget()) + "," + level.getMapVertexY(getSnakeTarget()) + ") to Snake failed. Direction is " + direction );
+		//for(int i = 0; i < queque.length; i++)
+			//Log.d("BFS", Integer.toString(queque[i]));
+		//Log.d("BFS", "end");
 		level.refreshFoodAndTeleportsOnTempMap();
 		return;
 	}
 	
 	public void nextTurn()
 	{
+		//Log.d("BFS", "BfS start");
 		bfs();	
 	}
 }
