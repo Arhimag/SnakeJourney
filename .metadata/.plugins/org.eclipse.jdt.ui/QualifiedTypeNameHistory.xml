@@ -1,22 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.LevelLevelsList"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.LevelsListMap"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.Level1Map"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.GameMap"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.Level1"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.Level2"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.Level3"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.Level4"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.LevelCarpet"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.LevelLabirinth"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.LevelThreeRooms"/>
-<fullyQualifiedTypeName name="android.graphics.Rect"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.AI.SimpleAISnake"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.MeetAILevel"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.MeetAIMap"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.GameElements.Teleport"/>
-<fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.MeetTeleportLevel"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.MeetTeleportMap"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.CircleLevel"/>
@@ -47,17 +33,31 @@
 <fullyQualifiedTypeName name="java.io.BufferedReader"/>
 <fullyQualifiedTypeName name="java.util.Calendar"/>
 <fullyQualifiedTypeName name="android.graphics.Point"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.GameAchievement"/>
 <fullyQualifiedTypeName name="java.io.BufferedWriter"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.GameLevelDrawer"/>
 <fullyQualifiedTypeName name="java.lang.Character"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.GameElements.Alphabet"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.LevelForest"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.LevelForestMap"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.LevelHypnoMap"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.LevelHypno"/>
-<fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.AI.BridgeAISnake"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.LevelBridge"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.AI.BFSAISnake"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.GameAchievement"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.GameElements.Alphabet"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.ReachLevel10"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.ReachLevel20"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.ReachLevel30"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.Earn100Eggs"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.LevelChristmass"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.CelebrateChristmas"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.FinishGame"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.ReachLevel5"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.MeetAILevel"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.MeetAI"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.GetLength40"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.UseTeleport"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.Get30WithAccel"/>
 </qualifiedTypeNameHistroy>

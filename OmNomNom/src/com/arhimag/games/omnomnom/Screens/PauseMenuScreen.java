@@ -85,6 +85,12 @@ public class PauseMenuScreen extends Screen
 						Assets.eat.play(1);
 					return;
 				}
+				if( levelDrawer.inBounds(event, PauseMenuMap.getAchievementsBounds()))
+				{
+					game.setScreen(new AchievementsScreen(game));
+					Assets.eat.play(1);
+					return;
+				}
 			}
 		}
 		

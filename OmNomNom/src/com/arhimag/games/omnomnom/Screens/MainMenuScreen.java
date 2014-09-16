@@ -76,6 +76,12 @@ public class MainMenuScreen extends Screen
 					Assets.eat.play(1);
 					return;
 				}
+				if( levelDrawer.inBounds(event, MainMenuMap.getAchievementsBounds()))
+				{
+					game.setScreen(new AchievementsScreen(game));
+					Assets.eat.play(1);
+					return;
+				}
 			}
 		}
 		

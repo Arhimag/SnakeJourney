@@ -9,18 +9,16 @@ public class GameAchievement {
 
 	private int id; //Глобальный id ачивки.
 	private int status; // Степень выполнения ачивки в процентах от одного до 100
-	protected int[][] text; // Текст ачивки представленный в виде карты цветов. Он будет отображаться на экране списка ачиивок рядом с иконкой.
+	protected String text; // Текст ачивки представленный в виде карты цветов. Он будет отображаться на экране списка ачиивок рядом с иконкой.
 	protected int[][] listIcon; // Иконка ачивки. тоже карта цветов. отображается в списке ачивок
 	protected int[][] gameIcon; // Иконка ачивки. карта цветов. Появляется в игре при достижении ачивки.
 	public static final int listIconWidth = 5; //Ширина иконки списочной
-	public static final int listIconHeight = 10; //Высота иконки списочной
+	public static final int listIconHeight = 5; //Высота иконки списочной
 	public static final int gameIconWidth = 5; //Ширина иконки списочной
 	public static final int gameIconHeight = 5; //Высота иконки списочной
-	public static final int textWidth = 46; // Ширина блока с текстом
-	public static final int textHeight = 10; // Высота блока с текстом
 	
 
-	public static final Class<?>[] achievementsList = {}; // Класс-список ачивок. Номер в этом массиве и является id ачивки.
+	public static final Class<?>[] achievementsList = {ReachLevel5.class, ReachLevel10.class, ReachLevel20.class, ReachLevel30.class, UseTeleport.class, MeetAI.class, CelebrateChristmas.class, Earn100Eggs.class, GetLength40.class, FinishGame.class,Get30WithAccel.class}; // Класс-список ачивок. Номер в этом массиве и является id ачивки.
 
 	/* Функция определяет id ачивки по ее классу */
 	public static final int getAchievementId( Class<?> target )
@@ -144,11 +142,8 @@ public class GameAchievement {
 
 	public GameAchievement()
 	{
-		text = new int[textHeight][textWidth];
-		for( int x = 0; x < textWidth; x++ )
-			for( int y = 0; y < textHeight; y++ )
-				text[y][x] = 0xFF000000;
-		
+		text = "";
+	
 		id = GameAchievement.getAchievementId(this.getClass());
 		status = 0;
 	}
@@ -181,9 +176,9 @@ public class GameAchievement {
 	{
 	}
 	
-	public int getText(int x, int y)
+	public String getText()
 	{
-		return text[y][x];
+		return text;
 	}
 	
 	public int getListIcon(int x, int y)
@@ -194,5 +189,10 @@ public class GameAchievement {
 	public int getGameIcon(int x, int y)
 	{
 		return gameIcon[y][x];
+	}
+	
+	public int[][] getListIcon()
+	{
+		return listIcon;
 	}
 }

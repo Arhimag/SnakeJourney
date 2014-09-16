@@ -1,7 +1,5 @@
 package com.arhimag.games.omnomnom.AI;
 
-import android.util.Log;
-
 import com.arhimag.games.omnomnom.Snake;
 import com.arhimag.games.omnomnom.Levels.GameLevel;
 

@@ -12,26 +12,27 @@ import com.arhimag.games.omnomnom.Levels.GameLevel;
 public class LevelSequence 
 {
 	private static final Class<?> levels[] = {
-		LevelSprint.class,
 		LevelBeginner.class, LevelSnail.class, LevelBalcony.class, 
 		LevelLabirinth.class, LevelZigZag.class, LevelForest.class,
-		LevelHypno.class, LevelMiniSquare.class, LevelTorii.class, MeetTeleportLevel.class, 
-		LevelMask.class, LevelCarpet.class, LevelChristmass.class, MeetAILevel.class, 
-		LevelBridge.class, CircleLevel.class, LevelBaskets.class, SnakeLevel.class, Level1.class, 
-		Level2.class, Level3.class, Level4.class};
+		LevelHypno.class, LevelMiniSquare.class, LevelTorii.class, 
+		MeetTeleportLevel.class, LevelMask.class, LevelCarpet.class, 
+		LevelChristmass.class, MeetAILevel.class, LevelBridge.class, 
+		LevelSprint.class, CircleLevel.class, LevelBaskets.class, 
+		SnakeLevel.class, Level1.class, Level2.class, 
+		Level3.class, Level4.class};
 
     private static final Class<?> maps[] = {
-    	LevelSprintMap.class,
+    	
     	LevelBeginnerMap.class, LevelSnailMap.class, LevelBalconyMap.class, 
     	LevelLabirinthMap.class, LevelZigZagMap.class, LevelForestMap.class, 
-    	LevelHypnoMap.class, LevelMiniSquareMap.class, 
-    	LevelToriiMap.class, MeetTeleportMap.class, MaskMap.class, 
-    	LevelCarpetMap.class, LevelChristmassMap.class, MeetAIMap.class, LevelBridgeMap.class, CircleMap.class, 
-    	LevelBasketsMap.class, 
+    	LevelHypnoMap.class, LevelMiniSquareMap.class, LevelToriiMap.class, 
+    	MeetTeleportMap.class, MaskMap.class, LevelCarpetMap.class, 
+    	LevelChristmassMap.class, MeetAIMap.class, LevelBridgeMap.class, 
+    	LevelSprintMap.class, CircleMap.class, LevelBasketsMap.class, 
     	SnakeMap.class, Level1Map.class, Level2Map.class, 
     	Level3Map.class,Level4Map.class};
     
-    private static int levelsCount = 20;
+    private static int levelsCount = 23;
     
 	private static Constructor<?> levelsConstructors[];
 	
@@ -72,6 +73,14 @@ public class LevelSequence
 	{
 		for( int i = 0; i < levelsCount; i++ )
 			if( level.getClass() == levels[i] )
+				return i;
+		return -1;
+	}
+	
+	public static int getLevelTypeNum( Class<?> level )
+	{
+		for( int i = 0; i < levelsCount; i++ )
+			if( level == levels[i] )
 				return i;
 		return -1;
 	}

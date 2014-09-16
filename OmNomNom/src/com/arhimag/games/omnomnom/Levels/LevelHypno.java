@@ -15,7 +15,7 @@ public class LevelHypno extends GameLevel
 		
 		egg1 = (long)300 * (long)1000000000 - 1; //5 час
 		egg2 = (long)120 * (long)1000000000; // 2 минут
-		egg3 = (long)30 * (long)1000000000; // .5 минута
+		egg3 = (long)45 * (long)1000000000; // .5 минута
 		
 		int snakeStartX = 15;
 		int snakeStartY = 10;
@@ -30,7 +30,7 @@ public class LevelHypno extends GameLevel
 		snakes[0].direction = Snake.RIGHT;
 		snakes[0].finishSize = 7;
 		
-		food = new Food[20];
+		food = new Food[10];
 		food[0] = new Food( 14, 14 );
 		food[1] = new Food( 15, 14 );
 		food[2] = new Food( 14, 13 );
@@ -41,16 +41,6 @@ public class LevelHypno extends GameLevel
 		food[7] = new Food( 15, 13 );
 		food[8] = new Food( 14, 14 );
 		food[9] = new Food( 15, 14 );
-		food[10] = new Food( 14, 13 );
-		food[11] = new Food( 15, 13 );
-		food[12] = new Food( 14, 14 );
-		food[13] = new Food( 15, 14 );
-		food[14] = new Food( 14, 13 );
-		food[15] = new Food( 15, 13 );
-		food[16] = new Food( 14, 14 );
-		food[17] = new Food( 15, 14 );
-		food[18] = new Food( 14, 13 );
-		food[19] = new Food( 15, 13 );
 		generateNewFood(0);
 		generateNewFood(1);
 		generateNewFood(2);
@@ -61,16 +51,6 @@ public class LevelHypno extends GameLevel
 		generateNewFood(7);
 		generateNewFood(8);
 		generateNewFood(9);
-		generateNewFood(10);
-		generateNewFood(11);
-		generateNewFood(12);
-		generateNewFood(13);
-		generateNewFood(14);
-		generateNewFood(15);
-		generateNewFood(16);
-		generateNewFood(17);
-		generateNewFood(18);
-		generateNewFood(19);
 		
 		finishes = new Point[3];
 		

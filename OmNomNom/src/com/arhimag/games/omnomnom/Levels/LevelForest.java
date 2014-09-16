@@ -17,7 +17,7 @@ public class LevelForest extends GameLevel
 		egg2 = (long)600 * (long)1000000000; // 10 минут
 		egg3 = (long)120 * (long)1000000000; // 2 минута
 		
-		int snakeStartX = 15;
+		int snakeStartX = 14;
 		int snakeStartY = 8;
 	
 		snakes = new Snake[1];
@@ -27,7 +27,7 @@ public class LevelForest extends GameLevel
 		snakes[0].parts.add(new SnakePart(snakeStartX, snakeStartY - 1));
 		snakes[0].lastx = snakeStartX;
 		snakes[0].lasty = snakeStartY - 2;
-		snakes[0].direction = Snake.RIGHT;
+		snakes[0].direction = Snake.DOWN;
 		snakes[0].finishSize = 20;
 		
 		food = new Food[4];

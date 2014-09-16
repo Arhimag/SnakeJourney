@@ -9,6 +9,10 @@ import com.arhimag.games.omnomnom.Food;
 import com.arhimag.games.omnomnom.LevelSequence;
 import com.arhimag.games.omnomnom.Settings;
 import com.arhimag.games.omnomnom.Snake;
+import com.arhimag.games.omnomnom.Achievements.GameAchievement;
+import com.arhimag.games.omnomnom.Achievements.Get30WithAccel;
+import com.arhimag.games.omnomnom.Achievements.GetLength40;
+import com.arhimag.games.omnomnom.Achievements.UseTeleport;
 import com.arhimag.games.omnomnom.GameElements.Teleport;
 import com.arhimag.games.omnomnom.Maps.GameMap;
 import com.arhimag.games.omnomnom.framework.Point;
@@ -544,7 +548,6 @@ public abstract class GameLevel
 	
 	protected void generateNewFood( int i )
 	{
-		// TODO переделать на другой Random
 		/* Старый алгоритм генерации Еды.
 		 */ 
 		 
@@ -895,7 +898,6 @@ public abstract class GameLevel
 					if( snakeid == this.playerSnake)
 					{
 						snakes[snakeid].advance();
-						// TODO Тест паузы
 						levelEndTime = System.nanoTime();
 						levelStartTime += GameLevel.getPauseDuration();
 						GameLevel.clearPause();
@@ -931,6 +933,8 @@ public abstract class GameLevel
 					snakes[snakeid].parts.get(0).x = teleports[teleports[teleportId].getNextPort()].x;
 					snakes[snakeid].parts.get(0).y = teleports[teleports[teleportId].getNextPort()].y;
 					moveFinished = false;
+					if( snakeid == playerSnake && snakes[snakeid].parts.size() >= 40 )
+						Settings.achievementsStatus[GameAchievement.getAchievementId(UseTeleport.class)].setStatus(100);
 				}
 				else
 				{
@@ -942,7 +946,9 @@ public abstract class GameLevel
 							snakes[snakeid].lastx = snakes[snakeid].parts.get(snakes[snakeid].parts.size() - 1).x;
 							snakes[snakeid].lasty = snakes[snakeid].parts.get(snakes[snakeid].parts.size() - 1).y;
 							snakes[snakeid].parts.remove(snakes[snakeid].parts.size() - 1);
-						}
+							if(snakeid == playerSnake && !Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].isAchievementReached() && Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() >= 0)
+								Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].setStatus(Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() - 1);
+						}		
 						moved[snakeid] = false;
 					}
 					else
@@ -962,6 +968,8 @@ public abstract class GameLevel
 								snakes[snakeid].lastx = snakes[snakeid].parts.get(snakes[snakeid].parts.size() - 1).x;
 								snakes[snakeid].lasty = snakes[snakeid].parts.get(snakes[snakeid].parts.size() - 1).y;
 								snakes[snakeid].parts.remove(snakes[snakeid].parts.size() - 1);
+								if(snakeid == playerSnake && !Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].isAchievementReached() && Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() >= 0)
+									Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].setStatus(Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() - 1);
 							}
 							moved[snakeid] = false;
 						}
@@ -972,6 +980,16 @@ public abstract class GameLevel
 								if (( nextFieldX == food[i].x ) && ( nextFieldY == food[i].y ))
 								{
 									this.snakes[snakeid].eat();
+									if( snakeid == playerSnake && snakes[snakeid].parts.size() >= 40 )
+										Settings.achievementsStatus[GameAchievement.getAchievementId(GetLength40.class)].setStatus(100);
+									
+									if(snakeid == playerSnake && !Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].isAchievementReached() && Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() >= 0)
+									{
+										Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].setStatus(Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() + 1);
+										if(Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() == 5)
+											Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].setStatus( 100 );
+									}
+									
 									eat = true;
 									this.generateNewFood(i);
 								}

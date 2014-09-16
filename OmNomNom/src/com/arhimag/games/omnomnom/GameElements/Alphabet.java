@@ -137,8 +137,8 @@ public class Alphabet
 				{'#','#','#','#','_'},
 				{'#','_','_','_','#'},
 				{'#','#','#','#','_'},
-				{'#','_','_','#','_'},
-				{'#','_','_','#','_'}
+				{'#','_','_','_','#'},
+				{'#','_','_','_','#'}
 			},
 			{                   
 				{'_','#','#','#','#'},
@@ -268,17 +268,17 @@ public class Alphabet
 			}
 		};
 
-	private static int getLetterWidth()
+	public static int getLetterWidth()
 	{
 		return alphabet[0][0].length;
 	}
 	
-	private static int getLetterHeight()
+	public static int getLetterHeight()
 	{
 		return alphabet[0].length;
 	}
 	
-	private static int getLetterPixel(char letter, int x, int y)
+	public static int getLetterPixel(char letter, int x, int y)
 	{
 		int letterId = ((int)Character.toUpperCase(letter) - (int)'A');
 		
@@ -292,12 +292,7 @@ public class Alphabet
 		{
 			letterId = 26 + letterId + (int)'A' - (int)'0';  
 		}
-		else
-		{
-			letterId = 0;
-			Log.d("Alphabet", "Not correct number access " + letter);
-		}
-		
+				
 		if( x < 0 || x >= getLetterWidth())
 		{
 			x = 0;
@@ -346,7 +341,7 @@ public class Alphabet
 		
 		if( canvas[0].length < phraseLength )
 		{
-			Log.d("Alphabet","Not enought length of canvas for phrase :" + phrase);
+			Log.d("Alphabet","Not enought length of canvas for phrase :'" + phrase + "'  Length:" + phraseLength + " CanvasLength: " + canvas[0].length);
 			return ;
 		}
 		
@@ -373,7 +368,7 @@ public class Alphabet
 		while( text.indexOf(" ", currentSpaceIndex) > 0)
 		{
 			while( text.indexOf(" ",currentSpaceIndex) >= 0 && text.indexOf(" ",currentSpaceIndex) - currentLineStart < canvas[0].length )
-				currentSpaceIndex = text.indexOf(" ",currentSpaceIndex);
+				currentSpaceIndex = text.indexOf(" ",currentSpaceIndex) + 1;
 			if( currentSpaceIndex > currentLineStart )
 			{
 				phrase = text.substring(currentLineStart, currentSpaceIndex - 1);
@@ -381,7 +376,7 @@ public class Alphabet
 				{
 					writePhraseLine(phrase, canvas, currentLine*(alphabet[0].length + lineSpace) );
 					currentLine++;
-					currentLineStart = currentSpaceIndex + 1;
+					currentLineStart = currentSpaceIndex;
 				}
 				else
 				{

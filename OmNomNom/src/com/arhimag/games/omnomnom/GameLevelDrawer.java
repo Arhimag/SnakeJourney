@@ -5,7 +5,10 @@ import java.util.Random;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.arhimag.games.omnomnom.Achievements.GameAchievement;
+import com.arhimag.games.omnomnom.GameElements.Alphabet;
 import com.arhimag.games.omnomnom.Levels.GameLevel;
+import com.arhimag.games.omnomnom.Levels.LevelAchievementsList;
 import com.arhimag.games.omnomnom.Levels.LevelLevelsList;
 import com.arhimag.games.omnomnom.Levels.SettingsLevel;
 import com.arhimag.games.omnomnom.Maps.EggsWindowMap;
@@ -31,7 +34,6 @@ public class GameLevelDrawer
 
 	private static int foodColor = 0xffaaaaaa;
 	private static int finishColor = 0xff000000;
-//	private int teleportColor = 0xff5555ff;
 	private static int teleportColor = 0xff7799ff;
 	
 	private static int inactiveSettingsColors = 0xff333333;
@@ -116,20 +118,14 @@ public class GameLevelDrawer
 			case 'G':
 				return mapWallColors[4] + mapColorModificators[i % 3][j % 3];
 			case 'P':
-//				return 0xFF03C03C + mapColorModificators[i % 3][j % 3];
-//				return 0xFFE0E0E0 + mapColorModificators[i % 3][j % 3];
-//				return 0xFF1AAE1A + mapColorModificators[i % 3][j % 3];
 				return mapWallColors[3] + mapColorModificators[i % 3][j % 3];
 			case 'A':
 				return 0xFFDAA520 + ( mapColorModificators[i % 3][j % 3] & 0xFF00FFFF );
 			case 's':
-				//return 0xFFBB1B5C + mapColorModificators[i % 3][j % 3];
 				return 0xFFDAC320 + mapColorModificators[i % 3][j % 3];
 			case 'L':
-				//return 0xFF7AC61D + mapColorModificators[i % 3][j % 3];
 				return 0xFF4B2295 + mapColorModificators[i * 5 % 3][j * 5 % 3];
 			case 'H':
-				//return 0xFF263696 + mapColorModificators[i % 3][j % 3];
 				return 0xFF263696 + mapColorModificators[i % 3][j % 3];
 			case 'T': //Время ачивки
 				return 0xFF7F7F7F + mapColorModificators[i % 3][j % 3];
@@ -1248,6 +1244,51 @@ public class GameLevelDrawer
 		drawLabel(NUMBER_0_P + (int)level.getPlayerTimeNumber(3),winStartDrawX + EggsWindowMap.PLAYER_MINUTE_2.x * winPixelSize, winStartDrawY + EggsWindowMap.PLAYER_MINUTE_2.y * winPixelSize, winPixelSize);
 	}
 	
+	
+	
+	private int makeColorDark(int color )
+	{
+		int delimeter = 8;
+		return (color & 0xFF000000) | (((((color & 0x00FF0000) >> 16) / delimeter) << 16) & 0x00FF0000) | (((((color & 0x0000FF00) >> 8) / delimeter) << 8) & 0x0000FF00) | (((color & 0x000000FF) / delimeter) & 0x000000FF) ;  
+	}
+	
+	private void drawIcon( int[][] icon, int x, int y, boolean dark )
+	{
+		for( int i = 0; i < icon[0].length; i++ )
+			for( int j = 0; j < icon.length; j++ )
+				graphics.drawRect(x + i * mapPixelSize, y  + j * mapPixelSize, mapPixelSize, mapPixelSize, (dark?makeColorDark(icon[j][i]):icon[j][i]));
+	}
+	
+	private void drawString( String string, int x, int y )
+	{
+		int currentx = x;
+		for( int i = 0; i < string.length(); i++ )
+			if( string.charAt(i) != ' ' )
+			{
+				for( int xi = 0; xi < Alphabet.getLetterWidth(); xi++)
+					for( int yi = 0; yi < Alphabet.getLetterHeight(); yi++)
+						graphics.drawRect( currentx + xi * mapPixelSize, y + yi * mapPixelSize, mapPixelSize, mapPixelSize, Alphabet.getLetterPixel(string.charAt(i), xi, yi));
+				currentx += (Alphabet.getLetterWidth() + 1) * mapPixelSize;
+			}
+			else
+				currentx += (Alphabet.getLetterWidth() + 1) * mapPixelSize;
+	}
+	
+	private void drawAchievements( int startDrawAchX, int startDrawAchY)
+	{
+		int achievementId = ((LevelAchievementsList)level).getAchievemntId();
+		int verticalSpace = (screenHeight / LevelAchievementsList.achievementsPerList);
+		int curStartDrawX = startDrawAchX;
+		int curStartDrawY = startDrawAchY + (verticalSpace - Alphabet.getLetterHeight() * mapPixelSize ) / 2 - Alphabet.getLetterHeight() * mapPixelSize / 2;
+		
+		for( int i = 0; i < java.lang.Math.min( LevelAchievementsList.achievementsPerList, Settings.getAchievementsCount() - achievementId ); i++)
+		{
+			drawIcon(Settings.getAchievement(achievementId + i).getListIcon(), curStartDrawX, curStartDrawY + i * verticalSpace, !Settings.getAchievement(achievementId + i).isAchievementReached());
+			drawString(Settings.getAchievement(achievementId + i).getText(),curStartDrawX + GameAchievement.listIconWidth * mapPixelSize + Alphabet.getLetterWidth() * mapPixelSize, curStartDrawY + i * verticalSpace);
+		}
+		
+	}
+	
 	public void draw( float deltaTime )
 	{	
 		if( level instanceof SettingsLevel )
@@ -1271,6 +1312,65 @@ public class GameLevelDrawer
 					break;
 			}
 		}
+		else if( level instanceof LevelAchievementsList)
+		{
+			drawMap();
+			int achStartDrawX = mapStartDrawX;
+			int achStartDrawY = mapStartDrawY;
+			if ( ((LevelAchievementsList)level).isSlide() )
+			{
+				drawAchievements(achStartDrawX,achStartDrawY - ((LevelAchievementsList)level).getSlideStartY() + ((LevelAchievementsList)level).getSlideY());
+			}
+			else if ( ((LevelAchievementsList)level).getAnimation() != LevelAchievementsList.ANIMATION_STOP ) 
+			{
+				if( levelsSlideAnimationStartTime == 0 )
+				{
+					levelsSlideAnimationStartTime = System.nanoTime();
+					levelsSlideAnimationStartX = ((LevelAchievementsList)level).getSlideY() - ((LevelAchievementsList)level).getSlideStartY(); 
+				}
+				
+				if (((LevelAchievementsList)level).getAnimation() == LevelAchievementsList.ANIMATION_UP || ((LevelAchievementsList)level).getAnimation() == LevelAchievementsList.ANIMATION_DOWN) 
+				{
+					int move = java.lang.Math.round(((float)((System.nanoTime() - levelsSlideAnimationStartTime))/ 1000000000.0f) * ((LevelAchievementsList)level).getAnimationSpeed());
+					
+					drawAchievements(achStartDrawX,achStartDrawY + move + levelsSlideAnimationStartX);
+					
+					if ((  move + levelsSlideAnimationStartX < - screenHeight) || ( move + levelsSlideAnimationStartX > screenHeight ))
+					{
+						levelsSlideAnimationStartTime = System.nanoTime();
+						switch(((LevelAchievementsList)level).getAnimation())
+						{
+							case LevelAchievementsList.ANIMATION_DOWN:
+								((LevelAchievementsList)level).decAchievement();
+								((LevelAchievementsList)level).setAnimation(LevelAchievementsList.ANIMATION_PREVIOUS);
+								levelsSlideAnimationStartX = - screenHeight;
+								break;
+							case LevelAchievementsList.ANIMATION_UP:
+								((LevelAchievementsList)level).incAchievement();
+								((LevelAchievementsList)level).setAnimation(LevelAchievementsList.ANIMATION_NEXT);
+								levelsSlideAnimationStartX = screenHeight;
+								break;
+						}
+					}
+				}
+				else
+				{
+					int move = java.lang.Math.round((((float)(System.nanoTime() - levelsSlideAnimationStartTime))/ 1000000000.0f) * ((LevelAchievementsList)level).getAnimationSpeed());
+					
+					drawAchievements(achStartDrawX,achStartDrawY + move + levelsSlideAnimationStartX);
+					
+					if ((( move + levelsSlideAnimationStartX < 0) && (((LevelAchievementsList)level).getAnimation() ==LevelAchievementsList.ANIMATION_NEXT )) || ((  move + levelsSlideAnimationStartX > 0) && (((LevelAchievementsList)level).getAnimation() ==LevelAchievementsList.ANIMATION_PREVIOUS )) )
+					{
+						((LevelAchievementsList)level).setAnimation(LevelAchievementsList.ANIMATION_STOP);
+						levelsSlideAnimationStartTime = 0;
+					}
+				}
+			}
+			else
+			{
+				drawAchievements(achStartDrawX,achStartDrawY);
+			}
+		}
 		else if( level instanceof LevelLevelsList)
 		{
 			int minimapWidth = ((LevelLevelsList)level).getMinimapWidth() * mapPixelSize;
@@ -1284,15 +1384,6 @@ public class GameLevelDrawer
 			int rbmapX  = paddingLeft + ((LevelLevelsList)level).getRbmapX() * mapPixelSize;
 			int rbmapY  = paddingTop + ((LevelLevelsList)level).getRbmapY() * mapPixelSize;
 			int eggSize = mapPixelSize / 4;
-			//int minimapXDiff = 5 * mapPixelSize;
-			/*int ltmapX  = paddingLeft + mapPixelSize * 6;
-			int ltmapY  = paddingTop + 10 * mapPixelSize;
-			int rtmapX  = ltmapX + minimapXDiff + minimapWidth;
-			int rtmapY  = ltmapY;
-			int lbmapX  = ltmapX;
-			int lbmapY  = ltmapY + minimapYDiff + minimapHeight;
-			int rbmapX  = ltmapX + minimapXDiff + minimapWidth;
-			int rbmapY  = ltmapY + minimapYDiff + minimapHeight;*/
 			
 			drawMap();
 			drawFood();

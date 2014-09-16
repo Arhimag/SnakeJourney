@@ -28,8 +28,8 @@ public class LevelChristmass extends GameLevel
 		snakes[0].parts.add(new SnakePart(snakeStartX, snakeStartY - 1));
 		snakes[0].lastx = snakeStartX;
 		snakes[0].lasty = snakeStartY - 2;
-		snakes[0].direction = Snake.RIGHT;
-		snakes[0].finishSize = 20;
+		snakes[0].direction = Snake.LEFT;
+		snakes[0].finishSize = 17;
 		
 		food = new Food[4];
 		food[0] = new Food( 5, 3 );

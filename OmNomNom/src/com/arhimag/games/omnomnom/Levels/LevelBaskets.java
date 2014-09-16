@@ -5,8 +5,6 @@ import com.arhimag.games.omnomnom.PlayerSnake;
 import com.arhimag.games.omnomnom.Snake;
 import com.arhimag.games.omnomnom.SnakePart;
 import com.arhimag.games.omnomnom.AI.BFSAISnake;
-import com.arhimag.games.omnomnom.AI.Deykstra2AISnake;
-import com.arhimag.games.omnomnom.GameElements.Teleport;
 import com.arhimag.games.omnomnom.Maps.GameMap;
 import com.arhimag.games.omnomnom.framework.Point;
 

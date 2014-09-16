@@ -2,30 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="screen" key="selection"/>
-		<item value="true" key="casesensitive"/>
+		<item value="Accel" key="selection"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="accel"/>
+			<item value="B5E61D"/>
+			<item value="FFFFFFFF"/>
+			<item value="FFFFFF"/>
 			<item value="&apos;T&apos;"/>
 			<item value="screen"/>
 			<item value="nextLevel"/>
 			<item value="finish"/>
-			<item value=" "/>
-			<item value="&apos; &apos;"/>
-			<item value="!"/>
-			<item value="S"/>
 		</list>
 		<list key="replacehistory">
+			<item value="FE2030"/>
+			<item value="FE20"/>
+			<item value="FE"/>
+			<item value="FF000000"/>
+			<item value="000000"/>
 			<item value="."/>
 			<item value=" "/>
 			<item value="s"/>
-			<item value="_"/>
-			<item value=""/>
-			<item value="S"/>
-			<item value="maxBotWinPercent"/>
-			<item value="aquaColor"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
