@@ -12,20 +12,23 @@ public class Get30WithAccel extends GameAchievement {
 		
 		text = "size 30 at accel";
 		
+		color1 = 0xFFFFF68F;
+		color2 = 0xFFEEE685;
+		
 		gameIcon = new int[][] {
-			{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFFFFF},
-			{0xFFFE2030, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-			{0xFFFFF200, 0xFF000000, 0xFFFFF200, 0xFFFE2030, 0xFFFFF200},
-			{0xFFFE2030, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFFE2030},
-			{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFF200}
+			{color1, color2, color1, color2, 0xFFFFFFFF},
+			{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+			{color1, 0xFF000000, color1, color2, color1},
+			{color2, 0xFF000000, 0xFF000000, 0xFF000000, color2},
+			{color1, color2, color1, color2, color1}
 		};
 		
 		listIcon = new int[][] {
-				{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFFFFF},
-				{0xFFFE2030, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-				{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFF200},
-				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFFE2030},
-				{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFF200},
+				{color1, color2, color1, color2, 0xFFFFFFFF},
+				{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+				{color1, color2, color1, color2, color1},
+				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, color2},
+				{color1, color2, color1, color2, color1},
 			};
 
 	}

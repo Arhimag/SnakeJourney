@@ -9,22 +9,24 @@ public class ReachLevel30 extends GameAchievement {
 		
 		text = "Reach Level 30";
 		
+		color1 = 0xFFFF00FF;
+		color2 = 0xFFFF00FF;
+		
 		gameIcon = new int[][] {
-			{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFFFFF},
-			{0xFFFE2030, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-			{0xFFFFF200, 0xFF000000, 0xFFFFF200, 0xFFFE2030, 0xFFFFF200},
-			{0xFFFE2030, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFFE2030},
-			{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFF200}
+			{color1, color2, color1, color2, 0xFFFFFFFF},
+			{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+			{color1, 0xFF000000, color1, color2, color1},
+			{color2, 0xFF000000, 0xFF000000, 0xFF000000, color2},
+			{color1, color2, color1, color2, color1}
 		};
 		
 		listIcon = new int[][] {
-				{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFFFFF},
-				{0xFFFE2030, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-				{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFF200},
-				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFFE2030},
-				{0xFFFFF200, 0xFFFE2030, 0xFFFFF200, 0xFFFE2030, 0xFFFFF200},
+				{color1, color2, color1, color2, 0xFFFFFFFF},
+				{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+				{color1, color2, color1, color2, color1},
+				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, color2},
+				{color1, color2, color1, color2, color1},
 			};
-
 	}
 
 }

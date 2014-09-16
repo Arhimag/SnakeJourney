@@ -1289,6 +1289,18 @@ public class GameLevelDrawer
 		
 	}
 	
+	private void drawReachedAchievement()
+	{
+		if( GameAchievement.lastReachedAchievement >= 0 &&  GameAchievement.lastReachedAchievement < Settings.achievementsStatus.length && System.nanoTime() < GameAchievement.reachAchievementTime + GameAchievement.showAchievementTime )
+		{
+			int currX = (screenWidth -  GameAchievement.gameIconWidth * mapPixelSize) / 2;
+			int currY = screenHeight -  GameAchievement.gameIconHeight * mapPixelSize;
+			for( int x = 0; x < GameAchievement.gameIconWidth; x++ )
+				for( int y = 0; y < GameAchievement.gameIconHeight; y++ )
+					graphics.drawRect( currX + x * mapPixelSize, currY + y * mapPixelSize, mapPixelSize, mapPixelSize, Settings.achievementsStatus[GameAchievement.lastReachedAchievement].getGameIcon(x,y));
+		}
+	}
+	
 	public void draw( float deltaTime )
 	{	
 		if( level instanceof SettingsLevel )
@@ -1511,6 +1523,7 @@ public class GameLevelDrawer
 			if( level.getEggsWindow())
 				drawEggWindow();
 		}
+		drawReachedAchievement();
 	}
 	
 		

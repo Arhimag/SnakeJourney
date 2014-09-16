@@ -16,9 +16,13 @@ public class GameAchievement {
 	public static final int listIconHeight = 5; //Высота иконки списочной
 	public static final int gameIconWidth = 5; //Ширина иконки списочной
 	public static final int gameIconHeight = 5; //Высота иконки списочной
-	
+	public static int lastReachedAchievement = -1;
+	public static long reachAchievementTime = -1;
+	public static long showAchievementTime = 1500000000;
+	public int color1 = 0xFFFFFFFF;
+	public int color2 = 0xFFFFFFFF;
 
-	public static final Class<?>[] achievementsList = {ReachLevel5.class, ReachLevel10.class, ReachLevel20.class, ReachLevel30.class, UseTeleport.class, MeetAI.class, CelebrateChristmas.class, Earn100Eggs.class, GetLength40.class, FinishGame.class,Get30WithAccel.class}; // Класс-список ачивок. Номер в этом массиве и является id ачивки.
+	public static final Class<?>[] achievementsList = {TryAllControls.class, WinWithACCEL.class, WinWithLR.class, WinWithSLIDE.class, WinWithUDLR.class, ReachLevel5.class, ReachLevel10.class, ReachLevel20.class, ReachLevel30.class, UseTeleport.class, MeetAI.class, CelebrateChristmas.class, Earn100Eggs.class, GetLength40.class, FinishGame.class,Get30WithAccel.class}; // Класс-список ачивок. Номер в этом массиве и является id ачивки.
 
 	/* Функция определяет id ачивки по ее классу */
 	public static final int getAchievementId( Class<?> target )
@@ -155,11 +159,17 @@ public class GameAchievement {
 	
 	public void setStatus( int newStatus )
 	{
-		if( newStatus < 0 )
-			status = 0;
-		else if ( newStatus > 100 )
-			status = 100;
-		else status = newStatus; 			
+		status = newStatus;
+		if ( newStatus == 100 )
+		{
+			lastReachedAchievement = id;
+			reachAchievementTime = System.nanoTime();
+		}
+	}
+	
+	public void setStatusSilient( int newStatus )
+	{
+		status = newStatus;
 	}
 	
 	public int getId()

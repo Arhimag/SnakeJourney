@@ -9,20 +9,23 @@ public class GetLength40 extends GameAchievement {
 		
 		text = "GET LENGTH 40";
 		
+		color1 = 0xFF8B658B;
+		color2 = 0xFFFFC1C1;
+		
 		gameIcon = new int[][] {
-			{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFFFFF},
-			{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-			{0xFFFFF200, 0xFF000000, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
-			{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFB5E61D},
-			{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200}
+			{color1, color2, color1, color2, 0xFFFFFFFF},
+			{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+			{color1, 0xFF000000, color1, color2, color1},
+			{color2, 0xFF000000, 0xFF000000, 0xFF000000, color2},
+			{color1, color2, color1, color2, color1}
 		};
 		
 		listIcon = new int[][] {
-				{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFFFFF},
-				{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-				{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
-				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFB5E61D},
-				{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
+				{color1, color2, color1, color2, 0xFFFFFFFF},
+				{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+				{color1, color2, color1, color2, color1},
+				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, color2},
+				{color1, color2, color1, color2, color1},
 			};
 
 	}

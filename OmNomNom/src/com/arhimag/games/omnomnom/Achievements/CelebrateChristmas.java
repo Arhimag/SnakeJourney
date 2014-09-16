@@ -9,20 +9,23 @@ public class CelebrateChristmas extends GameAchievement {
 		
 		text = "Happy new year";
 		
+		color1 = 0xFFFF0000;
+		color2 = 0xFF00FF00;
+		
 		gameIcon = new int[][] {
-			{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFFFFF},
-			{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-			{0xFFFFF200, 0xFF000000, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
-			{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFB5E61D},
-			{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200}
+			{color1, color2, color1, color2, 0xFFFFFFFF},
+			{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+			{color1, 0xFF000000, color1, color2, color1},
+			{color2, 0xFF000000, 0xFF000000, 0xFF000000, color2},
+			{color1, color2, color1, color2, color1}
 		};
 		
 		listIcon = new int[][] {
-				{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFFFFF},
-				{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-				{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
-				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFB5E61D},
-				{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
+				{color1, color2, color1, color2, 0xFFFFFFFF},
+				{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+				{color1, color2, color1, color2, color1},
+				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, color2},
+				{color1, color2, color1, color2, color1},
 			};
 
 	}

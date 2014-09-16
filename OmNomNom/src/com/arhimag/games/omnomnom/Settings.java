@@ -18,6 +18,7 @@ import com.arhimag.games.omnomnom.Achievements.ReachLevel10;
 import com.arhimag.games.omnomnom.Achievements.ReachLevel20;
 import com.arhimag.games.omnomnom.Achievements.ReachLevel30;
 import com.arhimag.games.omnomnom.Achievements.ReachLevel5;
+import com.arhimag.games.omnomnom.Achievements.TryAllControls;
 import com.arhimag.games.omnomnom.Levels.LevelChristmass;
 import com.arhimag.games.omnomnom.Levels.MeetAILevel;
 import com.arhimag.games.omnomnom.framework.FileIO;
@@ -45,19 +46,23 @@ public class Settings
 	 * 		может быть изменено разработчиком.)
 	 */
 	private static boolean soundEnabled = true;
-	private static int control = 0;
-	private static final int programmVersion = 23; 
+	private static int control = 2;
+	private static final int programmVersion = 33; 
 	private static int currentVersion = programmVersion;
 	private static int lastReachedLevel = 0;
 //	private static int isFutureMovement = 1;
 	private static int eggsCount = 0;
 	private static int levelsEggs[];
+	private static int evenSnakeColor = 0xffaaaaaa;
+	private static int oddSnakeColor = 0xffaaaaaa - 0x002f2f2f;
 	private static final int CODE_SOUND = 0;
 	private static final int CODE_CONTROL = 1;
 	private static final int CODE_PROGRAMMVERSION = 2;
 	private static final int CODE_LASTREACHEDLEVEL = 3;
 	private static final int CODE_EGG_VALUE = 4;
 	private static final int CODE_ACHIEVEMENT = 5;
+	private static final int CODE_EVEN_SNAKE = 6;
+	private static final int CODE_ODD_SNAKE = 7;
 	 
 
 	public static GameAchievement[] achievementsStatus;
@@ -112,6 +117,14 @@ public class Settings
 			out.newLine();
 			out.write(Integer.toString(lastReachedLevel));
 			out.newLine();
+			out.write(Integer.toString(CODE_EVEN_SNAKE));
+			out.newLine();
+			out.write(Integer.toString(evenSnakeColor));
+			out.newLine();
+			out.write(Integer.toString(CODE_ODD_SNAKE));
+			out.newLine();
+			out.write(Integer.toString(oddSnakeColor));
+			out.newLine();
 			for( int i = 0; i < levelsEggs.length; i ++ )
 			{
 				out.write(Integer.toString(CODE_EGG_VALUE));
@@ -159,6 +172,29 @@ public class Settings
 			achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].setStatus(-1);			
 		if( control != 1 && newControl == 1 && !achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].isAchievementReached())
 			achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].setStatus(0);
+		switch(newControl)
+		{
+			case 0:
+				if(!achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].isAchievementReached() &&  achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].getStatus() % 2 != 0)
+					achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].setStatus(achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].getStatus() *  2);
+				break;
+			case 1:
+				if(!achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].isAchievementReached() &&  achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].getStatus() % 3 != 0)
+					achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].setStatus(achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].getStatus() *  3);
+				break;
+			case 4:
+				if(!achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].isAchievementReached() &&  achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].getStatus() % 5 != 0)
+					achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].setStatus(achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].getStatus() *  5);
+				break;
+			case 2:
+				if(!achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].isAchievementReached() &&  achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].getStatus() % 7 != 0)
+					achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].setStatus(achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].getStatus() *  7);
+				break;
+		}
+
+		if(!achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].isAchievementReached() &&  achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].getStatus() % 7*5*3*2 == 0)
+			achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].setStatus(100);
+
 		control = newControl;
 	}
 	
@@ -241,12 +277,34 @@ public class Settings
 	}
 	
 	
+	public static int getSnakeEvenColor()
+	{
+		return evenSnakeColor;
+	}
+	
+	public static int getSnakeOddColor()
+	{
+		return oddSnakeColor;
+	}
+	
+	public static void setSnakeEvenColor(int color)
+	{
+		evenSnakeColor = color;
+	}
+	
+	public static void setSnakeOddColor(int color)
+	{
+		oddSnakeColor = color;
+	}
+	
 	private static void setToDefault()
 	{
 		soundEnabled = true;
-		control = 0;
+		control = 4;
 		currentVersion = programmVersion; 
 		lastReachedLevel = 0;
+		evenSnakeColor = 0xffaaaaaa;
+		oddSnakeColor = 0xffaaaaaa - 0x002f2f2f;
 		levelsEggs = new int[LevelSequence.getLevelsCount()];
 		eggsCount = 0;
 		for( int i = 0; i < levelsEggs.length; i++)
@@ -262,6 +320,7 @@ public class Settings
 				Log.e("Settings", "Can not inint achievement " + i);
 			}
 		achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].setStatus(-1);
+		achievementsStatus[GameAchievement.getAchievementId(TryAllControls.class)].setStatus(1);
 	}
 	
 	/* Ќовый формат считывани€ и хранени€ настроек */
@@ -298,7 +357,13 @@ public class Settings
 					return true;
 				case CODE_ACHIEVEMENT:
 					int achievementId = Integer.parseInt(in.readLine());
-					achievementsStatus[achievementId].setStatus(Integer.parseInt(in.readLine()));
+					achievementsStatus[achievementId].setStatusSilient(Integer.parseInt(in.readLine()));
+					return true;
+				case CODE_EVEN_SNAKE:
+					setSnakeEvenColor(Integer.parseInt(in.readLine()));
+					return true;
+				case CODE_ODD_SNAKE:
+					setSnakeOddColor(Integer.parseInt(in.readLine()));
 					return true;
 			}
 		}

@@ -8,6 +8,11 @@ import com.arhimag.games.omnomnom.GameLevelDrawer;
 import com.arhimag.games.omnomnom.LevelSequence;
 import com.arhimag.games.omnomnom.Settings;
 import com.arhimag.games.omnomnom.Snake;
+import com.arhimag.games.omnomnom.Achievements.GameAchievement;
+import com.arhimag.games.omnomnom.Achievements.WinWithACCEL;
+import com.arhimag.games.omnomnom.Achievements.WinWithLR;
+import com.arhimag.games.omnomnom.Achievements.WinWithSLIDE;
+import com.arhimag.games.omnomnom.Achievements.WinWithUDLR;
 import com.arhimag.games.omnomnom.Levels.GameLevel;
 import com.arhimag.games.omnomnom.Maps.EggsWindowMap;
 import com.arhimag.games.omnomnom.framework.Game;
@@ -136,6 +141,25 @@ public class GameScreen extends Screen
 			
 			if( level < LevelSequence.getLevelsCount() - 1)
 			{
+				switch(Settings.getControl())
+				{
+					case 0:
+						if(!Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithSLIDE.class)].isAchievementReached())
+							Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithSLIDE.class)].setStatus(100);
+						break;
+					case 1:
+						if(!Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithACCEL.class)].isAchievementReached())
+							Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithACCEL.class)].setStatus(100);
+						break;
+					case 2:
+						if(!Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithLR.class)].isAchievementReached())
+							Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithLR.class)].setStatus(100);
+						break;
+					case 4:
+						if(!Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithUDLR.class)].isAchievementReached())
+							Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithUDLR.class)].setStatus(100);
+						break;
+				}
 				level++;
 				thisSessionLevel++;
 				updateAvalibleLevel(level);

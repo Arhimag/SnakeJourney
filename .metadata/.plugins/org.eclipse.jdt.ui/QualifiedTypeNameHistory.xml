@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.AI.SimpleAISnake"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.MeetAIMap"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.GameElements.Teleport"/>
-<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.MeetTeleportLevel"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.MeetTeleportMap"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Levels.CircleLevel"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Maps.CircleMap"/>
@@ -60,4 +56,8 @@
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.GetLength40"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.UseTeleport"/>
 <fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.Get30WithAccel"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.WinWithSLIDE"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.WinWithACCEL"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.WinWithLR"/>
+<fullyQualifiedTypeName name="com.arhimag.games.omnomnom.Achievements.WinWithUDLR"/>
 </qualifiedTypeNameHistroy>

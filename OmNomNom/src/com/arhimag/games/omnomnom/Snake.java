@@ -14,8 +14,8 @@ public class Snake
 	public int direction;
 
 	public int headColor = 0xffffffff;
-	protected int bodyColorEven = 0xffaaaaaa;
-	protected int bodyColorOdd = 0xffaaaaaa - 0x002f2f2f;
+	protected int bodyColorEven = Settings.getSnakeEvenColor();
+	protected int bodyColorOdd = Settings.getSnakeOddColor();
 	
 	public int lastx;
 	public int lasty;

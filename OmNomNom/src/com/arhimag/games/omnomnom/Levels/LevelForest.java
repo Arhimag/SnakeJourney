@@ -28,7 +28,7 @@ public class LevelForest extends GameLevel
 		snakes[0].lastx = snakeStartX;
 		snakes[0].lasty = snakeStartY - 2;
 		snakes[0].direction = Snake.DOWN;
-		snakes[0].finishSize = 20;
+		snakes[0].finishSize = 16;
 		
 		food = new Food[4];
 		food[0] = new Food( 14, 14 );

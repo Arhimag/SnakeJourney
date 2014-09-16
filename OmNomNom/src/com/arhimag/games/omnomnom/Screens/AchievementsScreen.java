@@ -66,7 +66,7 @@ public class AchievementsScreen extends Screen
 			{
 				if (((LevelAchievementsList)this.levelDrawer.getLevel()).isSlide())
 				{
-					if (java.lang.Math.abs(event.y - ((LevelAchievementsList)this.levelDrawer.getLevel()).getSlideStartY()) > andrGame.getDisplayHeight()/100 )
+					if (java.lang.Math.abs(event.y - ((LevelAchievementsList)this.levelDrawer.getLevel()).getSlideStartY()) > andrGame.getDisplayHeight()/10 )
 					{
 						if( event.y > ((LevelAchievementsList)this.levelDrawer.getLevel()).getSlideStartY()) 
 							((LevelAchievementsList)this.levelDrawer.getLevel()).startAnimationDown();
@@ -74,6 +74,15 @@ public class AchievementsScreen extends Screen
 							((LevelAchievementsList)this.levelDrawer.getLevel()).startAnimationUP();
 					}
 					((LevelAchievementsList)this.levelDrawer.getLevel()).setSlide(false);
+				}
+				else
+				{
+					if((((LevelAchievementsList)levelDrawer.getLevel()).getAchievemntId() + event.y / (levelDrawer.getScreenHeight() / LevelAchievementsList.achievementsPerList ) < Settings.achievementsStatus.length ) 
+						&& Settings.achievementsStatus[((LevelAchievementsList)levelDrawer.getLevel()).getAchievemntId() + event.y / (levelDrawer.getScreenHeight() / LevelAchievementsList.achievementsPerList )].isAchievementReached() 	)
+					{
+						Settings.setSnakeEvenColor(Settings.achievementsStatus[((LevelAchievementsList)levelDrawer.getLevel()).getAchievemntId() + event.y / (levelDrawer.getScreenHeight() / LevelAchievementsList.achievementsPerList )].color1);
+						Settings.setSnakeOddColor(Settings.achievementsStatus[((LevelAchievementsList)levelDrawer.getLevel()).getAchievemntId() + event.y / (levelDrawer.getScreenHeight() / LevelAchievementsList.achievementsPerList )].color2);
+					}
 				}
 			}
 			else if( event.type == TouchEvent.TOUCH_DOWN )
