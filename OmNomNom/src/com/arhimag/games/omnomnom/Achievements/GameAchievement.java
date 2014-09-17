@@ -14,13 +14,14 @@ public class GameAchievement {
 	protected int[][] gameIcon; // Иконка ачивки. карта цветов. Появляется в игре при достижении ачивки.
 	public static final int listIconWidth = 5; //Ширина иконки списочной
 	public static final int listIconHeight = 5; //Высота иконки списочной
-	public static final int gameIconWidth = 5; //Ширина иконки списочной
-	public static final int gameIconHeight = 5; //Высота иконки списочной
+	public static final int gameIconWidth = 9; //Ширина иконки списочной
+	public static final int gameIconHeight = 9; //Высота иконки списочной
 	public static int lastReachedAchievement = -1;
 	public static long reachAchievementTime = -1;
-	public static long showAchievementTime = 1500000000;
+	public static long showAchievementTime = 1000000000;
 	public int color1 = 0xFFFFFFFF;
 	public int color2 = 0xFFFFFFFF;
+	protected int borderColor = 0xFFFFD700;
 
 	public static final Class<?>[] achievementsList = {TryAllControls.class, WinWithACCEL.class, WinWithLR.class, WinWithSLIDE.class, WinWithUDLR.class, ReachLevel5.class, ReachLevel10.class, ReachLevel20.class, ReachLevel30.class, UseTeleport.class, MeetAI.class, CelebrateChristmas.class, Earn100Eggs.class, GetLength40.class, FinishGame.class,Get30WithAccel.class}; // Класс-список ачивок. Номер в этом массиве и является id ачивки.
 
@@ -144,6 +145,33 @@ public class GameAchievement {
 		}
 	}
 
+	protected void initGameIcon()
+	{
+		gameIcon = new int[][] {
+				{0xFF000000, borderColor, borderColor, borderColor, borderColor, borderColor, borderColor, borderColor, 0xFF000000},
+				{borderColor, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, borderColor },
+				{borderColor, 0xFF000000, color1, color2, color1, color2, 0xFFFFFFFF, 0xFF000000, borderColor},
+				{borderColor, 0xFF000000, color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, borderColor},
+				{borderColor, 0xFF000000, color1, 0xFF000000, color1, color2, color1, 0xFF000000, borderColor},
+				{borderColor, 0xFF000000, color2, 0xFF000000, 0xFF000000, 0xFF000000, color2,0xFF000000, borderColor},
+				{borderColor, 0xFF000000, color1, color2, color1, color2, color1, 0xFF000000, borderColor},
+				{borderColor, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, borderColor },
+				{0xFF000000, borderColor, borderColor, borderColor, borderColor, borderColor, borderColor, borderColor, 0xFF000000}
+		};
+		
+	}
+	
+	protected void initListIcon()
+	{
+		listIcon = new int[][] {
+				{color1, color2, color1, color2, 0xFFFFFFFF},
+				{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+				{color1, color2, color1, color2, color1},
+				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, color2},
+				{color1, color2, color1, color2, color1},
+			};
+	}
+		
 	public GameAchievement()
 	{
 		text = "";
@@ -158,7 +186,8 @@ public class GameAchievement {
 	}
 	
 	public void setStatus( int newStatus )
-	{
+	{	
+		if( status == 100 ) return;
 		status = newStatus;
 		if ( newStatus == 100 )
 		{

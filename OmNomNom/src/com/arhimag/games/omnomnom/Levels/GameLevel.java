@@ -933,7 +933,7 @@ public abstract class GameLevel
 					snakes[snakeid].parts.get(0).x = teleports[teleports[teleportId].getNextPort()].x;
 					snakes[snakeid].parts.get(0).y = teleports[teleports[teleportId].getNextPort()].y;
 					moveFinished = false;
-					if( snakeid == playerSnake && snakes[snakeid].parts.size() >= 40 )
+					if( snakeid == playerSnake  )
 						Settings.achievementsStatus[GameAchievement.getAchievementId(UseTeleport.class)].setStatus(100);
 				}
 				else
@@ -1016,7 +1016,7 @@ public abstract class GameLevel
 		minTickTime = ticksEverySecs;
 		for( i_getTickTime = 0; i_getTickTime < this.snakes.length; i_getTickTime++)
 		{
-			tmp_getTickTime = ticksEverySecs - 0.003f * this.snakes[i_getTickTime].parts.size();
+			tmp_getTickTime = ticksEverySecs - 0.002f * this.snakes[i_getTickTime].parts.size();
 			if( tmp_getTickTime < minTickTime )
 				minTickTime = tmp_getTickTime;
 		}

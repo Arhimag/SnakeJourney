@@ -47,9 +47,9 @@ public class Settings
 	 */
 	private static boolean soundEnabled = true;
 	private static int control = 2;
-	private static final int programmVersion = 33; 
+	private static final int programmVersion = 36; 
 	private static int currentVersion = programmVersion;
-	private static int lastReachedLevel = 0;
+	private static int lastReachedLevel = 24;
 //	private static int isFutureMovement = 1;
 	private static int eggsCount = 0;
 	private static int levelsEggs[];
@@ -302,7 +302,7 @@ public class Settings
 		soundEnabled = true;
 		control = 4;
 		currentVersion = programmVersion; 
-		lastReachedLevel = 0;
+		lastReachedLevel = 24;
 		evenSnakeColor = 0xffaaaaaa;
 		oddSnakeColor = 0xffaaaaaa - 0x002f2f2f;
 		levelsEggs = new int[LevelSequence.getLevelsCount()];

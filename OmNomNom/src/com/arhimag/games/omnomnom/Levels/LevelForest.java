@@ -4,6 +4,7 @@ import com.arhimag.games.omnomnom.Food;
 import com.arhimag.games.omnomnom.PlayerSnake;
 import com.arhimag.games.omnomnom.Snake;
 import com.arhimag.games.omnomnom.SnakePart;
+import com.arhimag.games.omnomnom.GameElements.Teleport;
 import com.arhimag.games.omnomnom.Maps.GameMap;
 import com.arhimag.games.omnomnom.framework.Point;
 
@@ -46,6 +47,17 @@ public class LevelForest extends GameLevel
 		finishes[2] = new Point(17,19);
 		finishes[3] = new Point(18,19);
 		
+		teleports = new Teleport[10];
+		teleports[0] = new Teleport(0,19,5);
+		teleports[1] = new Teleport(0,18,8);
+		teleports[2] = new Teleport(0,17,9);
+		teleports[3] = new Teleport(1,19,6);
+		teleports[4] = new Teleport(2,19,7);
+		teleports[5] = new Teleport(31,0,0);
+		teleports[6] = new Teleport(30,0,3);
+		teleports[7] = new Teleport(29,0,4);
+		teleports[8] = new Teleport(31,1,1);
+		teleports[9] = new Teleport(31,2,2);
 		aqua = true;
 		pauseButton = true;
 		winLength = 30;

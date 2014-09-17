@@ -22,6 +22,7 @@ public class GameLevelDrawer
 {
 	private GameLevel level;
 	
+	/*
 	private static int[] mapWallColors = new int[]{0xff53aa14, 0xffdd954d, 0xFFDD954D, 0xFFDD954D, 0xFFDD954D, 0xFF305015, 0xFF000000};
 	private static int[][] mapColorModificators = new int[3][3];
 	
@@ -38,6 +39,24 @@ public class GameLevelDrawer
 	
 	private static int inactiveSettingsColors = 0xff333333;
 	private static int activeSettingsColors = 0xffdd5555;
+	*/
+	private static int[] mapWallColors = new int[]{0xff53aa14, 0xffdd954d, 0xFFDD954D, 0xFFDD954D, 0xFFDD954D, 0xFF305015, 0xFF000000};
+	private static int[][] mapColorModificators = new int[3][3];
+	
+	private int mapPixelSize = 5;
+	
+	private int mapStartDrawX = 0;
+	private int mapStartDrawY = 0;
+	
+	private int mapBitShift = 22;//было 32
+
+	private static int foodColor = 0xffaaaaaa;
+	private static int finishColor = 0xff000000;
+	private static int teleportColor = 0xff7799ff;
+	
+	private static int inactiveSettingsColors = 0xff333333;
+	private static int activeSettingsColors = 0xffdd5555;
+
 	
 	private int snakeHeadSize;
 	private int snakeBodySize;
@@ -99,7 +118,7 @@ public class GameLevelDrawer
 	{
 		return getColor( cellValue, 0, 0);
 	}
-	public static int getColor(char cellValue, int i, int j  )
+	/*public static int getColor(char cellValue, int i, int j  )
 	{
 		switch( cellValue )
 		{
@@ -143,6 +162,54 @@ public class GameLevelDrawer
 				return 0xFFFFFFFF;
 			case 'B':
 				return 0xFF9A7F76 + mapColorModificators[i % 3][j % 3];
+			default:
+				return mapWallColors[mapWallColors.length - 1];
+		}
+	}*/
+	public static int getColor(char cellValue, int i, int j  )
+	{
+		switch( cellValue )
+		{
+			case '#':
+				return mapWallColors[0] + mapColorModificators[i % 3][j % 3];
+			case '_':
+				return 0xFF000000;
+			case 'W':
+				return mapWallColors[1] + mapColorModificators[i % 3][j % 3];
+			case 'S':
+				return inactiveSettingsColors + mapColorModificators[i % 3][j % 3];
+			case 'Q':
+				return mapWallColors[2] + mapColorModificators[i % 3][j % 3];
+			case 'R':
+				return mapWallColors[3] + mapColorModificators[i % 3][j % 3];
+			case 'G':
+				return mapWallColors[4] + mapColorModificators[i % 3][j % 3];
+			case 'P':
+				return mapWallColors[3] + mapColorModificators[i % 3][j % 3];
+			case 'A':
+				return 0xFF3AA556 + mapColorModificators[i % 3][j % 3];
+			case 's':
+				return 0xFF5CBE76 + mapColorModificators[i % 3][j % 3];
+			case 'L':
+				return 0xFF5E6FAC + mapColorModificators[i * 5 % 3][j * 5 % 3];
+			case 'H':
+				return 0xFF405296 + mapColorModificators[i % 3][j % 3];
+			case 'T': //¬рем€ ачивки
+				return 0xFFB3B3B3 + mapColorModificators[i % 3][j % 3];
+			case 't': //¬рем€ ачивки
+				return 0xFFB3B3B3 + mapColorModificators[i % 3][j % 3];
+			case 'E': //не активное €йцо
+				return 0xFF303030 + mapColorModificators[i % 3][j % 3];
+			case 'e': //јктивное €йцо
+				return 0xFFF0F0F0;
+			case 'Y':
+				return 0xFFB3B3B3 + mapColorModificators[i % 3][j % 3];
+			case 'M':
+				return 0xFF6C6C6C + mapColorModificators[i % 3][j % 3];
+			case 'C':
+				return 0xFF6C6C6C;
+			case 'B':
+				return 0xFF505151 + mapColorModificators[i % 3][j % 3];
 			default:
 				return mapWallColors[mapWallColors.length - 1];
 		}
@@ -1170,7 +1237,7 @@ public class GameLevelDrawer
 		if(! this.level.getEggsWindow() )
 			return;
 		
-		graphics.drawRect(0, 0, screenWidth, screenHeight, 0x55000000);
+		graphics.drawRect(0, 0, screenWidth, screenHeight, 0xBB000000);
 		int winPixelSize = java.lang.Math.min((screenHeight - paddingTop - paddingBottom)/EggsWindowMap.getMapHeightStatic(), (screenWidth - paddingRight - paddingLeft)/EggsWindowMap.getMapWidthStatic() );
 		int winStartDrawX = paddingLeft + (screenWidth  - paddingRight - paddingLeft - winPixelSize * EggsWindowMap.getMapWidthStatic()) / 2 ;
 		int winStartDrawY = paddingTop + (screenHeight - paddingTop - paddingBottom - EggsWindowMap.getMapHeightStatic() * winPixelSize ) /2;
@@ -1293,11 +1360,12 @@ public class GameLevelDrawer
 	{
 		if( GameAchievement.lastReachedAchievement >= 0 &&  GameAchievement.lastReachedAchievement < Settings.achievementsStatus.length && System.nanoTime() < GameAchievement.reachAchievementTime + GameAchievement.showAchievementTime )
 		{
-			int currX = (screenWidth -  GameAchievement.gameIconWidth * mapPixelSize) / 2;
-			int currY = screenHeight -  GameAchievement.gameIconHeight * mapPixelSize;
+			int currX = (screenWidth -  GameAchievement.gameIconWidth * mapPixelSize /2) / 2;
+			int currY = screenHeight -  GameAchievement.gameIconHeight * mapPixelSize /2;
+			graphics.drawRect( currX , currY , GameAchievement.gameIconWidth * mapPixelSize/2, GameAchievement.gameIconHeight * mapPixelSize/2, 0xFF000000);
 			for( int x = 0; x < GameAchievement.gameIconWidth; x++ )
 				for( int y = 0; y < GameAchievement.gameIconHeight; y++ )
-					graphics.drawRect( currX + x * mapPixelSize, currY + y * mapPixelSize, mapPixelSize, mapPixelSize, Settings.achievementsStatus[GameAchievement.lastReachedAchievement].getGameIcon(x,y));
+					graphics.drawRect( currX + x * mapPixelSize/2, currY + y * mapPixelSize/2, mapPixelSize/2, mapPixelSize/2, Settings.achievementsStatus[GameAchievement.lastReachedAchievement].getGameIcon(x,y));
 		}
 	}
 	

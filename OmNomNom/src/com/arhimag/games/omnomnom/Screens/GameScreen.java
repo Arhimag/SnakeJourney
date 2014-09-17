@@ -100,9 +100,35 @@ public class GameScreen extends Screen
 				{
 					if( levelDrawer.inBoundsEgg(event, EggsWindowMap.getMenuBounds()))
 					{
+						if( level < LevelSequence.getLevelsCount() - 2)
+						{
+							switch(Settings.getControl())
+							{
+								case 0:
+									if(!Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithSLIDE.class)].isAchievementReached())
+										Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithSLIDE.class)].setStatus(100);
+									break;
+								case 1:
+									if(!Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithACCEL.class)].isAchievementReached())
+										Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithACCEL.class)].setStatus(100);
+									break;
+								case 2:
+									if(!Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithLR.class)].isAchievementReached())
+										Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithLR.class)].setStatus(100);
+									break;
+								case 4:
+									if(!Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithUDLR.class)].isAchievementReached())
+										Settings.achievementsStatus[GameAchievement.getAchievementId(WinWithUDLR.class)].setStatus(100);
+									break;
+							}
+							level++;
+							thisSessionLevel++;
+							updateAvalibleLevel(level);
+						}
 						game.setScreen(new MainMenuScreen(game));
 						if( Settings.isSoundEnabled())
 							Assets.eat.play(1);
+						
 						return;
 					}
 					if( levelDrawer.inBoundsEgg(event, EggsWindowMap.getRetryBounds()))
@@ -139,7 +165,7 @@ public class GameScreen extends Screen
 		if( this.levelDrawer.getLevel().nextLevel() )
 		{
 			
-			if( level < LevelSequence.getLevelsCount() - 1)
+			if( level < LevelSequence.getLevelsCount() - 2)
 			{
 				switch(Settings.getControl())
 				{

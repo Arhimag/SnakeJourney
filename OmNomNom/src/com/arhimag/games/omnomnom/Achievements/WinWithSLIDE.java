@@ -12,21 +12,8 @@ public class WinWithSLIDE extends GameAchievement {
 		color1 = 0xFFFF00FF;
 		color2 = 0xFFFF00FF;
 		
-		gameIcon = new int[][] {
-			{color1, color2, color1, color2, 0xFFFFFFFF},
-			{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-			{color1, 0xFF000000, color1, color2, color1},
-			{color2, 0xFF000000, 0xFF000000, 0xFF000000, color2},
-			{color1, color2, color1, color2, color1}
-		};
-		
-		listIcon = new int[][] {
-				{color1, color2, color1, color2, 0xFFFFFFFF},
-				{color2, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
-				{color1, color2, color1, color2, color1},
-				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, color2},
-				{color1, color2, color1, color2, color1},
-			};
+		initGameIcon();
+		initListIcon();
 	}
 
 }
