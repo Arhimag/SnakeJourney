@@ -117,7 +117,7 @@ public class BFSAISnake extends Snake
 	{
 		int minWayLengthSquare = mapWidth*mapWidth + mapHeight*mapHeight;
 		int target = -1;
-		if( parts.size() >= finishSize )
+		if( parts.size() > finishSize )
 		{
 			 for( int i = 0; i < level.getFinishesLength(); i++ )
 				 if( (parts.get(0).x - level.getFinishX(i))*(parts.get(0).x - level.getFinishX(i)) + (parts.get(0).y -level.getFinishY(i))*(parts.get(0).y - level.getFinishY(i)) < minWayLengthSquare )

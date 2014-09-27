@@ -12,28 +12,32 @@ import com.arhimag.games.omnomnom.Levels.GameLevel;
 public class LevelSequence 
 {
 	private static final Class<?> levels[] = {
-		LevelBeginner.class, 		LevelSnail.class, 		LevelBalcony.class, 
-		LevelLabirinth.class, 		LevelZigZag.class, 		LevelSlalom.class, 
-		LevelMask.class, 			LevelTorii.class, 		LevelTrefoil.class, 
-		LevelForest.class, 			LevelHypno.class, 		LevelMiniSquare.class, 
-		MeetTeleportLevel.class, 	LevelCarpet.class,		LevelChristmass.class, 
-		MeetAILevel.class, 			LevelBridge.class,		LevelSprint.class, 
-		CircleLevel.class, 			LevelBaskets.class,		SnakeLevel.class, 
-		Level1.class, 				Level2.class,			Level3.class, 
+		LevelBeginner.class, 			LevelSnail.class, 				LevelBalcony.class, 
+		LevelLabirinth.class, 			LevelZigZag.class, 				LevelSlalom.class, 
+		LevelMask.class, 				LevelTorii.class, 				LevelTrefoil.class, 
+		LevelForest.class, 				LevelHypno.class, 				LevelMiniSquare.class, 
+		MeetTeleportLevel.class, 		LevelCarpet.class,				LevelChristmass.class, 
+		MeetAILevel.class, 				LevelBridge.class,				LevelSprint.class, 
+		CircleLevel.class, 				LevelBaskets.class,				Level4Rooms.class,
+		LevelAIM.class,					SnakeLevel.class,				LevelHotMeet.class,
+		LevelCrankshaft.class,			LevelBreath.class,				LevelWelcomeToVisualDoj.class, 	
+		Level1.class,					Level2.class,					Level3.class,
 		Level4.class};
 
     private static final Class<?> maps[] = {
-    	LevelBeginnerMap.class, 	LevelSnailMap.class, 	LevelBalconyMap.class, 
-    	LevelLabirinthMap.class, 	LevelZigZagMap.class, 	LevelSlalomMap.class, 
-    	MaskMap.class, 				LevelToriiMap.class, 	LevelTrefoilMap.class,
-    	LevelForestMap.class, 		LevelHypnoMap.class, 	LevelMiniSquareMap.class,  
-    	MeetTeleportMap.class,  	LevelCarpetMap.class,	LevelChristmassMap.class, 
-    	MeetAIMap.class, 			LevelBridgeMap.class,  	LevelSprintMap.class, 
-    	CircleMap.class, 			LevelBasketsMap.class,	SnakeMap.class, 
-    	Level1Map.class, 			Level2Map.class,		Level3Map.class,
+    	LevelBeginnerMap.class, 		LevelSnailMap.class, 			LevelBalconyMap.class, 
+    	LevelLabirinthMap.class, 		LevelZigZagMap.class,	 		LevelSlalomMap.class, 
+    	MaskMap.class, 					LevelToriiMap.class, 			LevelTrefoilMap.class,
+    	LevelForestMap.class, 			LevelHypnoMap.class, 			LevelMiniSquareMap.class,  
+    	MeetTeleportMap.class,  		LevelCarpetMap.class,			LevelChristmassMap.class, 
+    	MeetAIMap.class, 				LevelBridgeMap.class,  			LevelSprintMap.class, 
+    	CircleMap.class, 				LevelBasketsMap.class,			Level4RoomsMap.class,
+    	LevelAIMMap.class,				SnakeMap.class,     			LevelHotMeetMap.class,
+    	LevelCrankshaftMap.class,    	LevelBreathMap.class,			WelcomeToVisualDojMap.class, 	
+    	Level1Map.class,		    	Level2Map.class,		    	Level3Map.class,
     	Level4Map.class};
     
-    private static int levelsCount = 25;
+    private static int levelsCount = 31;
     
 	private static Constructor<?> levelsConstructors[];
 	

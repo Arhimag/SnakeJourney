@@ -14,6 +14,7 @@ public class Level4 extends GameLevel
 	{
 		super(map);
 		
+		this.pauseButton = false;
 		int snakeStartX = 6;
 		int snakeStartY = 4;
 		snakes = new Snake[1];
@@ -25,6 +26,7 @@ public class Level4 extends GameLevel
 		snakes[0].lastx = snakeStartX + 4;
 		snakes[0].lasty = snakeStartY;
 		snakes[0].direction = Snake.LEFT;
+		snakes[0].finishSize = 30;
 		
 		food = new Food[5];
 		food[0] = new Food( snakeStartX + 3, snakeStartY);
@@ -32,6 +34,12 @@ public class Level4 extends GameLevel
 		food[2] = new Food( snakeStartX + 11, snakeStartY);
 		food[3] = new Food( snakeStartX + 17, snakeStartY);
 		food[4] = new Food( snakeStartX + 21, snakeStartY);
+		
+		generateNewFood(0);
+		generateNewFood(1);
+		generateNewFood(2);
+		generateNewFood(3);
+		generateNewFood(4);
 		
 		finishes = new Point[2];
 		

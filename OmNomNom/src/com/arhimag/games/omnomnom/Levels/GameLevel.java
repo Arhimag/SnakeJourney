@@ -76,9 +76,9 @@ public abstract class GameLevel
 	protected boolean botMoved = false;
 	
 	//Минимзируем работу сборщика мусора
-	private int i_getTickTime;
-	private float minTickTime;
-	private float tmp_getTickTime;
+	protected int i_getTickTime;
+	protected float minTickTime;
+	protected float tmp_getTickTime;
 	
 	protected Random rand = new Random();
 	
@@ -132,7 +132,7 @@ public abstract class GameLevel
 	{
 		for(int x = 0; x < map.getMapWidth(); x++)
 			for(int y = 0; y < map.getMapHeight(); y++)
-				intTempMap[x][y] = ((map.getFlatMap(x, y) == ' ') || (map.getFlatMap(x, y) == '.'))  ? 0 : WALL;
+				intTempMap[x][y] = ((map.getFlatMap(x, y) == ' ') || (map.getFlatMap(x, y) == '.')  || (map.getFlatMap(x, y) == '~'))  ? 0 : WALL;
 //				tempMap[x][y] = map.getFlatMap(x, y);
 		for(int j = 0; j < this.snakes.length; j++)
 		{
@@ -631,7 +631,7 @@ public abstract class GameLevel
 				nextFieldValue = map.getFlatMap(nextFieldX,nextFieldY);
 				
 				// Если змейка идет в стену
-				if( nextFieldValue != ' ' && nextFieldValue != '.')
+				if( nextFieldValue != ' ' && nextFieldValue != '.' && nextFieldValue != '~' )
 				{
 					if( snakes[snakeid].parts.size() > 1)
 					{
@@ -666,7 +666,7 @@ public abstract class GameLevel
 				nextFieldValue = map.getFlatMap(nextFieldX,nextFieldY);
 				
 				// Если змейка идет в стену
-				if( nextFieldValue != ' ' && nextFieldValue != '.')
+				if( nextFieldValue != ' ' && nextFieldValue != '.' && nextFieldValue != '~')
 				{
 					if( snakes[snakeid].parts.size() > 1)
 					{
@@ -702,7 +702,7 @@ public abstract class GameLevel
 				nextFieldValue = map.getFlatMap(nextFieldX,nextFieldY);
 				
 				// Если змейка идет в стену
-				if( nextFieldValue != ' ' && nextFieldValue != '.' )
+				if( nextFieldValue != ' ' && nextFieldValue != '.' && nextFieldValue != '~')
 				{
 					if( snakes[snakeid].parts.size() > 1)
 					{
@@ -735,7 +735,7 @@ public abstract class GameLevel
 				nextFieldValue = map.getFlatMap(nextFieldX,nextFieldY);
 				
 				// Если змейка идет в стену
-				if( nextFieldValue != ' ' && nextFieldValue != '.')
+				if( nextFieldValue != ' ' && nextFieldValue != '.' && nextFieldValue != '~')
 				{
 					if( snakes[snakeid].parts.size() > 1)
 					{
@@ -939,7 +939,7 @@ public abstract class GameLevel
 				else
 				{
 					// Если змейка идет в стену
-					if( nextFieldValue != ' ' && nextFieldValue != '.')
+					if( nextFieldValue != ' ' && nextFieldValue != '.' && nextFieldValue != '~')
 					{
 						if( snakes[snakeid].parts.size() > 1)
 						{
@@ -986,7 +986,7 @@ public abstract class GameLevel
 									if(snakeid == playerSnake && !Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].isAchievementReached() && Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() >= 0)
 									{
 										Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].setStatus(Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() + 1);
-										if(Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() == 5)
+										if(Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].getStatus() == 30)
 											Settings.achievementsStatus[GameAchievement.getAchievementId(Get30WithAccel.class)].setStatus( 100 );
 									}
 									
@@ -1016,7 +1016,7 @@ public abstract class GameLevel
 		minTickTime = ticksEverySecs;
 		for( i_getTickTime = 0; i_getTickTime < this.snakes.length; i_getTickTime++)
 		{
-			tmp_getTickTime = ticksEverySecs - 0.002f * this.snakes[i_getTickTime].parts.size();
+			tmp_getTickTime = ticksEverySecs - 0.003f * this.snakes[i_getTickTime].parts.size();
 			if( tmp_getTickTime < minTickTime )
 				minTickTime = tmp_getTickTime;
 		}

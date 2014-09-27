@@ -180,6 +180,7 @@ public class GameLevelDrawer
 				return inactiveSettingsColors + mapColorModificators[i % 3][j % 3];
 			case 'Q':
 				return mapWallColors[2] + mapColorModificators[i % 3][j % 3];
+			case '~':
 			case 'R':
 				return mapWallColors[3] + mapColorModificators[i % 3][j % 3];
 			case 'G':

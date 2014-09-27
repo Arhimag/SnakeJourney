@@ -13,6 +13,8 @@ public class Level3 extends GameLevel
 	{
 		super(map);
 		
+		this.pauseButton = false;
+		
 		int snakeStartX = 7;
 		int snakeStartY = 3;
 		snakes = new Snake[1];
@@ -20,6 +22,7 @@ public class Level3 extends GameLevel
 		snakes[0] = new PlayerSnake(snakeStartX, snakeStartY);
 		snakes[0].lastx = snakeStartX - 1;
 		snakes[0].lasty = snakeStartY;
+		snakes[0].finishSize = 40;
 		snakes[0].direction = Snake.RIGHT;
 		
 		food = new Food[5];

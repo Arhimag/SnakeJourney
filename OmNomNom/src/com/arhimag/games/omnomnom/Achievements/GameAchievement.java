@@ -23,7 +23,7 @@ public class GameAchievement {
 	public int color2 = 0xFFFFFFFF;
 	protected int borderColor = 0xFFFFD700;
 
-	public static final Class<?>[] achievementsList = {TryAllControls.class, WinWithACCEL.class, WinWithLR.class, WinWithSLIDE.class, WinWithUDLR.class, ReachLevel5.class, ReachLevel10.class, ReachLevel20.class, ReachLevel30.class, UseTeleport.class, MeetAI.class, CelebrateChristmas.class, Earn100Eggs.class, GetLength40.class, FinishGame.class,Get30WithAccel.class}; // Класс-список ачивок. Номер в этом массиве и является id ачивки.
+	public static final Class<?>[] achievementsList = {TryAllControls.class, WinWithACCEL.class, WinWithLR.class, WinWithSLIDE.class, WinWithUDLR.class, ReachLevel5.class, ReachLevel10.class, ReachLevel20.class, ReachLevel30.class, UseTeleport.class, MeetAI.class, CelebrateChristmas.class, Earn100Eggs.class, GetLength40.class, FinishGame.class,Get30WithAccel.class, FindVisualDoj.class}; // Класс-список ачивок. Номер в этом массиве и является id ачивки.
 
 	/* Функция определяет id ачивки по ее классу */
 	public static final int getAchievementId( Class<?> target )

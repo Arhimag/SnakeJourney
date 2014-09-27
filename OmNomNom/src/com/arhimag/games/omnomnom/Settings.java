@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.arhimag.games.omnomnom.Achievements.CelebrateChristmas;
 import com.arhimag.games.omnomnom.Achievements.Earn100Eggs;
+import com.arhimag.games.omnomnom.Achievements.FindVisualDoj;
 import com.arhimag.games.omnomnom.Achievements.FinishGame;
 import com.arhimag.games.omnomnom.Achievements.GameAchievement;
 import com.arhimag.games.omnomnom.Achievements.Get30WithAccel;
@@ -20,6 +21,7 @@ import com.arhimag.games.omnomnom.Achievements.ReachLevel30;
 import com.arhimag.games.omnomnom.Achievements.ReachLevel5;
 import com.arhimag.games.omnomnom.Achievements.TryAllControls;
 import com.arhimag.games.omnomnom.Levels.LevelChristmass;
+import com.arhimag.games.omnomnom.Levels.LevelWelcomeToVisualDoj;
 import com.arhimag.games.omnomnom.Levels.MeetAILevel;
 import com.arhimag.games.omnomnom.framework.FileIO;
 
@@ -47,9 +49,9 @@ public class Settings
 	 */
 	private static boolean soundEnabled = true;
 	private static int control = 2;
-	private static final int programmVersion = 36; 
+	private static final int programmVersion = 41; 
 	private static int currentVersion = programmVersion;
-	private static int lastReachedLevel = 24;
+	private static int lastReachedLevel = 0;
 //	private static int isFutureMovement = 1;
 	private static int eggsCount = 0;
 	private static int levelsEggs[];
@@ -229,6 +231,8 @@ public class Settings
 			achievementsStatus[GameAchievement.getAchievementId(FinishGame.class)].setStatus(100);
 		if( lastReachedLevel >= LevelSequence.getLevelTypeNum(MeetAILevel.class) )
 			achievementsStatus[GameAchievement.getAchievementId(MeetAI.class)].setStatus(100);
+		if( lastReachedLevel >= LevelSequence.getLevelTypeNum(LevelWelcomeToVisualDoj.class) )
+			achievementsStatus[GameAchievement.getAchievementId(FindVisualDoj.class)].setStatus(100);
 	}
 	
 	public static int getIsFutureMovement()
@@ -302,7 +306,7 @@ public class Settings
 		soundEnabled = true;
 		control = 4;
 		currentVersion = programmVersion; 
-		lastReachedLevel = 24;
+		lastReachedLevel = 0;
 		evenSnakeColor = 0xffaaaaaa;
 		oddSnakeColor = 0xffaaaaaa - 0x002f2f2f;
 		levelsEggs = new int[LevelSequence.getLevelsCount()];
