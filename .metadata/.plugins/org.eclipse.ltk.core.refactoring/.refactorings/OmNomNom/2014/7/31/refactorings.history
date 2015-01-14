@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;HeapDeykstraAISnake.java&apos; to &apos;OmNomNom/src/com.arhimag.games.omnomnom.AI&apos;&#x0D;&#x0A;- Original project: &apos;OmNomNom&apos;&#x0D;&#x0A;- Destination element: &apos;OmNomNom/src/com.arhimag.games.omnomnom.AI&apos;&#x0D;&#x0A;- Original element: &apos;com.arhimag.games.omnomnom.AI.HeapDeykstraAISnake.java&apos;" description="Copy compilation unit" destination="/src&lt;com.arhimag.games.omnomnom.AI" element1="/src&lt;com.arhimag.games.omnomnom.AI{HeapDeykstraAISnake.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1406552354467" units="1" version="1.0"/>
+</session>

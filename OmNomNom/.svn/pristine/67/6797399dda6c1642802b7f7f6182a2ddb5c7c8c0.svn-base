@@ -1,0 +1,29 @@
+package com.arhimag.games.omnomnom.Maps;
+
+
+public abstract class GameMap
+{
+	private static final int mapWidth = 48;
+	private static final int mapHeight = 29;
+	protected char[][] FlatMap;
+
+	
+	public GameMap()
+	{
+	}
+	
+	public static int getMapWidth()
+	{
+		return mapWidth;
+	}
+	
+	public static int getMapHeight()
+	{
+		return  mapHeight;
+	}
+	
+	public char getFlatMap(int x, int y)
+	{
+		return FlatMap[y][x];
+	}
+}

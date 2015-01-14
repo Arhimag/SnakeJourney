@@ -1,0 +1,134 @@
+package com.arhimag.games.omnomnom.Screens;
+
+import java.util.List;
+
+import android.graphics.Rect;
+
+import com.arhimag.games.omnomnom.Assets;
+import com.arhimag.games.omnomnom.GameLevelDrawer;
+import com.arhimag.games.omnomnom.Settings;
+import com.arhimag.games.omnomnom.Levels.MainMenuLevel;
+import com.arhimag.games.omnomnom.Maps.MainMenuMap;
+import com.arhimag.games.omnomnom.framework.Game;
+import com.arhimag.games.omnomnom.framework.Graphics;
+import com.arhimag.games.omnomnom.framework.Input.TouchEvent;
+import com.arhimag.games.omnomnom.framework.Screen;
+import com.arhimag.games.omnomnom.framework.impl.AndroidGame;
+
+
+public class MainMenuScreen extends Screen
+{
+	GameLevelDrawer levelDrawer;
+	int paddingTop = 0;
+	int paddingBottom = 0;
+	int paddingLeft = 0;
+	int paddingRight = 0;
+	int mapstartX = 0;
+	int mapstartY = 0;
+	int pixelSize = 0;
+	
+	public MainMenuScreen(Game game)
+	{
+		super(game);
+		AndroidGame andrGame = (AndroidGame) game;
+		
+		pixelSize = java.lang.Math.min((andrGame.getDisplayHeight() - paddingTop - paddingBottom)/MainMenuMap.getMapHeight(), (andrGame.getDisplayWidth() - paddingRight - paddingLeft)/MainMenuMap.getMapWidth() );
+		mapstartX = paddingLeft + (andrGame.getDisplayWidth()  - paddingRight - paddingLeft - pixelSize*MainMenuMap.getMapWidth()) / 2 ;
+		mapstartY = paddingTop + (andrGame.getDisplayHeight() - paddingTop - paddingBottom - MainMenuMap.getMapHeight()*pixelSize ) /2; 
+
+		levelDrawer = new GameLevelDrawer( new MainMenuLevel( new MainMenuMap()), pixelSize , mapstartX, mapstartY, game.getGraphics());
+	}
+
+	@Override
+	public void update(float deltaTime)
+	{
+		Graphics g = game.getGraphics();
+		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+		game.getInput().getKeyEvents();
+		
+		int len = touchEvents.size();
+		
+		if( game.getInput().getAccelY() < -2.5f )
+			this.levelDrawer.getLevel().goLEFT();
+		else if( game.getInput().getAccelY() > 2.5f )
+			this.levelDrawer.getLevel().goRIGHT();
+		
+		if( game.getInput().getAccelX() < -2.5f )
+			this.levelDrawer.getLevel().goUP();
+		else if( game.getInput().getAccelX() > 2.5f )
+			this.levelDrawer.getLevel().goDOWN();
+		
+		this.levelDrawer.getLevel().update(deltaTime);
+		
+			
+		
+		for(int i = 0; i < len; i++)
+		{
+			TouchEvent event = touchEvents.get(i);
+			
+			if(event.type == TouchEvent.TOUCH_UP)
+			{
+				if( inBounds(event, MainMenuMap.getNewGameBounds()))
+				{
+					game.setScreen(new GameScreen(game));
+					Assets.eat.play(1);
+					return;
+				}
+				if( inBounds(event, MainMenuMap.getHightScoreBounds()))
+				{
+					//game.setScreen(new HighscoreScreen(game));
+					if( Settings.soundEnabled)
+						Assets.eat.play(1);
+					return;
+				}
+				if( inBounds(event, MainMenuMap.getHelpBounds()))
+				{
+					game.setScreen(new HelpScreen(game));
+					Assets.eat.play(1);
+					return;
+				}
+			}
+		}
+		
+	}
+
+	public boolean inBounds( TouchEvent event, Rect rct)
+	{
+		if ( ( event.x > paddingLeft + rct.left * pixelSize + mapstartX) &&
+				( event.x <  paddingLeft + rct.right * pixelSize + mapstartX  ) &&
+				( event.y > paddingTop + rct.top * pixelSize + mapstartY) &&
+				( event.y <  paddingTop + rct.bottom * pixelSize + mapstartY  ) )
+			return true;
+		else
+			return false;
+	}
+	
+	@Override
+	public void present(float deltaTime)
+	{
+		Graphics g = game.getGraphics();
+		g.clear(0);
+		levelDrawer.draw(deltaTime);
+	}
+
+	@Override
+	public void pause()
+	{
+		Settings.save(game.getFileIO());
+	}
+
+	@Override
+	public void resume()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void dispose()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+}

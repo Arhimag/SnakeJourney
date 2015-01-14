@@ -1,0 +1,34 @@
+package com.arhimag.games.omnomnom.Achievements;
+
+
+public class CelebrateChristmas extends GameAchievement {
+
+	//TODO Activate achievement CelebrateChristmas
+	/**
+	 * 
+	 */
+	public CelebrateChristmas() 
+	{
+		super();
+		
+		text = "Happy new year";
+		
+		gameIcon = new int[][] {
+			{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFFFFF},
+			{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+			{0xFFFFF200, 0xFF000000, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
+			{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFB5E61D},
+			{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200}
+		};
+		
+		listIcon = new int[][] {
+				{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFFFFF},
+				{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+				{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
+				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFB5E61D},
+				{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
+			};
+
+	}
+
+}

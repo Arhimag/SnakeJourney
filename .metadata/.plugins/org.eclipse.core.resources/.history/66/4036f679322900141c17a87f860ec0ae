@@ -1,0 +1,123 @@
+package com.arhimag.games.omnomnom.Levels;
+
+import com.arhimag.games.omnomnom.Food;
+import com.arhimag.games.omnomnom.PlayerSnake;
+import com.arhimag.games.omnomnom.Snake;
+import com.arhimag.games.omnomnom.SnakePart;
+import com.arhimag.games.omnomnom.AI.Deykstra2AISnake;
+import com.arhimag.games.omnomnom.AI.SimpleAISnake;
+import com.arhimag.games.omnomnom.GameElements.Teleport;
+import com.arhimag.games.omnomnom.Maps.GameMap;
+import com.arhimag.games.omnomnom.framework.Point;
+
+public class LevelZigZag extends GameLevel
+{
+	public LevelZigZag(  GameMap map )
+	{
+		super(map);
+		
+		egg1 = (long)3600 * (long)1000000000 - 1; // 1 час
+		egg2 = (long)360 * (long)1000000000; // 5 минут
+		egg3 = (long)90 * (long)1000000000; // 1,5 минута
+		
+		int snakeStartX = 5;
+		int snakeStartY = 3;
+	
+		snakes = new Snake[1];
+		moved = new boolean[1];
+
+		snakes[0] = new PlayerSnake(snakeStartX, snakeStartY);
+		snakes[0].parts.add(new SnakePart(snakeStartX - 1, snakeStartY));
+		snakes[0].parts.add(new SnakePart(snakeStartX - 2, snakeStartY));
+		snakes[0].parts.add(new SnakePart(snakeStartX - 3, snakeStartY));
+		snakes[0].parts.add(new SnakePart(snakeStartX - 3, snakeStartY + 1));
+		snakes[0].parts.add(new SnakePart(snakeStartX - 3, snakeStartY + 2));
+		snakes[0].parts.add(new SnakePart(snakeStartX - 2, snakeStartY + 2));
+		snakes[0].parts.add(new SnakePart(snakeStartX - 1, snakeStartY + 2));
+		snakes[0].parts.add(new SnakePart(snakeStartX - 1, snakeStartY + 1));
+		snakes[0].parts.add(new SnakePart(snakeStartX - 2, snakeStartY + 1));
+		
+		snakes[0].lastx = snakeStartX - 3;
+		snakes[0].lasty = snakeStartY;
+		snakes[0].direction = Snake.RIGHT;
+		snakes[0].finishSize = 30;
+
+
+		food = new Food[3];
+		food[0] = new Food( snakeStartX + 3, snakeStartY);
+		food[1] = new Food( snakeStartX + 4, snakeStartY);
+		food[2] = new Food( snakeStartX + 5, snakeStartY);
+
+		
+
+		generateNewFood(0);
+		generateNewFood(1);
+		generateNewFood(2);
+		
+		
+		finishes = new Point[4];
+		
+		finishes[0] = new Point(6,16);
+		finishes[1] = new Point(7,16);
+		finishes[2] = new Point(8,16);
+		finishes[3] = new Point(9,16);
+		
+		teleports = new Teleport[46];
+		teleports[0] = new Teleport(1, 1, 17);
+		teleports[1] = new Teleport(1, 2, 18);
+		teleports[2] = new Teleport(1, 3, 19);
+		teleports[3] = new Teleport(1, 4, 20);
+		teleports[4] = new Teleport(1, 5, 21);
+		teleports[5] = new Teleport(1, 6, 22);
+		teleports[6] = new Teleport(1, 7, 23);
+		teleports[7] = new Teleport(1, 8, 24);
+		teleports[8] = new Teleport(1, 9, 25);
+		teleports[9] = new Teleport(1, 10, 26);
+		teleports[10] = new Teleport(1, 11, 27);
+		teleports[11] = new Teleport(1, 12, 28);
+		teleports[12] = new Teleport(1, 13, 29);
+		teleports[13] = new Teleport(1, 14, 30);
+		teleports[14] = new Teleport(1, 15, 31);
+		teleports[15] = new Teleport(1, 16, 32);
+		teleports[16] = new Teleport(1, 17, 33);
+		teleports[17] = new Teleport(32, 1, 0);
+		teleports[18] = new Teleport(32, 2, 1);
+		teleports[19] = new Teleport(32, 3, 2);
+		teleports[20] = new Teleport(32, 4, 3);
+		teleports[21] = new Teleport(32, 5, 4);
+		teleports[22] = new Teleport(32, 6, 5);
+		teleports[23] = new Teleport(32, 7, 6);
+		teleports[24] = new Teleport(32, 8, 7);
+		teleports[25] = new Teleport(32, 9, 8);
+		teleports[26] = new Teleport(32, 10, 9);
+		teleports[27] = new Teleport(32, 11, 10);
+		teleports[28] = new Teleport(32, 12, 11);
+		teleports[29] = new Teleport(32, 13, 12);
+		teleports[30] = new Teleport(32, 14, 13);
+		teleports[31] = new Teleport(32, 15, 14);
+		teleports[32] = new Teleport(32, 16, 15);
+		teleports[33] = new Teleport(32, 17, 16);
+		teleports[34] = new Teleport(12, 3, 6);
+		teleports[35] = new Teleport(12, 4, 7);
+		teleports[36] = new Teleport(12, 5, 8);
+		teleports[37] = new Teleport(12, 11, 14);
+		teleports[38] = new Teleport(12, 12, 15);
+		teleports[39] = new Teleport(12, 13, 16);
+		teleports[40] = new Teleport(21, 7, 19);
+		teleports[41] = new Teleport(21, 8, 20);
+		teleports[42] = new Teleport(21, 9, 21);
+		teleports[43] = new Teleport(21, 15, 27);
+		teleports[44] = new Teleport(21, 16, 28);
+		teleports[45] = new Teleport(21, 17, 29);
+		
+		aqua = true;
+		pauseButton = true;
+		winLength = 30;
+	}
+	
+	public void update(float deltaTime, int snake_id )
+	{
+		super.update(deltaTime, snake_id);
+	}
+
+}

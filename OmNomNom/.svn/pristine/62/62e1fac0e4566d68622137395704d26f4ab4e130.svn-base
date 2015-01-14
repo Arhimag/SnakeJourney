@@ -1,0 +1,80 @@
+package com.arhimag.games.omnomnom;
+
+import java.util.List;
+
+import com.arhimag.games.omnomnom.Maps.HelpScreenMap;
+import com.arhimag.games.omnomnom.Maps.MainMenuMap;
+import com.arhimag.games.omnomnom.framework.Game;
+import com.arhimag.games.omnomnom.framework.Graphics;
+import com.arhimag.games.omnomnom.framework.Input.TouchEvent;
+import com.arhimag.games.omnomnom.framework.Screen;
+import com.arhimag.games.omnomnom.framework.impl.AndroidGame;
+
+public class HelpScreen extends Screen
+{
+	HelpScreenMap map;
+	int paddingTop = 0;
+	int paddingBottom = 0;
+	int paddingLeft = 0;
+	int paddingRight = 0;
+	int mapstartX = 0;
+	int mapstartY = 0;
+	int pixelSize = 0;
+	
+	public HelpScreen ( Game game )
+	{
+		super(game);
+		AndroidGame andrGame = (AndroidGame) game;
+		
+		pixelSize = java.lang.Math.min((andrGame.getDisplayHeight() - paddingTop - paddingBottom)/MainMenuMap.getMapHeight(), (andrGame.getDisplayWidth() - paddingRight - paddingLeft)/MainMenuMap.getMapWidth() );
+		mapstartX = paddingLeft + (andrGame.getDisplayWidth()  - paddingRight - paddingLeft - pixelSize*MainMenuMap.getMapWidth()) / 2 ;
+		mapstartY = paddingTop + (andrGame.getDisplayHeight() - paddingTop - paddingBottom - MainMenuMap.getMapHeight()*pixelSize ) /2; 
+		map = new HelpScreenMap( pixelSize , mapstartX, mapstartY, game.getGraphics());
+	}
+
+	@Override
+	public void update (float deltaTime)
+	{
+		List<TouchEvent> touchEvents = game.getInput().getTouchEvents();
+		
+		game.getInput().getKeyEvents();
+		
+		int len = touchEvents.size();
+		
+		for( int i = 0; i < len; i++)
+		{
+			TouchEvent event = touchEvents.get(i);
+			if(event.type == TouchEvent.TOUCH_UP)
+			{
+				game.setScreen(new HelpScreen2(game));
+				if( Settings.soundEnabled)
+					Assets.eat.play(1);
+				return;
+			}
+		}
+	}
+	
+	@Override
+	public void present(float deltaTime)
+	{
+		Graphics g = game.getGraphics();
+		g.clear(0);
+		map.Draw();		
+	}
+	
+	@Override
+	public void pause()
+	{
+	}
+	
+	@Override
+	public void resume()
+	{
+	}
+	
+	@Override
+	public void dispose()
+	{
+	}
+	
+}

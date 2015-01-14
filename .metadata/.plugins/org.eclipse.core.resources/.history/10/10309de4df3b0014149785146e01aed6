@@ -1,0 +1,36 @@
+package com.arhimag.games.omnomnom.Achievements;
+
+import com.arhimag.games.omnomnom.GameElements.Alphabet;
+
+
+public class ReachLevel10 extends GameAchievement {
+
+	/**
+	 * 
+	 */
+	public ReachLevel10() 
+	{
+		super();
+		
+		text = "Reach Level 10";
+		
+		gameIcon = new int[][] {
+			{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFF000000},
+			{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+			{0xFFFFF200, 0xFF000000, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200},
+			{0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000, 0xFFB5E61D},
+			{0xFFFFF200, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFFFFF200}
+		};
+		
+		listIcon = new int[][] {
+				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+				{0xFF000000, 0xFFB5E61D, 0xFF000000, 0xFF000000, 0xFF000000},
+				{0xFF000000, 0xFFFFF200, 0xFF000000, 0xFFFFF200, 0xFF000000},
+				{0xFF000000, 0xFFB5E61D, 0xFFFFF200, 0xFFB5E61D, 0xFF000000},
+				{0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000},
+			};
+
+		// TODO Auto-generated constructor stub
+	}
+
+}
