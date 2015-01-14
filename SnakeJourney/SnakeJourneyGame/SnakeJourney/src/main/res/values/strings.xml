@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SnakeJourney</string>
+    <string name="facebook_app_id">801813936552955</string>
+    <string name="progress_dialog_text">please, wait</string>
+</resources>
