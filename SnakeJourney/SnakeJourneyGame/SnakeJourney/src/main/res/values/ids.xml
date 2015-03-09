@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_id">408045588416</string>
+    <string name="achievement_TryAllControls">CgkIwJ-mi_ALEAIQAQ</string>
+    <string name="achievement_WinWithACCEL">CgkIwJ-mi_ALEAIQAg</string>
+    <string name="achievement_WinwithLR">CgkIwJ-mi_ALEAIQAw</string>
+    <string name="achievement_WinWIthSlide">CgkIwJ-mi_ALEAIQBA</string>
+    <string name="achievement_WinWithUDLR">CgkIwJ-mi_ALEAIQBQ</string>
+    <string name="achievement_ReachLevel5">CgkIwJ-mi_ALEAIQBg</string>
+    <string name="achievement_Reachlevel10">CgkIwJ-mi_ALEAIQBw</string>
+    <string name="achievement_Reachlevel20">CgkIwJ-mi_ALEAIQCA</string>
+    <string name="achievement_Reachlevel30">CgkIwJ-mi_ALEAIQCQ</string>
+    <string name="achievement_UseTeleport">CgkIwJ-mi_ALEAIQCg</string>
+    <string name="achievement_MeetRobosnake">CgkIwJ-mi_ALEAIQCw</string>
+    <string name="achievement_Happynewyear">CgkIwJ-mi_ALEAIQDA</string>
+    <string name="achievement_Earn100eggs">CgkIwJ-mi_ALEAIQDQ</string>
+    <string name="achievement_GetLength40">CgkIwJ-mi_ALEAIQDg</string>
+    <string name="achievement_Finishthegame">CgkIwJ-mi_ALEAIQDw</string>
+    <string name="achievement_FindVisualDoj">CgkIwJ-mi_ALEAIQEA</string>
+    <string name="achievement_Size30ataccel">CgkIwJ-mi_ALEAIQEQ</string>
+</resources>
